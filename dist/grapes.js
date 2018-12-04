@@ -43398,6 +43398,7 @@ module.exports = function () {
         st.load(keysF, function (res) {
           // Restore keys name
           var reg = new RegExp('^' + c.id + '');
+          res = res["data"]["attributes"];
           for (var itemKey in res) {
             var itemKeyR = itemKey.replace(reg, '');
             result[itemKeyR] = res[itemKey];
@@ -43673,9 +43674,13 @@ module.exports = __webpack_require__(/*! backbone */ "./node_modules/backbone/ba
     var fetchOptions = void 0;
     var body = void 0;
 
+    var apiBody = { 'data': { 'attributes': {} } };
+
     for (var param in params) {
       bodyObj[param] = params[param];
     }
+
+    apiBody['data']['attributes'] = bodyObj;
 
     if ((0, _underscore.isUndefined)(headers[reqHead])) {
       headers[reqHead] = 'XMLHttpRequest';
@@ -43689,12 +43694,12 @@ module.exports = __webpack_require__(/*! backbone */ "./node_modules/backbone/ba
     }
 
     if (typeJson) {
-      body = JSON.stringify(bodyObj);
+      body = JSON.stringify(apiBody);
     } else {
       body = new FormData();
 
       for (var bodyKey in bodyObj) {
-        body.append(bodyKey, bodyObj[bodyKey]);
+        body.append(bodyKey, apiBody['data']['attributes'][bodyKey]);
       }
     }
     fetchOptions = {
@@ -49160,7 +49165,7 @@ exports.default = function ($, undefined) {
 
     var elem = document.createElement('div');
     var style = elem.style;
-    style.cssText = 'background-color:rgba(0,0,0,.5)';
+    style.cssText = 'background-color:rgba(0,0,0,0.5)';
     return contains(style.backgroundColor, 'rgba') || contains(style.backgroundColor, 'hsla');
   }(),
       replaceInput = ["<div class='sp-replacer'>", "<div class='sp-preview'><div class='sp-preview-inner'></div></div>", "<div class='sp-dd'>&#9660;</div>", '</div>'].join(''),
@@ -49730,7 +49735,7 @@ exports.default = function ($, undefined) {
         currentHue = newHsv.h % 360 / 360;
         currentSaturation = newHsv.s;
         currentValue = newHsv.v;
-        currentAlpha = newHsv.a;
+        currentAlpha = newHsv.a !== 0 ? newHsv.a : 1;
       }
       updateUI();
 
@@ -49750,7 +49755,7 @@ exports.default = function ($, undefined) {
         h: currentHue,
         s: currentSaturation,
         v: currentValue,
-        a: Math.round(currentAlpha * 100) / 100
+        a: Math.round(currentAlpha * 100) / 20
       }, { format: opts.format || currentPreferredFormat });
     }
 
@@ -49787,7 +49792,7 @@ exports.default = function ($, undefined) {
 
       //reset background info for preview element
       previewElement.removeClass('sp-clear-display');
-      previewElement.css('background-color', 'transparent');
+      //previewElement.css('background-color', 'transparent');
 
       if (!realColor && allowEmpty) {
         // Update the replaced elements background with icon indicating no color selection
@@ -54055,7 +54060,7 @@ var upFirst = function upFirst(value) {
 };
 
 var camelCase = function camelCase(value) {
-  var values = value.split('-');
+  var values = value.split('-').filter(String);
   return values[0].toLowerCase() + values.slice(1).map(upFirst);
 };
 

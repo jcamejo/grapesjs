@@ -87,9 +87,13 @@ module.exports = require('backbone').Model.extend({
     let fetchOptions;
     let body;
 
+    let apiBody = { data: { attributes: {} } };
+
     for (let param in params) {
       bodyObj[param] = params[param];
     }
+
+    apiBody['data']['attributes'] = bodyObj;
 
     if (isUndefined(headers[reqHead])) {
       headers[reqHead] = 'XMLHttpRequest';
@@ -103,12 +107,12 @@ module.exports = require('backbone').Model.extend({
     }
 
     if (typeJson) {
-      body = JSON.stringify(bodyObj);
+      body = JSON.stringify(apiBody);
     } else {
       body = new FormData();
 
       for (let bodyKey in bodyObj) {
-        body.append(bodyKey, bodyObj[bodyKey]);
+        body.append(bodyKey, apiBody['data']['attributes'][bodyKey]);
       }
     }
     fetchOptions = {
@@ -124,11 +128,10 @@ module.exports = require('backbone').Model.extend({
 
     this.onStart();
     this.fetch(url, fetchOptions)
-      .then(
-        res =>
-          ((res.status / 200) | 0) == 1
-            ? res.text()
-            : res.text().then(text => Promise.reject(text))
+      .then(res =>
+        ((res.status / 200) | 0) == 1
+          ? res.text()
+          : res.text().then(text => Promise.reject(text))
       )
       .then(text => this.onResponse(text, clb))
       .catch(err => this.onError(err, clbErr));

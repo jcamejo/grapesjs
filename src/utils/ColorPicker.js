@@ -70,7 +70,7 @@ export default function($, undefined) {
 
       var elem = document.createElement('div');
       var style = elem.style;
-      style.cssText = 'background-color:rgba(0,0,0,.5)';
+      style.cssText = 'background-color:rgba(0,0,0,0.5)';
       return (
         contains(style.backgroundColor, 'rgba') ||
         contains(style.backgroundColor, 'hsla')
@@ -788,7 +788,7 @@ export default function($, undefined) {
         currentHue = (newHsv.h % 360) / 360;
         currentSaturation = newHsv.s;
         currentValue = newHsv.v;
-        currentAlpha = newHsv.a;
+        currentAlpha = newHsv.a !== 0 ? newHsv.a : 1;
       }
       updateUI();
 
@@ -809,7 +809,7 @@ export default function($, undefined) {
           h: currentHue,
           s: currentSaturation,
           v: currentValue,
-          a: Math.round(currentAlpha * 100) / 100
+          a: Math.round(currentAlpha * 100) / 20
         },
         { format: opts.format || currentPreferredFormat }
       );
@@ -853,7 +853,7 @@ export default function($, undefined) {
 
       //reset background info for preview element
       previewElement.removeClass('sp-clear-display');
-      previewElement.css('background-color', 'transparent');
+      //previewElement.css('background-color', 'transparent');
 
       if (!realColor && allowEmpty) {
         // Update the replaced elements background with icon indicating no color selection

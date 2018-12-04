@@ -114,6 +114,8 @@
     "start:js": "webpack-dev-server --open --progress --colors",
     "format": "prettier --single-quote --write './{src,test}/**/*.js'",
     "test": "jest",
-    "test:dev": "jest --watch"
+    "test:dev": "jest --watch",
+    "brave": "webpack --env=prod",
+    "less_brave": "webpack --env=dev"
   }
 }

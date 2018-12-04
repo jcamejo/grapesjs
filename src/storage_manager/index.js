@@ -257,6 +257,7 @@ module.exports = () => {
           res => {
             // Restore keys name
             var reg = new RegExp('^' + c.id + '');
+            res = res['data']['attributes'];
             for (var itemKey in res) {
               var itemKeyR = itemKey.replace(reg, '');
               result[itemKeyR] = res[itemKey];
