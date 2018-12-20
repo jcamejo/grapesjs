@@ -112,11 +112,14 @@
         },
       });
 
-      editor.BlockManager.add('testBlock', {
-        label: 'Block',
+      editor.BlockManager.add('Image', {
+        label: 'Image',
         attributes: { class:'gjs-fonts gjs-f-b1' },
-        content: `<div style="padding-top:50px; padding-bottom:50px; text-align:center">Test block</div>`
-      })
+				content: `<div><img /></div>`,
+				activate: true
+      });
+
+			
     </script>
   </body>
 </html>
