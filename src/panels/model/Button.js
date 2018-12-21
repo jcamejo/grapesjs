@@ -4,6 +4,7 @@ module.exports = Backbone.Model.extend({
   defaults: {
     id: '',
     label: '',
+    title: '',
     className: '',
     command: '',
     context: '',
