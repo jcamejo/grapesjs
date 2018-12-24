@@ -161,7 +161,6 @@ module.exports = Backbone.View.extend({
     label && $el.append(label);
     title && $el.append(title);
     this.checkActive();
-    console.log('element!!!!', $el);
     this.updateDisable();
 
     return this;
