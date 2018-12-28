@@ -39662,12 +39662,14 @@ module.exports = {
       attributes: { title: 'View components' }
     }, {
       id: prv,
+      title: '<span style="padding-left: 0.5rem">Preview</span>',
       className: 'fa fa-eye',
       command: prv,
       context: prv,
       attributes: { title: 'Preview' }
     }, {
       id: ful,
+      title: '<span style="padding-left: 0.5rem">Fullscreen</span>',
       className: 'fa fa-arrows-alt',
       command: ful,
       context: ful,
