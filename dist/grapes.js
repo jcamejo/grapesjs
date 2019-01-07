@@ -39653,14 +39653,16 @@ module.exports = {
     buttons: [{}]
   }, {
     id: 'options',
-    buttons: [{
-      active: true,
-      id: swv,
-      className: 'fa fa-square-o',
-      command: swv,
-      context: swv,
-      attributes: { title: 'View components' }
-    }, {
+    buttons: [
+    // {
+    //   active: true,
+    //   id: swv,
+    //   className: 'fa fa-square-o',
+    //   command: swv,
+    //   context: swv,
+    //   attributes: { title: 'View components' }
+    // },
+    {
       id: prv,
       title: '<span style="padding-left: 0.5rem">Preview</span>',
       className: 'fa fa-eye',
@@ -39674,11 +39676,6 @@ module.exports = {
       command: ful,
       context: ful,
       attributes: { title: 'Fullscreen' }
-    }, {
-      id: expt,
-      className: 'fa fa-code',
-      command: expt,
-      attributes: { title: 'View code' }
     }]
   }, {
     id: 'views',

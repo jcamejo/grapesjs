@@ -21,14 +21,14 @@ module.exports = {
     {
       id: 'options',
       buttons: [
-        {
-          active: true,
-          id: swv,
-          className: 'fa fa-square-o',
-          command: swv,
-          context: swv,
-          attributes: { title: 'View components' }
-        },
+        // {
+        //   active: true,
+        //   id: swv,
+        //   className: 'fa fa-square-o',
+        //   command: swv,
+        //   context: swv,
+        //   attributes: { title: 'View components' }
+        // },
         {
           id: prv,
           title: '<span style="padding-left: 0.5rem">Preview</span>',
@@ -44,13 +44,13 @@ module.exports = {
           command: ful,
           context: ful,
           attributes: { title: 'Fullscreen' }
-        },
-        {
-          id: expt,
-          className: 'fa fa-code',
-          command: expt,
-          attributes: { title: 'View code' }
         }
+        // {
+        //   id: expt,
+        //   className: 'fa fa-code',
+        //   command: expt,
+        //   attributes: { title: 'View code' }
+        // }
       ]
     },
     {
