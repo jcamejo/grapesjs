@@ -24981,7 +24981,7 @@ module.exports = function () {
 
       var elem = (0, _mixins.getElement)(el);
       var cv = this.getCanvasView();
-
+      console.log('scroll to', elem);
       if (!cv.isElInViewport(elem) || opts.force) {
         elem.scrollIntoView(opts);
       }
@@ -27107,7 +27107,15 @@ module.exports = {
       }
       if (component) {
         var coll = component.collection;
+        var pcoll = component.parent().collection;
         component.trigger('component:destroy');
+        switch (component.attributes.tagName) {
+          case 'img':
+            coll && pcoll.remove(component.parent());
+            break;
+          default:
+            break;
+        }
         coll && coll.remove(component);
       }
     });
@@ -27593,7 +27601,6 @@ module.exports = _underscore2.default.extend({}, SelectComponent, {
   startDelete: function startDelete(e) {
     e.stopPropagation();
     var $this = $(e.target);
-
     // Show badge if possible
     if ($this.data('model').get('removable')) {
       $this.addClass(this.hoverClass);
@@ -39676,6 +39683,12 @@ module.exports = {
       command: ful,
       context: ful,
       attributes: { title: 'Fullscreen' }
+      // {
+      //   id: expt,
+      //   className: 'fa fa-code',
+      //   command: expt,
+      //   attributes: { title: 'View code' }
+      // }
     }]
   }, {
     id: 'views',
@@ -47865,6 +47878,38 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/trait_manager/config/tooltips.js":
+/*!**********************************************!*\
+  !*** ./src/trait_manager/config/tooltips.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var tooltips = {
+  'Submit action': 'Submit action your form. Example: if the action is redirection ...',
+  'Redirection type': 'About Redirection type',
+  'Redirect url': 'About Redirect url',
+  'Redirection Thank_you_url type': 'About Redirection Thank_you_url type',
+  'Thank you url': 'About thank you url',
+  'Agreed': 'About Agreed function',
+  'Agreed text': 'About Agreed text',
+  'Web from code (HTML)': 'Web from code (HTML): some description about the form parser'
+};
+
+module.exports = {
+  getTooltip: function getTooltip(label) {
+    if (tooltips.hasOwnProperty(label)) {
+      return tooltips[label];
+    }
+    return label;
+  }
+};
+
+/***/ }),
+
 /***/ "./src/trait_manager/index.js":
 /*!************************************!*\
   !*** ./src/trait_manager/index.js ***!
@@ -48564,6 +48609,8 @@ module.exports = TraitView.extend({
 
 var _underscore = __webpack_require__(/*! underscore */ "./node_modules/underscore/underscore.js");
 
+var tooltips = __webpack_require__(/*! ./../config/tooltips */ "./src/trait_manager/config/tooltips.js");
+
 var Backbone = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
 var $ = Backbone.$;
 
@@ -48636,7 +48683,19 @@ module.exports = Backbone.View.extend({
    */
   renderLabel: function renderLabel() {
     var label = this.getLabel();
-    this.$el.html('<div class="' + this.labelClass + '" title="' + label + '">' + label + '</div>');
+    switch (label) {
+      // case 'Agreed':
+      //   this.$el.html(
+      //     `<div class="${this.labelClass} tooltip" data-title="${tooltips.getTooltip(label)}">${label}</div>`
+      //   );
+      //   break;
+      default:
+        this.$el.html('<div class="' + this.labelClass + '" >' + label + '<i class="fa fa-question tooltip" style="margin-left: 0.25rem" data-tooltip="' + tooltips.getTooltip(label) + '"></i></div>');
+        break;
+    }
+    // this.$el.html(
+    //   `<div class="${this.labelClass} tooltip" title="${tooltips.getTooltip(label)}">${label}</div>`
+    // );
   },
 
 
@@ -48711,6 +48770,11 @@ module.exports = Backbone.View.extend({
       var el = this.getInputEl();
       // I use prepand expecially for checkbox traits
       var inputWrap = this.el.querySelector('.' + this.inputhClass);
+      var label = this.getLabel();
+      if (label === 'Agreed' || label === 'Required') {
+        inputWrap.parentElement.parentElement.style.display = 'flex';
+        inputWrap.parentElement.parentElement.style.justifyContent = 'space-between';
+      }
       inputWrap.insertBefore(el, inputWrap.childNodes[0]);
     }
   },

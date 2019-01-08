@@ -17,7 +17,15 @@ module.exports = {
       }
       if (component) {
         const coll = component.collection;
+        const pcoll = component.parent().collection;
         component.trigger('component:destroy');
+        switch (component.attributes.tagName) {
+          case 'img':
+            coll && pcoll.remove(component.parent());
+            break;
+          default:
+            break;
+        }
         coll && coll.remove(component);
       }
     });
