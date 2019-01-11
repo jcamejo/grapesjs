@@ -50,6 +50,9 @@ module.exports = () => {
       um.changeUndoType('add', {
         on(model, collection, options = {}) {
           if (options.avoidStore) return;
+          // remove hovered event
+          // if (model.changed.status === 'hovered') return;
+          console.log('add', model.changed.status);
           return {
             object: collection,
             before: undefined,
@@ -60,6 +63,7 @@ module.exports = () => {
       });
       um.changeUndoType('remove', {
         on(model, collection, options = {}) {
+          // if (!model.changed.status) return;
           if (options.avoidStore) return;
           return {
             object: collection,
@@ -87,10 +91,12 @@ module.exports = () => {
         },
 
         undo(model, bf, af, opt) {
+          console.log(model, 'model undo');
           model.set(bf);
         },
 
         redo(model, bf, af, opt) {
+          console.log(model, 'model redo');
           model.set(af);
         }
       };

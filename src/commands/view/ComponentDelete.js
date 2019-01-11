@@ -20,6 +20,13 @@ module.exports = {
         const pcoll = component.parent().collection;
         component.trigger('component:destroy');
         switch (component.attributes.tagName) {
+          case 'input':
+            const form = component.parent().parent().collection;
+            coll && pcoll.remove(component.parent());
+            if (pcoll.models.length <= 1) {
+              coll && form.remove(pcoll.parent);
+            }
+            break;
           case 'img':
             coll && pcoll.remove(component.parent());
             break;

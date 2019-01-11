@@ -74,7 +74,8 @@ module.exports = () => {
         handler: 'core:component-exit'
       },
       'core:component-delete': {
-        keys: 'backspace, delete',
+        // keys: 'backspace, delete',
+        keys: '',
         handler: 'core:component-delete'
       }
     }

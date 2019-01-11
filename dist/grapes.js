@@ -24492,7 +24492,8 @@ module.exports = {
    * stops some commands (eg. disables the copy/paste of components with CTRL+C/V to allow the copy/paste of the text).
    * This option allows to customize, by a selector, which element should not be considered textable
    */
-  notTextable: ['button', 'input[type=checkbox]', 'input[type=radio]']
+  // notTextable: ['button', 'input[type=checkbox]', 'input[type=radio]']
+  notTextable: ['button', 'input[type=checkbox]', 'input[type=radio]', 'input', 'textarea']
 };
 
 /***/ }),
@@ -27110,6 +27111,13 @@ module.exports = {
         var pcoll = component.parent().collection;
         component.trigger('component:destroy');
         switch (component.attributes.tagName) {
+          case 'input':
+            var form = component.parent().parent().collection;
+            coll && pcoll.remove(component.parent());
+            if (pcoll.models.length <= 1) {
+              coll && form.remove(pcoll.parent);
+            }
+            break;
           case 'img':
             coll && pcoll.remove(component.parent());
             break;
@@ -27599,6 +27607,7 @@ module.exports = _underscore2.default.extend({}, SelectComponent, {
    * @private
    */
   startDelete: function startDelete(e) {
+    console.log(e, 'start delete');
     e.stopPropagation();
     var $this = $(e.target);
     // Show badge if possible
@@ -38372,7 +38381,8 @@ module.exports = function () {
         handler: 'core:component-exit'
       },
       'core:component-delete': {
-        keys: 'backspace, delete',
+        // keys: 'backspace, delete',
+        keys: '',
         handler: 'core:component-delete'
       }
     }
@@ -47894,7 +47904,7 @@ var tooltips = {
   'Redirect url': 'About Redirect url',
   'Redirection Thank_you_url type': 'About Redirection Thank_you_url type',
   'Thank you url': 'About thank you url',
-  'Agreed': 'About Agreed function',
+  Agreed: 'About Agreed function',
   'Agreed text': 'About Agreed text',
   'Web from code (HTML)': 'Web from code (HTML): some description about the form parser'
 };
@@ -48918,6 +48928,9 @@ module.exports = function () {
           var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
           if (options.avoidStore) return;
+          // remove hovered event
+          // if (model.changed.status === 'hovered') return;
+          console.log('add', model.changed.status);
           return {
             object: collection,
             before: undefined,
@@ -48930,6 +48943,7 @@ module.exports = function () {
         on: function on(model, collection) {
           var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+          // if (!model.changed.status) return;
           if (options.avoidStore) return;
           return {
             object: collection,
@@ -48958,9 +48972,11 @@ module.exports = function () {
           }
         },
         undo: function undo(model, bf, af, opt) {
+          console.log(model, 'model undo');
           model.set(bf);
         },
         redo: function redo(model, bf, af, opt) {
+          console.log(model, 'model redo');
           model.set(af);
         }
       };
