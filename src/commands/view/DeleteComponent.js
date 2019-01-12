@@ -25,7 +25,6 @@ module.exports = _.extend({}, SelectComponent, {
    * @private
    */
   startDelete(e) {
-    console.log(e, 'start delete');
     e.stopPropagation();
     var $this = $(e.target);
     // Show badge if possible

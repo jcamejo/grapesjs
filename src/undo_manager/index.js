@@ -51,8 +51,7 @@ module.exports = () => {
         on(model, collection, options = {}) {
           if (options.avoidStore) return;
           // remove hovered event
-          // if (model.changed.status === 'hovered') return;
-          console.log('add', model.changed.status);
+          // if (model.changed.status === 'hovered') return;;
           return {
             object: collection,
             before: undefined,
@@ -91,12 +90,10 @@ module.exports = () => {
         },
 
         undo(model, bf, af, opt) {
-          console.log(model, 'model undo');
           model.set(bf);
         },
 
         redo(model, bf, af, opt) {
-          console.log(model, 'model redo');
           model.set(af);
         }
       };
