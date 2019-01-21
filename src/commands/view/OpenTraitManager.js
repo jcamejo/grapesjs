@@ -7,6 +7,7 @@ module.exports = {
     var config = editor.Config;
     var pfx = config.stylePrefix;
     var tm = editor.TraitManager;
+    var sm = editor.StyleManager;
     var panelC;
 
     if (!this.$cn) {
@@ -23,6 +24,12 @@ module.exports = {
         `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
       );
       this.$cn2.append(tmView.render().el);
+
+      const smView = sm.render();
+      //adding style manager in trait manager;
+      this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
+      this.$cn2.append(smView);
+
       var panels = editor.Panels;
 
       if (!panels.getPanel('views-container'))
