@@ -35,7 +35,7 @@ module.exports = {
       // this.$cnProperties.append();
       this.$cnWrap.append(this.$cnSector);
 
-      this.$cnWrap.bind('click', () => {
+      this.$cnTitle.bind('click', () => {
         this.toggleMenu();
       });
 
