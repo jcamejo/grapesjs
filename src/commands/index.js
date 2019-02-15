@@ -94,6 +94,13 @@ module.exports = () => {
       defaultCommands['open-assets'] = require('./view/OpenAssets');
       defaultCommands['show-offset'] = require('./view/ShowOffset');
       defaultCommands['select-parent'] = require('./view/SelectParent');
+
+      //close all dropdowns
+      defaultCommands['close_dropdowns'] = require('./view/CloseDropdowns');
+      defaultCommands['open_dropdowns'] = require('./view/OpenDropdowns');
+      defaultCommands['open_rows'] = require('./view/OpenRows');
+      defaultCommands['open_layout'] = require('./view/OpenLayout');
+
       defaultCommands.fullscreen = require('./view/Fullscreen');
       defaultCommands.preview = require('./view/Preview');
       defaultCommands.resize = require('./view/Resize');
