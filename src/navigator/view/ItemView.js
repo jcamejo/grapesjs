@@ -30,7 +30,7 @@ module.exports = Backbone.View.extend({
     const clsInput = `${this.inputNameCls} ${ppfx}no-app`;
     const level = this.level + 1;
     const gut = `${30 + level * 10}px`;
-    const name = model.getName();
+    const name = model.getName() === 'Body' ? 'Page' : model.getName();
 
     return `
       ${

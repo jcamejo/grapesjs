@@ -105,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Backbone.Undo.js v0.2
- * 
+ *
  * Copyright (c)2013 Oliver Sartun
  * Released under the MIT License
  *
@@ -128,8 +128,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	/**
 	 * As call is faster than apply, this is a faster version of apply as it uses call.
-	 * 
-	 * @param  {Function} fn 	The function to execute 
+	 *
+	 * @param  {Function} fn 	The function to execute
 	 * @param  {Object}   ctx 	The context the function should be called in
 	 * @param  {Array}    args 	The array of arguments that should be applied to the function
 	 * @return Forwards whatever the called function returns
@@ -142,7 +142,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	/**
 	 * Uses slice on an array or an array-like object.
-	 * 
+	 *
 	 * @param  {Array|Object} 	arr 	The array or array-like object.
 	 * @param  {Number} 		[index]	The index from where the array should be sliced. Default is 0.
 	 * @return {Array} The sliced array
@@ -152,13 +152,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	}
 
 	/**
-	 * Checks if an object has one or more specific keys. The keys 
+	 * Checks if an object has one or more specific keys. The keys
 	 * don't have to be an owned property.
 	 * You can call this function either this way:
 	 * hasKeys(obj, ["a", "b", "c"])
 	 * or this way:
 	 * hasKeys(obj, "a", "b", "c")
-	 * 
+	 *
 	 * @param  {Object}  	obj 	The object to check on
 	 * @param  {Array}  	keys 	The keys to check for
 	 * @return {Boolean} True, if the object has all those keys
@@ -174,9 +174,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	}
 
 	/**
-	 * Returns a number that is unique per call stack. The number gets 
+	 * Returns a number that is unique per call stack. The number gets
 	 * changed after the call stack has been completely processed.
-	 * 
+	 *
 	 * @return {number} MagicFusionIndex
 	 */
 	var getMagicFusionIndex = (function () {
@@ -188,9 +188,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		// would be removed from the collection or the last set
 		// attribute would be changed back to its previous value.
 		// To prevent that we have to figure out a way to combine
-		// all those actions that happened "at the same time". 
-		// Timestamps aren't exact enough. A complex routine could 
-		// run several milliseconds and in that time produce a lot 
+		// all those actions that happened "at the same time".
+		// Timestamps aren't exact enough. A complex routine could
+		// run several milliseconds and in that time produce a lot
 		// of actions with different timestamps.
 		// Instead we take advantage of the single-threadedness of
 		// JavaScript:
@@ -200,7 +200,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			magicFusionIndex++;
 			callstackWasIndexed = true;
 			_.defer(function () {
-				// Here comes the magic. With a Timeout of 0 
+				// Here comes the magic. With a Timeout of 0
 				// milliseconds this function gets called whenever
 				// the current callstack is completed
 				callstackWasIndexed = false;
@@ -215,7 +215,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	})();
 
 	/**
-	 * To prevent binding a listener several times to one 
+	 * To prevent binding a listener several times to one
 	 * object, we register the objects in an ObjectRegistry
 	 *
 	 * @constructor
@@ -225,39 +225,39 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		// objects: In case the object has a cid
 		// (which Backbone objects typically have)
 		// it uses this cid as an index. That way
-		// the Array's length attribute doesn't 
-		// change and the object isn't an item 
+		// the Array's length attribute doesn't
+		// change and the object isn't an item
 		// in the array, but an object-property.
 		// Otherwise it's added to the Array as an
 		// item.
 		// That way we can use the fast property-
-		// lookup and only have to fall back to 
-		// iterating over the array in case 
+		// lookup and only have to fall back to
+		// iterating over the array in case
 		// non-Backbone-objects are registered.
 		this.registeredObjects = [];
-		// To return a list of all registered 
+		// To return a list of all registered
 		// objects in the 'get' method we have to
 		// store the objects that have a cid in
-		// an additional array. 
+		// an additional array.
 		this.cidIndexes = [];
 	}
 	ObjectRegistry.prototype = {
 		/**
 		 * Returns whether the object is already registered in this ObjectRegistry or not.
-		 * 
+		 *
 		 * @this 	{ObjectRegistry}
 		 * @param  	{Object} 		 obj 	The object to check
 		 * @return 	{Boolean} True if the object is already registered
 		 */
 		isRegistered: function (obj) {
-			// This is where we get a performance boost 
-			// by using the two different ways of storing 
+			// This is where we get a performance boost
+			// by using the two different ways of storing
 			// objects.
 			return obj && obj.cid ? this.registeredObjects[obj.cid] : _.contains(this.registeredObjects, obj);
 		},
 		/**
 		 * Registers an object in this ObjectRegistry.
-		 * 
+		 *
 		 * @this 	{ObjectRegistry}
 		 * @param  	{Object} 		 obj 	The object to register
 		 * @return 	{undefined}
@@ -276,12 +276,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		},
 		/**
 		 * Unregisters an object from this ObjectRegistry.
-		 * 
+		 *
 		 * @this {ObjectRegistry}
 		 * @param  {Object} obj The object to unregister
 		 * @return {undefined}
 		 */
 		unregister: function (obj) {
+		  console.log(obj)
 			if (this.isRegistered(obj)) {
 				if (obj && obj.cid) {
 					delete this.registeredObjects[obj.cid];
@@ -296,7 +297,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		},
 		/**
 		 * Returns an array of all objects that are currently in this ObjectRegistry.
-		 * 
+		 *
 		 * @return {Array} An array of all the objects which are currently in the ObjectRegistry
 		 */
 		get: function () {
@@ -306,7 +307,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	/**
 	 * Binds or unbinds the "all"-listener for one or more objects.
-	 * 
+	 *
 	 * @param  {String}   which 	Either "on" or "off"
 	 * @param  {Object[]} objects 	Array of the objects on which the "all"-listener should be bound / unbound to
 	 * @param  {Function} [fn] 		The function that should be bound / unbound. Optional in case of "off"
@@ -336,7 +337,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	/**
 	 * Calls the undo/redo-function for a specific action.
-	 * 
+	 *
 	 * @param  {String} which 	Either "undo" or "redo"
 	 * @param  {Object} action 	The Action's attributes
 	 * @return {undefined}
@@ -359,10 +360,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	 * @return {undefined}
 	 */
 	function managerUndoRedo (which, manager, stack, magic, everything) {
-		if (stack.isCurrentlyUndoRedoing || 
+		if (stack.isCurrentlyUndoRedoing ||
 			(which === "undo" && stack.pointer === -1) ||
 			(which === "redo" && stack.pointer === stack.length - 1)) {
-			// We're either currently in an undo- / redo-process or 
+			// We're either currently in an undo- / redo-process or
 			// we reached the end of the stack
 			return;
 		}
@@ -379,7 +380,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			action = stack.at(isUndo ? stack.pointer : stack.pointer + 1);
 			actions = magic ? stack.where({"magicFusionIndex": action.get("magicFusionIndex")}) : [action];
 		}
-		
+
 		stack.pointer += (isUndo ? -1 : 1) * actions.length;
 		while (action = isUndo ? actions.pop() : actions.shift()) {
 			// Here we're calling the Action's undo / redo method
@@ -394,9 +395,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	 * Checks whether an UndoAction should be created or not. Therefore it checks
 	 * whether a "condition" property is set in the undoTypes-object of the specific
 	 * event type. If not, it returns true. If it's set and a boolean, it returns it.
-	 * If it's a function, it returns its result, converting it into a boolean. 
+	 * If it's a function, it returns its result, converting it into a boolean.
 	 * Otherwise it returns true.
-	 * 
+	 *
 	 * @param  {Object} 	undoTypesType 	The object within the UndoTypes that holds the function for this event type (i.e. "change")
 	 * @param  {Arguments} 	args       		The arguments the "condition" function is called with
 	 * @return {Boolean} 	True, if an UndoAction should be created
@@ -409,7 +410,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	/**
 	 * Adds an Undo-Action to the stack.
-	 * 
+	 *
 	 * @param {UndoStack} 		stack 		The undostack the action should be added to.
 	 * @param {String} 			type 		The event type (i.e. "change")
 	 * @param {Arguments} 		args 		The arguments passed to the undoTypes' "on"-handler
@@ -417,6 +418,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	 * @return {undefined}
 	 */
 	function addToStack(stack, type, args, undoTypes) {
+	  // console.log(stack, type, args, undoTypes)
 		if (stack.track && !stack.isCurrentlyUndoRedoing && type in undoTypes &&
 			validateUndoActionCreation(undoTypes[type], args)) {
 			// An UndoAction should be created
@@ -568,10 +570,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	/**
 	 * Every UndoManager instance has an own undoTypes object
-	 * which is an instance of OwnedUndoTypes. OwnedUndoTypes' 
-	 * prototype is the global UndoTypes object. Changes to the 
+	 * which is an instance of OwnedUndoTypes. OwnedUndoTypes'
+	 * prototype is the global UndoTypes object. Changes to the
 	 * global UndoTypes object take effect on every instance of
-	 * UndoManager as the object is its prototype. And yet every 
+	 * UndoManager as the object is its prototype. And yet every
 	 * local UndoTypes object can be changed individually.
 	 *
 	 * @constructor
@@ -588,7 +590,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	 * In case of removing undo-types you can pass an Array for performing
 	 * bulk actions:
 	 * manipulateUndoType(2, ["reset", "change"], undoTypes)
-	 * 
+	 *
 	 * @param  {Number} 				  manipType 		Indicates the kind of action to execute: 0 for add, 1 for change, 2 for remove
 	 * @param  {String|Object|Array} 	  undoType 			The type of undoType that should be added/changed/removed. Can be an object / array to perform bulk actions
 	 * @param  {Object} 				  [fns] 			Object with the functions to add / change. Is optional in case you passed an object as undoType that contains these functions
@@ -617,7 +619,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			case 0: // add
 				if (hasKeys(fns, "undo", "redo", "on") && _.all(_.pick(fns, "undo", "redo", "on"), _.isFunction)) {
 					undoTypesInstance[undoType] = fns;
-				} 
+				}
 			break;
 			case 1: // change
 				if (undoTypesInstance[undoType] && _.isObject(fns)) {
@@ -628,19 +630,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 					// Instead we just want to manipulate this instance. That's why
 					// we're doing this:
 					undoTypesInstance[undoType] = _.extend({}, undoTypesInstance[undoType], fns);
-				} 
+				}
 			break;
 			case 2: // remove
-				delete undoTypesInstance[undoType]; 
+				delete undoTypesInstance[undoType];
 			break;
 		}
 		return this;
 	}
 
 	/**
-	 * Instantiating "Action" creates the UndoActions that 
-	 * are collected in an UndoStack. It holds all relevant 
-	 * data to undo / redo an action and has an undo / redo 
+	 * Instantiating "Action" creates the UndoActions that
+	 * are collected in an UndoStack. It holds all relevant
+	 * data to undo / redo an action and has an undo / redo
 	 * method.
 	 */
 	var Action = Backbone.Model.extend({
@@ -649,7 +651,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			object: null, // The object on which the action occurred
 			before: null, // The previous values which were changed with this action
 			after: null, // The values after this action
-			magicFusionIndex: null // The magicFusionIndex helps to combine 
+			magicFusionIndex: null // The magicFusionIndex helps to combine
 			// all actions that occurred "at the same time" to undo/redo them altogether
 		},
 		/**
@@ -670,7 +672,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		}
 	}),
 	/**
-	 * An UndoStack is a collection of UndoActions in 
+	 * An UndoStack is a collection of UndoActions in
 	 * chronological order.
 	 */
 	UndoStack = Backbone.Collection.extend({
@@ -684,7 +686,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		}
 	}),
 	/**
-	 * An instance of UndoManager can keep track of 
+	 * An instance of UndoManager can keep track of
 	 * changes to objects and helps to undo them.
 	 */
 	UndoManager = Backbone.Model.extend({
@@ -748,10 +750,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			return this.get("track");
 		},
 		/**
-		 * This is the "all"-handler which is bound to registered 
-		 * objects. It creates an UndoAction from the event and adds 
+		 * This is the "all"-handler which is bound to registered
+		 * objects. It creates an UndoAction from the event and adds
 		 * it to the stack.
-		 * 
+		 *
 		 * @param  {String} 	type 	The event type
 		 * @return {undefined}
 		 */
@@ -834,15 +836,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		 * @return {undefined}
 		 */
 		merge: function (undoManager) {
-			// This sets the stack-reference to the stack of another 
-			// undoManager so that the stack of this other undoManager 
+			// This sets the stack-reference to the stack of another
+			// undoManager so that the stack of this other undoManager
 			// is used by two different managers.
 			// This enables to set up a main-undoManager and besides it
 			// several others for special, exceptional cases (by using
-			// instance-based custom UndoTypes). Models / collections 
-			// which need this special treatment are only registered at 
-			// those special undoManagers. Those special ones are then 
-			// merged into the main-undoManager to write on its stack. 
+			// instance-based custom UndoTypes). Models / collections
+			// which need this special treatment are only registered at
+			// those special undoManagers. Those special ones are then
+			// merged into the main-undoManager to write on its stack.
 			// That way it's easier to manage exceptional cases.
 			var args = _.isArray(undoManager) ? undoManager : slice(arguments), manager;
 			while (manager = args.pop()) {
@@ -26465,6 +26467,13 @@ module.exports = function () {
       defaultCommands['open-assets'] = __webpack_require__(/*! ./view/OpenAssets */ "./src/commands/view/OpenAssets.js");
       defaultCommands['show-offset'] = __webpack_require__(/*! ./view/ShowOffset */ "./src/commands/view/ShowOffset.js");
       defaultCommands['select-parent'] = __webpack_require__(/*! ./view/SelectParent */ "./src/commands/view/SelectParent.js");
+
+      //close all dropdowns
+      defaultCommands['close_dropdowns'] = __webpack_require__(/*! ./view/CloseDropdowns */ "./src/commands/view/CloseDropdowns.js");
+      defaultCommands['open_dropdowns'] = __webpack_require__(/*! ./view/OpenDropdowns */ "./src/commands/view/OpenDropdowns.js");
+      defaultCommands['open_rows'] = __webpack_require__(/*! ./view/OpenRows */ "./src/commands/view/OpenRows.js");
+      defaultCommands['open_layout'] = __webpack_require__(/*! ./view/OpenLayout */ "./src/commands/view/OpenLayout.js");
+
       defaultCommands.fullscreen = __webpack_require__(/*! ./view/Fullscreen */ "./src/commands/view/Fullscreen.js");
       defaultCommands.preview = __webpack_require__(/*! ./view/Preview */ "./src/commands/view/Preview.js");
       defaultCommands.resize = __webpack_require__(/*! ./view/Resize */ "./src/commands/view/Resize.js");
@@ -26788,6 +26797,8 @@ module.exports = function () {
 var map = {
 	"./CanvasClear": "./src/commands/view/CanvasClear.js",
 	"./CanvasClear.js": "./src/commands/view/CanvasClear.js",
+	"./CloseDropdowns": "./src/commands/view/CloseDropdowns.js",
+	"./CloseDropdowns.js": "./src/commands/view/CloseDropdowns.js",
 	"./CommandAbstract": "./src/commands/view/CommandAbstract.js",
 	"./CommandAbstract.js": "./src/commands/view/CommandAbstract.js",
 	"./ComponentDelete": "./src/commands/view/ComponentDelete.js",
@@ -26824,8 +26835,14 @@ var map = {
 	"./OpenAssets.js": "./src/commands/view/OpenAssets.js",
 	"./OpenBlocks": "./src/commands/view/OpenBlocks.js",
 	"./OpenBlocks.js": "./src/commands/view/OpenBlocks.js",
+	"./OpenDropdowns": "./src/commands/view/OpenDropdowns.js",
+	"./OpenDropdowns.js": "./src/commands/view/OpenDropdowns.js",
 	"./OpenLayers": "./src/commands/view/OpenLayers.js",
 	"./OpenLayers.js": "./src/commands/view/OpenLayers.js",
+	"./OpenLayout": "./src/commands/view/OpenLayout.js",
+	"./OpenLayout.js": "./src/commands/view/OpenLayout.js",
+	"./OpenRows": "./src/commands/view/OpenRows.js",
+	"./OpenRows.js": "./src/commands/view/OpenRows.js",
 	"./OpenStyleManager": "./src/commands/view/OpenStyleManager.js",
 	"./OpenStyleManager.js": "./src/commands/view/OpenStyleManager.js",
 	"./OpenTraitManager": "./src/commands/view/OpenTraitManager.js",
@@ -26887,6 +26904,34 @@ module.exports = {
   run: function run(ed) {
     ed.DomComponents.clear();
     ed.CssComposer.clear();
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/CloseDropdowns.js":
+/*!*********************************************!*\
+  !*** ./src/commands/view/CloseDropdowns.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-open');
+    var blocks = $('.gjs-blocks-c');
+    elements.each(function (el) {
+      $(elements[el]).removeClass('gjs-open');
+    });
+    blocks.each(function (el) {
+      $(blocks[el]).hide();
+    });
+  },
+  stop: function stop() {
+    console.log('Stop Close DropDown');
   }
 };
 
@@ -28327,6 +28372,34 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/commands/view/OpenDropdowns.js":
+/*!********************************************!*\
+  !*** ./src/commands/view/OpenDropdowns.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-block-category');
+    var blocks = $('.gjs-blocks-c');
+    elements.each(function (el) {
+      $(elements[el]).addClass('gjs-open');
+    });
+    blocks.each(function (el) {
+      $(blocks[el]).show();
+    });
+  },
+  stop: function stop() {
+    console.log('Stop Open Dropdowns');
+  }
+};
+
+/***/ }),
+
 /***/ "./src/commands/view/OpenLayers.js":
 /*!*****************************************!*\
   !*** ./src/commands/view/OpenLayers.js ***!
@@ -28365,6 +28438,52 @@ module.exports = {
   stop: function stop() {
     var layers = this.layers;
     layers && (layers.style.display = 'none');
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenLayout.js":
+/*!*****************************************!*\
+  !*** ./src/commands/view/OpenLayout.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-block-categories').children();
+    $(elements[0]).find('.gjs-blocks-c').show();
+    $(elements[0]).addClass('gjs-open');
+  },
+  stop: function stop() {
+    console.log('Stop Open Layouts');
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenRows.js":
+/*!***************************************!*\
+  !*** ./src/commands/view/OpenRows.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-block-categories').children();
+    $(elements[1]).find('.gjs-blocks-c').show();
+    $(elements[1]).addClass('gjs-open');
+  },
+  stop: function stop() {
+    console.log('Stop Open Rows');
   }
 };
 
@@ -28475,11 +28594,14 @@ var $ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js
 
 module.exports = {
   run: function run(editor, sender) {
+    var _this = this;
+
     this.sender = sender;
 
     var config = editor.Config;
     var pfx = config.stylePrefix;
     var tm = editor.TraitManager;
+    var sm = editor.StyleManager;
     var panelC;
 
     if (!this.$cn) {
@@ -28487,11 +28609,43 @@ module.exports = {
       var confTm = tm.getConfig();
       this.$cn = $('<div></div>');
       this.$cn2 = $('<div></div>');
-      this.$cn.append(this.$cn2);
-      this.$header = $('<div>').append('<div class="' + confTm.stylePrefix + 'header">' + confTm.textNoElement + '</div>');
-      this.$cn.append(this.$header);
+      this.$cnWrap = $('<div class="gjs-sm-sectors gjs-one-bg gjs-two-color"></div>');
+      this.$cnSector = $('<div class="gjs-sm-sector no-select"></div>');
+      this.$cnTitle = $('<div class="gjs-sm-title"></div>');
+      this.$cnTitleInner = $('<i id="gjs-sm-caret" class="fa fa-caret-right"></i>');
+      this.$cnTextInnet = $('<span>Basic</span>');
+      this.$cnProperties = $('<div class="gjs-sm-properties" style="display: none;"></div>');
+
+      this.$cnTitle.append(this.$cnTitleInner);
+      this.$cnTitle.append(this.$cnTextInnet);
+      this.$cnSector.append(this.$cnTitle);
+      this.$cnSector.append(this.$cnProperties);
+      // this.$cnProperties.append();
+      this.$cnWrap.append(this.$cnSector);
+
+      this.$cnTitle.bind('click', function () {
+        _this.toggleMenu();
+      });
+
       this.$cn2.append('<div class="' + pfx + 'traits-label">' + confTm.labelContainer + '</div>');
-      this.$cn2.append(tmView.render().el);
+      this.$cn2.append(this.$cnWrap);
+      this.$cn.append(this.$cn2);
+
+      this.$header = $('<div>').append('<div class="' + confTm.stylePrefix + 'header">' + confTm.textNoElement + '</div>');
+
+      this.$cn.append(this.$header);
+
+      // this.$cn2.append(
+      //   `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
+      // );
+      // this.$cn2.append(tmView.render().el);
+      this.$cnProperties.append(tmView.render().el);
+
+      var smView = sm.render();
+      //adding style manager in trait manager;
+      this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
+      this.$cn2.append(smView);
+
       var panels = editor.Panels;
 
       if (!panels.getPanel('views-container')) panelC = panels.addPanel({ id: 'views-container' });else panelC = panels.getPanel('views-container');
@@ -28503,6 +28657,19 @@ module.exports = {
     }
 
     this.toggleTm();
+  },
+  toggleMenu: function toggleMenu() {
+    if (this.$cnSector.hasClass('gjs-sm-open')) {
+      this.$cnSector.removeClass('gjs-sm-open');
+      this.$cnTitleInner.removeClass('fa-caret-down');
+      this.$cnTitleInner.addClass('fa-caret-right');
+      this.$cnProperties.hide();
+    } else {
+      this.$cnSector.addClass('gjs-sm-open');
+      this.$cnTitleInner.removeClass('fa-caret-right');
+      this.$cnTitleInner.addClass('fa-caret-down');
+      this.$cnProperties.show();
+    }
   },
 
 
@@ -28920,6 +29087,7 @@ module.exports = {
     if (model) {
       if (model.get('selectable')) {
         this.select(model, e);
+        editor.trigger('change:highlightMenu');
       } else {
         var _parent2 = model.parent();
         while (_parent2 && !_parent2.get('selectable')) {
@@ -38379,8 +38547,8 @@ module.exports = function () {
         handler: 'core:component-exit'
       },
       'core:component-delete': {
-        // keys: 'backspace, delete',
-        keys: 'delete',
+        keys: 'backspace, delete',
+        // keys: 'delete',
         handler: 'core:component-delete'
       }
     }
@@ -39138,7 +39306,7 @@ module.exports = _backbone2.default.View.extend({
     var clsInput = this.inputNameCls + ' ' + ppfx + 'no-app';
     var level = this.level + 1;
     var gut = 30 + level * 10 + 'px';
-    var name = model.getName();
+    var name = model.getName() === 'Body' ? 'Page' : model.getName();
 
     return '\n      ' + (hidable ? '<i class="' + pfx + 'layer-vis fa fa-eye ' + (this.isVisible() ? '' : 'fa-eye-slash') + '" data-toggle-visible></i>' : '') + '\n      <div class="' + clsTitleC + '">\n        <div class="' + clsTitle + '" style="padding-left: ' + gut + '" data-toggle-select>\n          <div class="' + pfx + 'layer-title-inn">\n            <i class="' + clsCaret + '" data-toggle-open></i>\n            ' + model.getIcon() + '\n            <span class="' + clsInput + '" data-name>' + name + '</span>\n          </div>\n        </div>\n      </div>\n      <div class="' + this.clsCount + '">' + (count || '') + '</div>\n      <div class="' + this.clsMove + '" data-toggle-move>\n        <i class="fa fa-arrows"></i>\n      </div>\n      <div class="' + this.clsChildren + '"></div>';
   },
@@ -39700,13 +39868,15 @@ module.exports = {
     }]
   }, {
     id: 'views',
-    buttons: [{
-      id: osm,
-      className: 'fa fa-paint-brush',
-      command: osm,
-      active: true,
-      attributes: { title: 'Open Style Manager' }
-    }, {
+    buttons: [
+    // {
+    //   id: osm,
+    //   className: 'fa fa-paint-brush',
+    //   command: osm,
+    //   active: true,
+    //   attributes: { title: 'Open Style Manager' }
+    // },
+    {
       id: otm,
       className: 'fa fa-cog',
       command: otm,
@@ -45153,7 +45323,7 @@ module.exports = function () {
             obj.defaults = 'black';
             break;
           case 'text-align':
-            obj.defaults = 'left';
+            obj.defaults = 'center';
             break;
           case 'border-style':
             obj.defaults = 'solid';
