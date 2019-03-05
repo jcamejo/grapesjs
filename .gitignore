@@ -20,3 +20,6 @@ grapesjs-*.tgz
 _index.html
 docs/.vuepress/dist
 *.swp
+*.swn
+*.swo
+tags
