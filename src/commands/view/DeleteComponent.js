@@ -27,7 +27,6 @@ module.exports = _.extend({}, SelectComponent, {
   startDelete(e) {
     e.stopPropagation();
     var $this = $(e.target);
-
     // Show badge if possible
     if ($this.data('model').get('removable')) {
       $this.addClass(this.hoverClass);

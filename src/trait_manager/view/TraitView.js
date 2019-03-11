@@ -1,4 +1,5 @@
 import { isUndefined, clone } from 'underscore';
+const tooltips = require('./../config/tooltips');
 
 const Backbone = require('backbone');
 const $ = Backbone.$;
@@ -76,9 +77,25 @@ module.exports = Backbone.View.extend({
    */
   renderLabel() {
     const label = this.getLabel();
-    this.$el.html(
-      `<div class="${this.labelClass}" title="${label}">${label}</div>`
-    );
+    switch (label) {
+      // case 'Agreed':
+      //   this.$el.html(
+      //     `<div class="${this.labelClass} tooltip" data-title="${tooltips.getTooltip(label)}">${label}</div>`
+      //   );
+      //   break;
+      default:
+        this.$el.html(
+          `<div class="${
+            this.labelClass
+          }" >${label}<i class="fa fa-question tooltip" style="margin-left: 0.25rem" data-tooltip="${tooltips.getTooltip(
+            label
+          )}"></i></div>`
+        );
+        break;
+    }
+    // this.$el.html(
+    //   `<div class="${this.labelClass} tooltip" title="${tooltips.getTooltip(label)}">${label}</div>`
+    // );
   },
 
   /**
@@ -151,6 +168,12 @@ module.exports = Backbone.View.extend({
       const el = this.getInputEl();
       // I use prepand expecially for checkbox traits
       const inputWrap = this.el.querySelector(`.${this.inputhClass}`);
+      const label = this.getLabel();
+      if (label === 'Agreed' || label === 'Required') {
+        inputWrap.parentElement.parentElement.style.display = 'flex';
+        inputWrap.parentElement.parentElement.style.justifyContent =
+          'space-between';
+      }
       inputWrap.insertBefore(el, inputWrap.childNodes[0]);
     }
   },

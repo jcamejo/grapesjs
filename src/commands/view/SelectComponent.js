@@ -192,6 +192,7 @@ module.exports = {
     if (model) {
       if (model.get('selectable')) {
         this.select(model, e);
+        editor.trigger('change:highlightMenu');
       } else {
         let parent = model.parent();
         while (parent && !parent.get('selectable')) parent = parent.parent();

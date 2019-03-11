@@ -7,6 +7,7 @@ module.exports = {
     var config = editor.Config;
     var pfx = config.stylePrefix;
     var tm = editor.TraitManager;
+    var sm = editor.StyleManager;
     var panelC;
 
     if (!this.$cn) {
@@ -14,15 +15,53 @@ module.exports = {
       var confTm = tm.getConfig();
       this.$cn = $('<div></div>');
       this.$cn2 = $('<div></div>');
-      this.$cn.append(this.$cn2);
-      this.$header = $('<div>').append(
-        `<div class="${confTm.stylePrefix}header">${confTm.textNoElement}</div>`
+      this.$cnWrap = $(
+        '<div class="gjs-sm-sectors gjs-one-bg gjs-two-color"></div>'
       );
-      this.$cn.append(this.$header);
+      this.$cnSector = $('<div class="gjs-sm-sector no-select"></div>');
+      this.$cnTitle = $('<div class="gjs-sm-title"></div>');
+      this.$cnTitleInner = $(
+        '<i id="gjs-sm-caret" class="fa fa-caret-right"></i>'
+      );
+      this.$cnTextInnet = $('<span>Basic</span>');
+      this.$cnProperties = $(
+        '<div class="gjs-sm-properties" style="display: none;"></div>'
+      );
+
+      this.$cnTitle.append(this.$cnTitleInner);
+      this.$cnTitle.append(this.$cnTextInnet);
+      this.$cnSector.append(this.$cnTitle);
+      this.$cnSector.append(this.$cnProperties);
+      // this.$cnProperties.append();
+      this.$cnWrap.append(this.$cnSector);
+
+      this.$cnTitle.bind('click', () => {
+        this.toggleMenu();
+      });
+
       this.$cn2.append(
         `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
       );
-      this.$cn2.append(tmView.render().el);
+      this.$cn2.append(this.$cnWrap);
+      this.$cn.append(this.$cn2);
+
+      this.$header = $('<div>').append(
+        `<div class="${confTm.stylePrefix}header">${confTm.textNoElement}</div>`
+      );
+
+      this.$cn.append(this.$header);
+
+      // this.$cn2.append(
+      //   `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
+      // );
+      // this.$cn2.append(tmView.render().el);
+      this.$cnProperties.append(tmView.render().el);
+
+      const smView = sm.render();
+      //adding style manager in trait manager;
+      this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
+      this.$cn2.append(smView);
+
       var panels = editor.Panels;
 
       if (!panels.getPanel('views-container'))
@@ -38,6 +77,20 @@ module.exports = {
     }
 
     this.toggleTm();
+  },
+
+  toggleMenu() {
+    if (this.$cnSector.hasClass('gjs-sm-open')) {
+      this.$cnSector.removeClass('gjs-sm-open');
+      this.$cnTitleInner.removeClass('fa-caret-down');
+      this.$cnTitleInner.addClass('fa-caret-right');
+      this.$cnProperties.hide();
+    } else {
+      this.$cnSector.addClass('gjs-sm-open');
+      this.$cnTitleInner.removeClass('fa-caret-right');
+      this.$cnTitleInner.addClass('fa-caret-down');
+      this.$cnProperties.show();
+    }
   },
 
   /**

@@ -434,7 +434,6 @@ module.exports = () => {
     scrollTo(el, opts = {}) {
       const elem = getElement(el);
       const cv = this.getCanvasView();
-
       if (!cv.isElInViewport(elem) || opts.force) {
         elem.scrollIntoView(opts);
       }

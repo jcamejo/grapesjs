@@ -237,7 +237,7 @@ module.exports = () => ({
           obj.defaults = 'black';
           break;
         case 'text-align':
-          obj.defaults = 'left';
+          obj.defaults = 'center';
           break;
         case 'border-style':
           obj.defaults = 'solid';
