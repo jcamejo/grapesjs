@@ -20,12 +20,15 @@
  * * [clear](#clear)
  * * [load](#load)
  * * [store](#store)
+ * * [addType](#addtype)
+ * * [getType](#gettype)
+ * * [getTypes](#gettypes)
  * * [render](#render)
  *
  * @module DomComponents
  */
 import Backbone from 'backbone';
-import { isEmpty, isString, isObject, isArray } from 'underscore';
+import { isEmpty, isString, isObject, isArray, result } from 'underscore';
 
 module.exports = () => {
   var c = {};
@@ -35,6 +38,7 @@ module.exports = () => {
   const ComponentView = require('./view/ComponentView');
   const Components = require('./model/Components');
   const ComponentsView = require('./view/ComponentsView');
+  const componentsById = {};
 
   var component, componentView;
   var componentTypes = [
@@ -134,6 +138,8 @@ module.exports = () => {
 
     componentTypes,
 
+    componentsById,
+
     /**
      * Name of the module
      * @type {String}
@@ -228,7 +234,8 @@ module.exports = () => {
       component = new Component(wrapper, {
         em,
         config: c,
-        componentTypes
+        componentTypes,
+        domc: this
       });
       component.set({ attributes: { id: 'wrapper' } });
 
@@ -506,13 +513,57 @@ module.exports = () => {
     },
 
     /**
-     * Add new component type
-     * @param {string} type
-     * @param {Object} methods
-     * @private
+     * Add new component type.
+     * Read more about this in [Define New Component](https://grapesjs.com/docs/modules/Components.html#define-new-component)
+     * @param {string} type Component ID
+     * @param {Object} methods Component methods
+     * @return {this}
      */
     addType(type, methods) {
-      var compType = this.getType(type);
+      const { em } = this;
+      const {
+        model = {},
+        view = {},
+        isComponent,
+        extend,
+        extendView
+      } = methods;
+      const compType = this.getType(type);
+      const extendType = this.getType(extend);
+      const extendViewType = this.getType(extendView);
+      const typeToExtend = extendType
+        ? extendType
+        : compType
+        ? compType
+        : this.getType('default');
+      const modelToExt = typeToExtend.model;
+      const viewToExt = extendViewType
+        ? extendViewType.view
+        : typeToExtend.view;
+
+      // If the model/view is a simple object I need to extend it
+      if (typeof model === 'object') {
+        methods.model = modelToExt.extend(
+          {
+            ...model,
+            defaults: {
+              ...modelToExt.prototype.defaults,
+              ...(result(model, 'defaults') || {})
+            }
+          },
+          {
+            isComponent:
+              compType && !extendType && !isComponent
+                ? modelToExt.isComponent
+                : isComponent || (() => 0)
+          }
+        );
+      }
+
+      if (typeof view === 'object') {
+        methods.view = viewToExt.extend({ ...view });
+      }
+
       if (compType) {
         compType.model = methods.model;
         compType.view = methods.view;
@@ -520,12 +571,18 @@ module.exports = () => {
         methods.id = type;
         componentTypes.unshift(methods);
       }
+
+      const event = `component:type:${compType ? 'update' : 'add'}`;
+      em && em.trigger(event, compType || methods);
+
+      return this;
     },
 
     /**
-     * Get component type
-     * @param {string} type
-     * @private
+     * Get component type.
+     * Read more about this in [Define New Component](https://grapesjs.com/docs/modules/Components.html#define-new-component)
+     * @param {string} type Component ID
+     * @return {Object} Component type defintion, eg. `{ model: ..., view: ... }`
      */
     getType(type) {
       var df = componentTypes;
@@ -537,6 +594,14 @@ module.exports = () => {
         }
       }
       return;
+    },
+
+    /**
+     * Return the array of all types
+     * @return {Array}
+     */
+    getTypes() {
+      return componentTypes;
     },
 
     selectAdd(component, opts = {}) {

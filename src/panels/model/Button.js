@@ -5,6 +5,7 @@ module.exports = Backbone.Model.extend({
     id: '',
     label: '',
     title: '',
+    tagName: 'span',
     className: '',
     command: '',
     context: '',

@@ -224,6 +224,22 @@ module.exports = {
         ]
       },
       {
+        name: 'Flex',
+        open: false,
+        buildProps: [
+          'flex-direction',
+          'flex-wrap',
+          'justify-content',
+          'align-items',
+          'align-content',
+          'order',
+          'flex-basis',
+          'flex-grow',
+          'flex-shrink',
+          'align-self'
+        ]
+      },
+      {
         name: 'Dimension',
         open: false,
         buildProps: [
@@ -290,5 +306,8 @@ module.exports = {
   textViewCode: 'Code',
 
   // Keep unused styles within the editor
-  keepUnusedStyles: 0
+  keepUnusedStyles: 0,
+
+  // TODO
+  multiFrames: 0
 };

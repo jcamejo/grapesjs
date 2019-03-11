@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { isString, isFunction, isArray } from 'underscore';
+import { isString, isFunction, isArray, result } from 'underscore';
 import { on, off, matches, getElement } from 'utils/mixins';
 const $ = Backbone.$;
 
@@ -50,11 +50,16 @@ module.exports = Backbone.View.extend({
     this.dragHelper = null;
     this.canvasRelative = o.canvasRelative || 0;
     this.selectOnEnd = !o.avoidSelectOnEnd;
+    this.scale = o.scale;
 
     if (this.em && this.em.on) {
       this.em.on('change:canvasOffset', this.udpateOffset);
       this.udpateOffset();
     }
+  },
+
+  getScale() {
+    return result(this, scale) || 1;
   },
 
   getContainerEl() {
@@ -78,7 +83,7 @@ module.exports = Backbone.View.extend({
    * Triggered when the offset of the editro is changed
    */
   udpateOffset() {
-    var offset = this.em.get('canvasOffset');
+    const offset = this.em.get('canvasOffset') || {};
     this.offTop = offset.top;
     this.offLeft = offset.left;
   },
@@ -448,11 +453,18 @@ module.exports = Backbone.View.extend({
    * @private
    */
   styleInFlow(el, parent) {
-    var style = el.style;
-    var $el = $(el);
+    const style = el.style;
+    const $el = $(el);
+    const $parent = parent && $(parent);
+
     if (style.overflow && style.overflow !== 'visible') return;
     if ($el.css('float') !== 'none') return;
-    if (parent && $(parent).css('display') == 'flex') return;
+    if (
+      $parent &&
+      $parent.css('display') == 'flex' &&
+      $parent.css('flex-direction') !== 'column'
+    )
+      return;
     switch (style.position) {
       case 'static':
       case 'relative':
@@ -695,19 +707,17 @@ module.exports = Backbone.View.extend({
    * @return {Array<number>}
    */
   getDim(el) {
+    const { em, canvasRelative } = this;
     var top, left, height, width;
 
-    if (this.canvasRelative && this.em) {
-      var pos = this.em.get('Canvas').getElementPos(el);
-      var styles = window.getComputedStyle(el);
-      var marginTop = parseFloat(styles['marginTop']);
-      var marginBottom = parseFloat(styles['marginBottom']);
-      var marginRight = parseFloat(styles['marginRight']);
-      var marginLeft = parseFloat(styles['marginLeft']);
-      top = pos.top - marginTop;
-      left = pos.left - marginLeft;
-      height = pos.height + marginTop + marginBottom;
-      width = pos.width + marginLeft + marginRight;
+    if (canvasRelative && em) {
+      const canvas = em.get('Canvas');
+      const pos = canvas.getElementPos(el);
+      const elOffsets = canvas.getElementOffsets(el);
+      top = pos.top - elOffsets.marginTop;
+      left = pos.left - elOffsets.marginLeft;
+      height = pos.height + elOffsets.marginTop + elOffsets.marginBottom;
+      width = pos.width + elOffsets.marginLeft + elOffsets.marginRight;
     } else {
       var o = this.offset(el);
       top = this.relative

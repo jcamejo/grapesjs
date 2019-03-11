@@ -10,7 +10,8 @@ module.exports = require('backbone').Model.extend({
     params: {},
     beforeSend() {},
     onComplete() {},
-    contentTypeJson: false
+    contentTypeJson: false,
+    credentials: 'include'
   },
 
   /**
@@ -117,7 +118,7 @@ module.exports = require('backbone').Model.extend({
     }
     fetchOptions = {
       method: opts.method || 'post',
-      credentials: 'include',
+      credentials: this.get('credentials'),
       headers
     };
 

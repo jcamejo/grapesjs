@@ -3,7 +3,6 @@ import { on, off, getUnitFromValue } from 'utils/mixins';
 
 const ToolbarView = require('dom_components/view/ToolbarView');
 const Toolbar = require('dom_components/model/Toolbar');
-const key = require('keymaster');
 const $ = require('backbone').$;
 let showOffsets;
 
@@ -14,9 +13,8 @@ module.exports = {
 
   enable() {
     this.frameOff = this.canvasOff = this.adjScroll = null;
-    var config = this.config.em.get('Config');
     this.startSelectComponent();
-    var em = this.config.em;
+    const { em } = this.config;
     showOffsets = 1;
 
     em.on('component:update', this.updateAttached, this);
@@ -44,7 +42,7 @@ module.exports = {
    * @private
    * */
   toggleSelectComponent(enable) {
-    const em = this.em;
+    const { em } = this;
     const method = enable ? 'on' : 'off';
     const methods = { on, off };
     const body = this.getCanvasBody();
@@ -70,7 +68,7 @@ module.exports = {
 
     if (!model) {
       let parent = $el.parent();
-      while (!model && parent) {
+      while (!model && parent.length > 0) {
         model = parent.data('model');
         parent = parent.parent();
       }
@@ -106,8 +104,8 @@ module.exports = {
    * @param {Object}  e
    * @private
    */
-  onOut(e) {
-    e.stopPropagation();
+  onOut(ev) {
+    ev && ev.stopPropagation();
     this.hideBadge();
     this.hideHighlighter();
     this.hideElementOffset();
@@ -128,7 +126,8 @@ module.exports = {
 
     this.editor.runCommand('show-offset', {
       el,
-      elPos: pos
+      elPos: pos,
+      force: 1
     });
   },
 
@@ -138,7 +137,8 @@ module.exports = {
    * @param {Object} pos
    */
   hideElementOffset(el, pos) {
-    this.editor.stopCommand('show-offset');
+    const { editor } = this;
+    editor && editor.stopCommand('show-offset');
   },
 
   /**
@@ -178,12 +178,11 @@ module.exports = {
   onClick(e) {
     e.stopPropagation();
     const $el = $(e.target);
-    const editor = this.editor;
     let model = $el.data('model');
 
     if (!model) {
       let parent = $el.parent();
-      while (!model && parent) {
+      while (!model && parent.length > 0) {
         model = parent.data('model');
         parent = parent.parent();
       }
@@ -281,13 +280,15 @@ module.exports = {
     var bStyle = badge.style;
     var u = 'px';
     bStyle.display = 'block';
-    var canvasPos = canvas.getCanvasView().getPosition();
+    var canvasPos = this.getCanvasPosition();
+
     if (canvasPos) {
-      var badgeH = badge ? badge.offsetHeight : 0;
-      var badgeW = badge ? badge.offsetWidth : 0;
-      var top =
-        pos.top - badgeH < canvasPos.top ? canvasPos.top : pos.top - badgeH;
-      var left = pos.left + badgeW < canvasPos.left ? canvasPos.left : pos.left;
+      const canvasTop = canvasPos.top;
+      const canvasLeft = canvasPos.left;
+      const posTop = pos.top - (badge ? badge.offsetHeight : 0);
+      const badgeW = badge ? badge.offsetWidth : 0;
+      var top = posTop < canvasTop ? canvasTop : posTop;
+      var left = pos.left + badgeW < canvasLeft ? canvasLeft : pos.left;
       bStyle.top = top + u;
       bStyle.left = left + u;
     }
@@ -351,7 +352,7 @@ module.exports = {
    * @private
    */
   initResize(elem) {
-    const em = this.em;
+    const { em, canvas } = this;
     const editor = em ? em.get('Editor') : '';
     const config = em ? em.get('Config') : '';
     const pfx = config.stylePrefix || '';
@@ -445,7 +446,13 @@ module.exports = {
           const style = modelToStyle.getStyle();
 
           if (!onlyHeight) {
-            style[keyWidth] = autoWidth ? 'auto' : `${rect.w}${unitWidth}`;
+            const padding = 10;
+            const frameOffset = canvas.getCanvasView().getFrameOffset();
+            const width =
+              rect.w < frameOffset.width - padding
+                ? rect.w
+                : frameOffset.width - padding;
+            style[keyWidth] = autoWidth ? 'auto' : `${width}${unitWidth}`;
           }
 
           if (!onlyWidth) {
@@ -468,12 +475,11 @@ module.exports = {
       if (typeof resizable == 'object') {
         options = { ...options, ...resizable };
       }
-      editor.runCommand('resize', { el, options });
 
-      // On undo/redo the resizer rect is not updating, need somehow to call
-      // this.updateRect on undo/redo action
+      this.resizer = editor.runCommand('resize', { el, options, force: 1 });
     } else {
       editor.stopCommand('resize');
+      this.resizer = null;
     }
   },
 
@@ -528,15 +534,33 @@ module.exports = {
    * @param {Object} pos
    */
   updateToolbarPos(el, elPos) {
-    var unit = 'px';
-    var toolbarEl = this.canvas.getToolbarEl();
-    var toolbarStyle = toolbarEl.style;
+    const { canvas } = this;
+    const unit = 'px';
+    const toolbarEl = canvas.getToolbarEl();
+    const toolbarStyle = toolbarEl.style;
     toolbarStyle.opacity = 0;
-    var pos = this.canvas.getTargetToElementDim(toolbarEl, el, {
+    const pos = canvas.getTargetToElementDim(toolbarEl, el, {
       elPos,
       event: 'toolbarPosUpdate'
     });
+
     if (pos) {
+      const frameOffset = canvas.getCanvasView().getFrameOffset();
+
+      // Scroll with the window if the top edge is reached and the
+      // element is bigger than the canvas
+      if (
+        pos.top <= pos.canvasTop &&
+        !(pos.elementHeight + pos.targetHeight >= frameOffset.height)
+      ) {
+        pos.top = pos.elementTop + pos.elementHeight;
+      }
+
+      // Check if not outside of the canvas
+      if (pos.left < pos.canvasLeft) {
+        pos.left = pos.canvasLeft;
+      }
+
       var leftPos = pos.left + pos.elementWidth - pos.targetWidth;
       toolbarStyle.top = pos.top + unit;
       toolbarStyle.left = (leftPos < 0 ? 0 : leftPos) + unit;
@@ -589,14 +613,16 @@ module.exports = {
   /**
    * Update attached elements, eg. component toolbar
    */
-  updateAttached(updated) {
-    const model = this.em.getSelected();
+  updateAttached() {
+    const { resizer, em } = this;
+    const model = em.getSelected();
     const view = model && model.view;
 
     if (view) {
       const { el } = view;
       this.updateToolbarPos(el);
       this.showFixedElementOffset(el);
+      resizer && resizer.updateContainer();
     }
   },
 
@@ -650,7 +676,7 @@ module.exports = {
     this.stopSelectComponent();
     !opts.preserveSelected && em.setSelected(null);
     this.clean();
-    this.hideBadge();
+    this.onOut();
     this.hideFixedElementOffset();
     this.canvas.getToolbarEl().style.display = 'none';
 

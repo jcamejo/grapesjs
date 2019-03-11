@@ -115,8 +115,27 @@ const Component = Backbone.Model.extend(Styleable).extend(
       attributes: '',
       traits: ['id', 'title'],
       propagate: '',
+      dmode: '',
       toolbar: null
     },
+
+    /**
+     * Hook method, called once the model is created
+     */
+    init() {},
+
+    /**
+     * Hook method, called when the model has been updated (eg. updated some model's property)
+     * @param {String} property Property name, if triggered after some property update
+     * @param {*} value Property value, if triggered after some property update
+     * @param {*} previous Property previous value, if triggered after some property update
+     */
+    updated(property, value, previous) {},
+
+    /**
+     * Hook method, called once the model has been removed
+     */
+    removed() {},
 
     initialize(props = {}, opt = {}) {
       const em = opt.em;
@@ -151,8 +170,11 @@ const Component = Backbone.Model.extend(Styleable).extend(
       this.opt = opt;
       this.em = em;
       this.config = opt.config || {};
+      this.set('attributes', {
+        ...(this.defaults.attributes || {}),
+        ...(this.get('attributes') || {})
+      });
       this.ccid = Component.createId(this);
-      this.set('attributes', this.get('attributes') || {});
       this.initClasses();
       this.initTraits();
       this.initComponents();
@@ -169,10 +191,10 @@ const Component = Backbone.Model.extend(Styleable).extend(
           this.emitUpdate(name, ...args)
         );
       });
-      this.init();
 
-      if (em) {
-        em.trigger('component:create', this);
+      if (!opt.temporary) {
+        this.init();
+        em && em.trigger('component:create', this);
       }
     },
 
@@ -186,6 +208,15 @@ const Component = Backbone.Model.extend(Styleable).extend(
      */
     is(type) {
       return !!(this.get('type') == type);
+    },
+
+    /**
+     * Get the index of the component in the parent collection.
+     * @return {Number}
+     */
+    index() {
+      const { collection } = this;
+      return collection && collection.indexOf(this);
     },
 
     /**
@@ -280,7 +311,9 @@ const Component = Backbone.Model.extend(Styleable).extend(
       this.set('attributes', attrs, opts);
       const attrPrev = { ...this.previous('attributes') };
       const diff = shallowDiff(attrPrev, attrs);
-      keys(diff).forEach(pr => this.trigger(`change:attributes:${pr}`));
+      keys(diff).forEach(pr =>
+        this.trigger(`change:attributes:${pr}`, this, diff[pr])
+      );
 
       return this;
     },
@@ -455,8 +488,10 @@ const Component = Backbone.Model.extend(Styleable).extend(
     initClasses() {
       const event = 'change:classes';
       const toListen = [this, event, this.initClasses];
+      const cls = this.get('classes') || [];
+      const clsArr = isString(cls) ? cls.split(' ') : cls;
       this.stopListening(...toListen);
-      const classes = this.normalizeClasses(this.get('classes') || []);
+      const classes = this.normalizeClasses(clsArr);
       const selectors = new Selectors([]);
       this.set('classes', selectors);
       selectors.add(classes);
@@ -498,8 +533,6 @@ const Component = Backbone.Model.extend(Styleable).extend(
       this.listenTo(...toListen);
       return this;
     },
-
-    init() {},
 
     /**
      * Add new component children
@@ -704,7 +737,12 @@ const Component = Backbone.Model.extend(Styleable).extend(
         attr.style = style;
       }
 
-      return new this.constructor(attr, opts);
+      const cloned = new this.constructor(attr, opts);
+      const event = 'component:clone';
+      em && em.trigger(event, cloned);
+      this.trigger(event, cloned);
+
+      return cloned;
     },
 
     /**
@@ -929,6 +967,14 @@ const Component = Backbone.Model.extend(Styleable).extend(
     emitUpdate(property, ...args) {
       const em = this.em;
       const event = 'component:update' + (property ? `:${property}` : '');
+      property &&
+        this.updated(
+          property,
+          property && this.get(property),
+          property && this.previous(property),
+          ...args
+        );
+      this.trigger(event, ...args);
       em && em.trigger(event, this, ...args);
     },
 
@@ -996,17 +1042,84 @@ const Component = Backbone.Model.extend(Styleable).extend(
      * @private
      */
     createId(model) {
-      componentIndex++;
-      // Testing 1000000 components with `+ 2` returns 0 collisions
-      const ilen = componentIndex.toString().length + 2;
-      const uid = (Math.random() + 1.1).toString(36).slice(-ilen);
-      const nextId = 'i' + uid;
-      componentList[nextId] = model;
+      const list = Component.getList(model);
+      let { id } = model.get('attributes');
+      let nextId;
+
+      if (id) {
+        nextId = Component.getIncrementId(id, list);
+        model.setId(nextId);
+      } else {
+        nextId = Component.getNewId(list);
+      }
+
+      list[nextId] = model;
       return nextId;
     },
 
-    getList() {
-      return componentList;
+    getNewId(list) {
+      const count = Object.keys(list).length;
+      // Testing 1000000 components with `+ 2` returns 0 collisions
+      const ilen = count.toString().length + 2;
+      const uid = (Math.random() + 1.1).toString(36).slice(-ilen);
+      let newId = `i${uid}`;
+
+      while (list[newId]) {
+        newId = Component.getNewId(list);
+      }
+
+      return newId;
+    },
+
+    getIncrementId(id, list) {
+      let counter = 1;
+      let newId = id;
+
+      while (list[newId]) {
+        counter++;
+        newId = `${id}-${counter}`;
+      }
+
+      return newId;
+    },
+
+    /**
+     * The list of components is taken from the Components module.
+     * Initially, the list, was set statically on the Component object but it was
+     * not ok, as it was shared between multiple editor instances
+     */
+    getList(model) {
+      const domc = model.opt && model.opt.domc;
+      return domc ? domc.componentsById : {};
+    },
+
+    /**
+     * This method checks, for each parsed component and style object
+     * (are not Components/CSSRules yet), for duplicated id and fixes them
+     * This method is used in Components.js just after the parsing
+     */
+    checkId(components, styles = [], list = {}) {
+      const comps = isArray(components) ? components : [components];
+      comps.forEach(comp => {
+        const { attributes = {}, components } = comp;
+        const { id } = attributes;
+
+        // Check if we have collisions with current components
+        if (id && list[id]) {
+          const newId = Component.getIncrementId(id, list);
+          attributes.id = newId;
+          // Update passed styles
+          isArray(styles) &&
+            styles.forEach(style => {
+              const { selectors } = style;
+              selectors.forEach((sel, idx) => {
+                if (sel === `#${id}`) selectors[idx] = `#${newId}`;
+              });
+            });
+        }
+
+        components && Component.checkId(components, styles, list);
+      });
     }
   }
 );

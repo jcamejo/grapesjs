@@ -1,4 +1,5 @@
 import { isUndefined, isString } from 'underscore';
+import { capitalize } from 'utils/mixins';
 
 const Property = require('backbone').Model.extend(
   {
@@ -26,21 +27,29 @@ const Property = require('backbone').Model.extend(
       // Use case:
       // you can add all SVG CSS properties with toRequire as true
       // and then require them on SVG Components
-      toRequire: 0
+      toRequire: 0,
+
+      // Specifies dependency on other properties of the selected object.
+      // Property is shown only when all conditions are matched.
+      //
+      // example: { display: ['flex', 'block'], position: ['absolute'] };
+      //          in this case the property is only shown when display is
+      //          of value 'flex' or 'block' AND position is 'absolute'
+      requires: null,
+
+      // Specifies dependency on properties of the parent of the selected object.
+      // Property is shown only when all conditions are matched.
+      requiresParent: null
     },
 
     initialize(props = {}, opts = {}) {
-      const name = this.get('name');
+      const id = this.get('id') || '';
+      const name = this.get('name') || '';
+      !this.get('property') &&
+        this.set('property', (name || id).replace(/ /g, '-'));
       const prop = this.get('property');
       !this.get('id') && this.set('id', prop);
-
-      if (!name) {
-        this.set(
-          'name',
-          prop.charAt(0).toUpperCase() + prop.slice(1).replace(/-/g, ' ')
-        );
-      }
-
+      !name && this.set('name', capitalize(prop).replace(/-/g, ' '));
       Property.callInit(this, props, opts);
     },
 

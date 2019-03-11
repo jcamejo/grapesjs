@@ -121,6 +121,24 @@ const getModel = (el, $) => {
   return model;
 };
 
+/**
+ * Get cross-device pointer event
+ * @param  {Event} ev
+ * @return {Event}
+ */
+const getPointerEvent = ev =>
+  ev.touches && ev.touches[0] ? ev.touches[0] : ev;
+
+/**
+ * Get cross-browser keycode
+ * @param  {Event} ev
+ * @return {Number}
+ */
+const getKeyCode = ev => ev.which || ev.keyCode;
+const getKeyChar = ev => String.fromCharCode(getKeyCode(ev));
+
+const capitalize = str => str.charAt(0).toUpperCase() + str.substring(1);
+
 export {
   on,
   off,
@@ -129,8 +147,12 @@ export {
   matches,
   getModel,
   camelCase,
+  getKeyCode,
+  getKeyChar,
   getElement,
   shallowDiff,
   normalizeFloat,
-  getUnitFromValue
+  getPointerEvent,
+  getUnitFromValue,
+  capitalize
 };
