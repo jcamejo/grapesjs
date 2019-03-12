@@ -24554,12 +24554,7 @@ module.exports = {
    * stops some commands (eg. disables the copy/paste of components with CTRL+C/V to allow the copy/paste of the text).
    * This option allows to customize, by a selector, which element should not be considered textable
    */
-<<<<<<< HEAD
-  // notTextable: ['button', 'input[type=checkbox]', 'input[type=radio]']
-  notTextable: ['button', 'input[type=checkbox]', 'input[type=radio]', 'input', 'textarea']
-=======
   notTextable: ['button', 'a', 'input[type=checkbox]', 'input[type=radio]']
->>>>>>> origin/master
 };
 
 /***/ }),
@@ -28779,11 +28774,14 @@ var $ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js
 
 module.exports = {
   run: function run(editor, sender) {
+    var _this = this;
+
     this.sender = sender;
 
     var config = editor.Config;
     var pfx = config.stylePrefix;
     var tm = editor.TraitManager;
+    var sm = editor.StyleManager;
     var panelC;
 
     if (!this.$cn) {
@@ -28791,11 +28789,43 @@ module.exports = {
       var confTm = tm.getConfig();
       this.$cn = $('<div></div>');
       this.$cn2 = $('<div></div>');
-      this.$cn.append(this.$cn2);
-      this.$header = $('<div>').append('<div class="' + confTm.stylePrefix + 'header">' + confTm.textNoElement + '</div>');
-      this.$cn.append(this.$header);
+      this.$cnWrap = $('<div class="gjs-sm-sectors gjs-one-bg gjs-two-color"></div>');
+      this.$cnSector = $('<div class="gjs-sm-sector no-select"></div>');
+      this.$cnTitle = $('<div class="gjs-sm-title"></div>');
+      this.$cnTitleInner = $('<i id="gjs-sm-caret" class="fa fa-caret-right"></i>');
+      this.$cnTextInnet = $('<span>Basic</span>');
+      this.$cnProperties = $('<div class="gjs-sm-properties" style="display: none;"></div>');
+
+      this.$cnTitle.append(this.$cnTitleInner);
+      this.$cnTitle.append(this.$cnTextInnet);
+      this.$cnSector.append(this.$cnTitle);
+      this.$cnSector.append(this.$cnProperties);
+      // this.$cnProperties.append();
+      this.$cnWrap.append(this.$cnSector);
+
+      this.$cnTitle.bind('click', function () {
+        _this.toggleMenu();
+      });
+
       this.$cn2.append('<div class="' + pfx + 'traits-label">' + confTm.labelContainer + '</div>');
-      this.$cn2.append(tmView.render().el);
+      this.$cn2.append(this.$cnWrap);
+      this.$cn.append(this.$cn2);
+
+      this.$header = $('<div>').append('<div class="' + confTm.stylePrefix + 'header">' + confTm.textNoElement + '</div>');
+
+      this.$cn.append(this.$header);
+
+      // this.$cn2.append(
+      //   `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
+      // );
+      // this.$cn2.append(tmView.render().el);
+      this.$cnProperties.append(tmView.render().el);
+
+      var smView = sm.render();
+      //adding style manager in trait manager;
+      this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
+      this.$cn2.append(smView);
+
       var panels = editor.Panels;
 
       if (!panels.getPanel('views-container')) panelC = panels.addPanel({ id: 'views-container' });else panelC = panels.getPanel('views-container');
@@ -28807,6 +28837,19 @@ module.exports = {
     }
 
     this.toggleTm();
+  },
+  toggleMenu: function toggleMenu() {
+    if (this.$cnSector.hasClass('gjs-sm-open')) {
+      this.$cnSector.removeClass('gjs-sm-open');
+      this.$cnTitleInner.removeClass('fa-caret-down');
+      this.$cnTitleInner.addClass('fa-caret-right');
+      this.$cnProperties.hide();
+    } else {
+      this.$cnSector.addClass('gjs-sm-open');
+      this.$cnTitleInner.removeClass('fa-caret-right');
+      this.$cnTitleInner.addClass('fa-caret-down');
+      this.$cnProperties.show();
+    }
   },
 
 
@@ -29225,6 +29268,7 @@ module.exports = {
     if (model) {
       if (model.get('selectable')) {
         this.select(model, e);
+        editor.trigger('change:highlightMenu');
       } else {
         var _parent2 = model.parent();
         while (_parent2 && !_parent2.get('selectable')) {
@@ -29903,20 +29947,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var $ = _backbone2.default.$;
 
 module.exports = {
-<<<<<<< HEAD
-    getOffsetMethod: function getOffsetMethod(state) {
-        var method = state || '';
-        return 'get' + method + 'OffsetViewerEl';
-    },
-    run: function run(editor, sender, opts) {
-        var opt = opts || {};
-        var state = opt.state || '';
-        var config = editor.getConfig();
-
-        if (!config.showOffsets || !config.showOffsetsSelected && state == 'Fixed') {
-            return;
-        }
-=======
   getOffsetMethod: function getOffsetMethod(state) {
     var method = state || '';
     return 'get' + method + 'OffsetViewerEl';
@@ -29931,139 +29961,64 @@ module.exports = {
       editor.stopCommand(this.id, opts);
       return;
     }
->>>>>>> origin/master
 
-        var canvas = editor.Canvas;
-        var el = opt.el || '';
-        var pos = opt.elPos || canvas.getElementPos(el);
-        var style = window.getComputedStyle(el);
-        var ppfx = this.ppfx;
-        var stateVar = state + 'State';
-        var method = this.getOffsetMethod(state);
-        var offsetViewer = canvas[method]();
-        offsetViewer.style.display = 'block';
+    var canvas = editor.Canvas;
+    var el = opt.el || '';
+    var pos = opt.elPos || canvas.getElementPos(el);
+    var style = window.getComputedStyle(el);
+    var ppfx = this.ppfx;
+    var stateVar = state + 'State';
+    var method = this.getOffsetMethod(state);
+    var offsetViewer = canvas[method]();
+    offsetViewer.style.display = 'block';
 
-        var marginT = this['marginT' + state];
-        var marginB = this['marginB' + state];
-        var marginL = this['marginL' + state];
-        var marginR = this['marginR' + state];
-        var padT = this['padT' + state];
-        var padB = this['padB' + state];
-        var padL = this['padL' + state];
-        var padR = this['padR' + state];
+    var marginT = this['marginT' + state];
+    var marginB = this['marginB' + state];
+    var marginL = this['marginL' + state];
+    var marginR = this['marginR' + state];
+    var padT = this['padT' + state];
+    var padB = this['padB' + state];
+    var padL = this['padL' + state];
+    var padR = this['padR' + state];
 
-        if (!this[stateVar]) {
-            var stateLow = state.toLowerCase();
-            var marginName = stateLow + 'margin-v';
-            var paddingName = stateLow + 'padding-v';
-            var marginV = $('<div class="' + ppfx + 'marginName">').get(0);
-            var paddingV = $('<div class="' + ppfx + 'paddingName">').get(0);
-            var marginEls = ppfx + marginName + '-el';
-            var paddingEls = ppfx + paddingName + '-el';
-            var fullMargName = marginEls + ' ' + (ppfx + marginName);
-            var fullPadName = paddingEls + ' ' + (ppfx + paddingName);
-            marginT = $('<div class="' + fullMargName + '-top"></div>').get(0);
-            marginB = $('<div class="' + fullMargName + '-bottom"></div>').get(0);
-            marginL = $('<div class="' + fullMargName + '-left"></div>').get(0);
-            marginR = $('<div class="' + fullMargName + '-right"></div>').get(0);
-            padT = $('<div class="' + fullPadName + '-top"></div>').get(0);
-            padB = $('<div class="' + fullPadName + '-bottom"></div>').get(0);
-            padL = $('<div class="' + fullPadName + '-left"></div>').get(0);
-            padR = $('<div class="' + fullPadName + '-right"></div>').get(0);
-            this['marginT' + state] = marginT;
-            this['marginB' + state] = marginB;
-            this['marginL' + state] = marginL;
-            this['marginR' + state] = marginR;
-            this['padT' + state] = padT;
-            this['padB' + state] = padB;
-            this['padL' + state] = padL;
-            this['padR' + state] = padR;
-            marginV.appendChild(marginT);
-            marginV.appendChild(marginB);
-            marginV.appendChild(marginL);
-            marginV.appendChild(marginR);
-            paddingV.appendChild(padT);
-            paddingV.appendChild(padB);
-            paddingV.appendChild(padL);
-            paddingV.appendChild(padR);
-            offsetViewer.appendChild(marginV);
-            offsetViewer.appendChild(paddingV);
-            this[stateVar] = '1';
-        }
-
-        var unit = 'px';
-        var marginLeftSt = style.marginLeft.replace(unit, '');
-        var marginTopSt = parseInt(style.marginTop.replace(unit, ''));
-        var marginBottomSt = parseInt(style.marginBottom.replace(unit, ''));
-        var mtStyle = marginT.style;
-        var mbStyle = marginB.style;
-        var mlStyle = marginL.style;
-        var mrStyle = marginR.style;
-        var ptStyle = padT.style;
-        var pbStyle = padB.style;
-        var plStyle = padL.style;
-        var prStyle = padR.style;
-        var posLeft = parseInt(pos.left);
-
-        // Margin style
-        mtStyle.height = style.marginTop;
-        mtStyle.width = style.width;
-        mtStyle.top = pos.top - style.marginTop.replace(unit, '') + unit;
-        mtStyle.left = posLeft + unit;
-
-        mbStyle.height = style.marginBottom;
-        mbStyle.width = style.width;
-        mbStyle.top = pos.top + pos.height + unit;
-        mbStyle.left = posLeft + unit;
-
-        var marginSideH = pos.height + marginTopSt + marginBottomSt + unit;
-        var marginSideT = pos.top - marginTopSt + unit;
-        mlStyle.height = marginSideH;
-        mlStyle.width = style.marginLeft;
-        mlStyle.top = marginSideT;
-        mlStyle.left = posLeft - marginLeftSt + unit;
-
-        mrStyle.height = marginSideH;
-        mrStyle.width = style.marginRight;
-        mrStyle.top = marginSideT;
-        mrStyle.left = posLeft + pos.width + unit;
-
-        // Padding style
-        var padTop = parseInt(style.paddingTop.replace(unit, ''));
-        ptStyle.height = style.paddingTop;
-        ptStyle.width = style.width;
-        ptStyle.top = pos.top + unit;
-        ptStyle.left = posLeft + unit;
-
-        var padBot = parseInt(style.paddingBottom.replace(unit, ''));
-        pbStyle.height = style.paddingBottom;
-        pbStyle.width = style.width;
-        pbStyle.top = pos.top + pos.height - padBot + unit;
-        pbStyle.left = posLeft + unit;
-
-        var padSideH = pos.height - padBot - padTop + unit;
-        var padSideT = pos.top + padTop + unit;
-        plStyle.height = padSideH;
-        plStyle.width = style.paddingLeft;
-        plStyle.top = padSideT;
-        plStyle.left = pos.left + unit;
-
-        var padRight = parseInt(style.paddingRight.replace(unit, ''));
-        prStyle.height = padSideH;
-        prStyle.width = style.paddingRight;
-        prStyle.top = padSideT;
-        prStyle.left = pos.left + pos.width - padRight + unit;
-    },
-    stop: function stop(editor, sender, opts) {
-        var opt = opts || {};
-        var state = opt.state || '';
-        var method = this.getOffsetMethod(state);
-        var canvas = editor.Canvas;
-        var offsetViewer = canvas[method]();
-        offsetViewer.style.display = 'none';
+    if (!this[stateVar]) {
+      var stateLow = state.toLowerCase();
+      var marginName = stateLow + 'margin-v';
+      var paddingName = stateLow + 'padding-v';
+      var marginV = $('<div class="' + ppfx + 'marginName">').get(0);
+      var paddingV = $('<div class="' + ppfx + 'paddingName">').get(0);
+      var marginEls = ppfx + marginName + '-el';
+      var paddingEls = ppfx + paddingName + '-el';
+      var fullMargName = marginEls + ' ' + (ppfx + marginName);
+      var fullPadName = paddingEls + ' ' + (ppfx + paddingName);
+      marginT = $('<div class="' + fullMargName + '-top"></div>').get(0);
+      marginB = $('<div class="' + fullMargName + '-bottom"></div>').get(0);
+      marginL = $('<div class="' + fullMargName + '-left"></div>').get(0);
+      marginR = $('<div class="' + fullMargName + '-right"></div>').get(0);
+      padT = $('<div class="' + fullPadName + '-top"></div>').get(0);
+      padB = $('<div class="' + fullPadName + '-bottom"></div>').get(0);
+      padL = $('<div class="' + fullPadName + '-left"></div>').get(0);
+      padR = $('<div class="' + fullPadName + '-right"></div>').get(0);
+      this['marginT' + state] = marginT;
+      this['marginB' + state] = marginB;
+      this['marginL' + state] = marginL;
+      this['marginR' + state] = marginR;
+      this['padT' + state] = padT;
+      this['padB' + state] = padB;
+      this['padL' + state] = padL;
+      this['padR' + state] = padR;
+      marginV.appendChild(marginT);
+      marginV.appendChild(marginB);
+      marginV.appendChild(marginL);
+      marginV.appendChild(marginR);
+      paddingV.appendChild(padT);
+      paddingV.appendChild(padB);
+      paddingV.appendChild(padL);
+      paddingV.appendChild(padR);
+      offsetViewer.appendChild(marginV);
+      offsetViewer.appendChild(paddingV);
+      this[stateVar] = '1';
     }
-<<<<<<< HEAD
-=======
 
     var unit = 'px';
     var marginLeftSt = parseFloat(style.marginLeft.replace(unit, '')) * zoom;
@@ -30138,7 +30093,6 @@ module.exports = {
     var offsetViewer = canvas[method]();
     offsetViewer.style.display = 'none';
   }
->>>>>>> origin/master
 };
 
 /***/ }),
@@ -38995,11 +38949,7 @@ module.exports = function () {
     plugins: plugins,
 
     // Will be replaced on build
-<<<<<<< HEAD
-    version: '<# VERSION #>',
-=======
     version: '0.14.55',
->>>>>>> origin/master
 
     /**
      * Initialize the editor with passed options
@@ -39147,8 +39097,8 @@ module.exports = function () {
         handler: 'core:component-exit'
       },
       'core:component-delete': {
-        // keys: 'backspace, delete',
-        keys: 'delete',
+        keys: 'backspace, delete',
+        // keys: 'delete',
         handler: 'core:component-delete'
       }
     }
@@ -40500,13 +40450,15 @@ module.exports = {
     }]
   }, {
     id: 'views',
-    buttons: [{
-      id: osm,
-      className: 'fa fa-paint-brush',
-      command: osm,
-      active: true,
-      attributes: { title: 'Open Style Manager' }
-    }, {
+    buttons: [
+    // {
+    //   id: osm,
+    //   className: 'fa fa-paint-brush',
+    //   command: osm,
+    //   active: true,
+    //   attributes: { title: 'Open Style Manager' }
+    // },
+    {
       id: otm,
       className: 'fa fa-cog',
       command: otm,
@@ -40812,11 +40764,8 @@ module.exports = Backbone.Model.extend({
   defaults: {
     id: '',
     label: '',
-<<<<<<< HEAD
     title: '',
-=======
     tagName: 'span',
->>>>>>> origin/master
     className: '',
     command: '',
     context: '',
@@ -46081,7 +46030,7 @@ module.exports = function () {
             obj.defaults = 'black';
             break;
           case 'text-align':
-            obj.defaults = 'left';
+            obj.defaults = 'center';
             break;
           case 'border-style':
             obj.defaults = 'solid';
