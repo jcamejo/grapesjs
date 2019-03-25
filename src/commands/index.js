@@ -98,6 +98,9 @@ module.exports = () => {
       //close all dropdowns
       defaultCommands['close_dropdowns'] = require('./view/CloseDropdowns');
       defaultCommands['open_dropdowns'] = require('./view/OpenDropdowns');
+      defaultCommands[
+        'open_setting_dropdown'
+      ] = require('./view/OpenSettingDropdown');
       defaultCommands['open_rows'] = require('./view/OpenRows');
       defaultCommands['open_layout'] = require('./view/OpenLayout');
 
