@@ -116,6 +116,25 @@ component.find('div > .class');
 
 Returns **[Array][4]** Array of components
 
+## findType
+
+Find all inner components by component id.
+The advantage of this method over `find` is that you can use it
+also before rendering the component
+
+### Parameters
+
+-   `id` **[String][1]** Component id
+
+### Examples
+
+```javascript
+const allImages = component.findType('image');
+console.log(allImages[0]) // prints the first found component
+```
+
+Returns **[Array][4]&lt;[Component][9]>** 
+
 ## closest
 
 Find the closest parent component by query string.
@@ -351,6 +370,83 @@ traitTitle && traitTitle.set('label', 'New label');
 
 Returns **Trait** Trait model
 
+## updateTrait
+
+Update a trait
+
+### Parameters
+
+-   `id` **[String][1]** The `id` or `name` of the trait
+-   `props` **[Object][2]** Object with the props to update
+
+### Examples
+
+```javascript
+component.updateTrait('title', {
+ type: 'select',
+ options: [ 'Option 1', 'Option 2' ],
+});
+```
+
+Returns **this** 
+
+## getTraitIndex
+
+Get the trait position index by id/name. Useful in case you want to
+replace some trait, at runtime, with something else.
+
+### Parameters
+
+-   `id` **[String][1]** The `id` or `name` of the trait
+
+### Examples
+
+```javascript
+const traitTitle = component.getTraitIndex('title');
+console.log(traitTitle); // 1
+```
+
+Returns **[Number][10]** Index position of the current trait
+
+## removeTrait
+
+Remove trait/s by id/s.
+
+### Parameters
+
+-   `id` **([String][1] \| [Array][4]&lt;[String][1]>)** The `id`/`name` of the trait (or an array)
+
+### Examples
+
+```javascript
+component.removeTrait('title');
+component.removeTrait(['title', 'id']);
+```
+
+Returns **[Array][4]** Array of removed traits
+
+## addTrait
+
+Add trait/s by id/s.
+
+### Parameters
+
+-   `trait` **([String][1] \| [Object][2] \| [Array][4]&lt;([String][1] \| [Object][2])>)** Trait to add (or an array of traits)
+-   `opts` **Options** Options for the add (optional, default `{}`)
+
+### Examples
+
+```javascript
+component.addTrat('title', { at: 1 }); // Add title trait (`at` option is the position index)
+component.addTrat({
+ type: 'checkbox',
+ name: 'disabled',
+});
+component.addTrat(['title', {...}, ...]);
+```
+
+Returns **[Array][4]** Array of added traits
+
 ## getName
 
 Get the name of the component
@@ -453,6 +549,28 @@ Returns **this**
 Remove the component
 
 Returns **this** 
+
+## getList
+
+The list of components is taken from the Components module.
+Initially, the list, was set statically on the Component object but it was
+not ok, as it was shared between multiple editor instances
+
+### Parameters
+
+-   `model`  
+
+## checkId
+
+This method checks, for each parsed component and style object
+(are not Components/CSSRules yet), for duplicated id and fixes them
+This method is used in Components.js just after the parsing
+
+### Parameters
+
+-   `components`  
+-   `styles`   (optional, default `[]`)
+-   `list`   (optional, default `{}`)
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

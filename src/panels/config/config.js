@@ -1,5 +1,3 @@
-var crc = 'create-comp';
-var mvc = 'move-comp';
 var swv = 'sw-visibility';
 var expt = 'export-template';
 var osm = 'open-sm';
@@ -67,18 +65,21 @@ module.exports = {
           id: otm,
           className: 'fa fa-cog',
           command: otm,
+          togglable: 0,
           attributes: { title: 'Settings' }
         },
         {
           id: ola,
           className: 'fa fa-bars',
           command: ola,
+          togglable: 0,
           attributes: { title: 'Open Layer Manager' }
         },
         {
           id: obl,
           className: 'fa fa-th-large',
           command: obl,
+          togglable: 0,
           attributes: { title: 'Open Blocks' }
         }
       ]

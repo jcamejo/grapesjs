@@ -19,7 +19,7 @@
  *
  * ### Components
  * * `component:create` - Component is created (only the model, is not yet mounted in the canvas), called after the init() method
- * * `component:mount` - Component is monted to an element and rendered in canvas
+ * * `component:mount` - Component is mounted to an element and rendered in canvas
  * * `component:add` - Triggered when a new component is added to the editor, the model is passed as an argument to the callback
  * * `component:remove` - Triggered when a component is removed, the model is passed as an argument to the callback
  * * `component:clone` - Triggered when a component is cloned, the new model is passed as an argument to the callback
@@ -87,6 +87,8 @@
  * * `run:{commandName}:before` - Triggered before the command is called
  * * `stop:{commandName}:before` - Triggered before the command is called to stop
  * * `abort:{commandName}` - Triggered when the command execution is aborted (`editor.on(`run:preview:before`, opts => opts.abort = 1);`)
+ * * `run` - Triggered on run of any command. The id and the result are passed as arguments to the callback
+ * * `stop` - Triggered on stop of any command. The id and the result are passed as arguments to the callback
  * ### General
  * * `canvasScroll` - Canvas is scrolled
  * * `update` - The structure of the template is updated (its HTML/CSS)
@@ -409,6 +411,8 @@ export default (config = {}) => {
     /**
      * Select a component
      * @param  {Component|HTMLElement} el Component to select
+     * @param  {Object} [opts] Options
+     * @param  {Boolean} [opts.scroll] Scroll canvas to the selected element
      * @return {this}
      * @example
      * // Select dropped block
@@ -416,8 +420,8 @@ export default (config = {}) => {
      *  editor.select(model);
      * });
      */
-    select(el) {
-      em.setSelected(el);
+    select(el, opts) {
+      em.setSelected(el, opts);
       return this;
     },
 
