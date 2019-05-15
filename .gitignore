@@ -23,3 +23,4 @@ docs/.vuepress/dist
 *.swn
 *.swo
 tags
+index.html
