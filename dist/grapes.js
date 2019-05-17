@@ -33062,14 +33062,11 @@ var Component = Backbone.Model.extend(_Styleable2.default).extend({
         tb.push({
           attributes: { class: 'fa fa-2x fa-arrow-up' },
           command: 'select-parent'
-
-		/*
+          // TODO: Check this
+          /*
           attributes: { class: 'fa fa-arrow-up' },
-          command: function command(ed) {
-            return ed.runCommand('core:component-exit', { force: 1 });
-          }
+          command: ed => ed.runCommand('core:component-exit', { force: 1 })
           */
-
         });
       }
       if (model.get('draggable')) {
