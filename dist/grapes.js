@@ -46269,10 +46269,6 @@ module.exports = function () {
           case 'right':
           case 'bottom':
           case 'left':
-          case 'margin-top':
-          case 'margin-right':
-          case 'margin-bottom':
-          case 'margin-left':
           case 'min-height':
           case 'min-width':
           case 'max-height':
@@ -46313,6 +46309,10 @@ module.exports = function () {
           case 'padding-right':
           case 'padding-bottom':
           case 'padding-left':
+          case 'margin-top':
+          case 'margin-right':
+          case 'margin-bottom':
+          case 'margin-left':
             obj.type = 'slider';
             break;
           case 'margin':
@@ -46571,6 +46571,10 @@ module.exports = function () {
           case 'padding-right':
           case 'padding-bottom':
           case 'padding-left':
+          case 'margin-top':
+          case 'margin-right':
+          case 'margin-bottom':
+          case 'margin-left':
             obj.min = 0;
             obj.max = 600;
           case 'min-height':

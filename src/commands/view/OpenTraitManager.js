@@ -13,6 +13,7 @@ module.exports = {
     if (!this.$cn) {
       var tmView = tm.getTraitsViewer();
       var confTm = tm.getConfig();
+
       this.$cn = $('<div></div>');
       this.$cn2 = $('<div></div>');
       this.$cnWrap = $(
@@ -55,6 +56,8 @@ module.exports = {
       //   `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
       // );
       // this.$cn2.append(tmView.render().el);
+      console.log('Trait Manager');
+      console.log(tmView);
       this.$cnProperties.append(tmView.render().el);
 
       //adding style manager in trait manager;
