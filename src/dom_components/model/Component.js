@@ -113,7 +113,7 @@ const Component = Backbone.Model.extend(Styleable).extend(
       classes: '', // Array of classes
       script: '',
       attributes: '',
-      traits: ['id', 'title'],
+      traits: ['id'],
       propagate: '',
       dmode: '',
       toolbar: null

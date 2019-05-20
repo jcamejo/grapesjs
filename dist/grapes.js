@@ -28968,8 +28968,8 @@ module.exports = {
       // this.$cn2.append(tmView.render().el);
       this.$cnProperties.append(tmView.render().el);
 
-      var smView = sm.render();
       //adding style manager in trait manager;
+      var smView = sm.render();
       this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
       this.$cn2.append(smView);
 
@@ -32498,7 +32498,7 @@ var Component = Backbone.Model.extend(_Styleable2.default).extend({
     classes: '', // Array of classes
     script: '',
     attributes: '',
-    traits: ['id', 'title'],
+    traits: ['id'],
     propagate: '',
     dmode: '',
     toolbar: null
@@ -46273,10 +46273,6 @@ module.exports = function () {
           case 'margin-right':
           case 'margin-bottom':
           case 'margin-left':
-          case 'padding-top':
-          case 'padding-right':
-          case 'padding-bottom':
-          case 'padding-left':
           case 'min-height':
           case 'min-width':
           case 'max-height':
@@ -46312,6 +46308,12 @@ module.exports = function () {
           case 'flex-shrink':
           case 'flex-basis':
             obj.type = 'integer';
+            break;
+          case 'padding-top':
+          case 'padding-right':
+          case 'padding-bottom':
+          case 'padding-left':
+            obj.type = 'slider';
             break;
           case 'margin':
           case 'padding':
@@ -46569,6 +46571,8 @@ module.exports = function () {
           case 'padding-right':
           case 'padding-bottom':
           case 'padding-left':
+            obj.min = 0;
+            obj.max = 600;
           case 'min-height':
           case 'min-width':
           case 'max-height':

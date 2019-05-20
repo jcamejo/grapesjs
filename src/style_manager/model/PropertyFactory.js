@@ -103,10 +103,6 @@ module.exports = () => ({
         case 'margin-right':
         case 'margin-bottom':
         case 'margin-left':
-        case 'padding-top':
-        case 'padding-right':
-        case 'padding-bottom':
-        case 'padding-left':
         case 'min-height':
         case 'min-width':
         case 'max-height':
@@ -142,6 +138,12 @@ module.exports = () => ({
         case 'flex-shrink':
         case 'flex-basis':
           obj.type = 'integer';
+          break;
+        case 'padding-top':
+        case 'padding-right':
+        case 'padding-bottom':
+        case 'padding-left':
+          obj.type = 'slider';
           break;
         case 'margin':
         case 'padding':
@@ -399,6 +401,8 @@ module.exports = () => ({
         case 'padding-right':
         case 'padding-bottom':
         case 'padding-left':
+          obj.min = 0;
+          obj.max = 600;
         case 'min-height':
         case 'min-width':
         case 'max-height':

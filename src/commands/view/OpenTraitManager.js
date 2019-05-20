@@ -57,8 +57,8 @@ module.exports = {
       // this.$cn2.append(tmView.render().el);
       this.$cnProperties.append(tmView.render().el);
 
-      const smView = sm.render();
       //adding style manager in trait manager;
+      const smView = sm.render();
       this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
       this.$cn2.append(smView);
 
