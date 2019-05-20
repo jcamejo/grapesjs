@@ -28934,6 +28934,7 @@ module.exports = {
     if (!this.$cn) {
       var tmView = tm.getTraitsViewer();
       var confTm = tm.getConfig();
+
       this.$cn = $('<div></div>');
       this.$cn2 = $('<div></div>');
       this.$cnWrap = $('<div class="gjs-sm-sectors gjs-one-bg gjs-two-color"></div>');
@@ -32498,7 +32499,7 @@ var Component = Backbone.Model.extend(_Styleable2.default).extend({
     classes: '', // Array of classes
     script: '',
     attributes: '',
-    traits: ['id'],
+    traits: [],
     propagate: '',
     dmode: '',
     toolbar: null
@@ -33760,6 +33761,7 @@ module.exports = Component.extend({
     droppable: 0,
     editable: 1,
     highlightable: 0,
+    unstylable: ['text-align', 'font-family'],
     resizable: { ratioDefault: 1 },
     traits: ['alt'],
 
@@ -48606,7 +48608,6 @@ module.exports = _backbone2.default.View.extend({
   },
   checkVisibility: function checkVisibility() {
     var result = 1;
-
     // Check if need to hide the property
     if (this.config.hideNotStylable) {
       if (!this.isTargetStylable() || !this.isComponentStylable()) {

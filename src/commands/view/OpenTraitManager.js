@@ -56,8 +56,6 @@ module.exports = {
       //   `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
       // );
       // this.$cn2.append(tmView.render().el);
-      console.log('Trait Manager');
-      console.log(tmView);
       this.$cnProperties.append(tmView.render().el);
 
       //adding style manager in trait manager;
