@@ -22382,6 +22382,9 @@ module.exports = {
   // Default title for the asset manager modal
   modalTitle: 'Select Image',
 
+  //Show/hide add image action
+  showInput: false,
+
   //Default placeholder for input
   inputPlaceholder: 'http://path/to/the/image.jpg'
 };
@@ -23224,7 +23227,12 @@ module.exports = _backbone2.default.View.extend({
   render: function render() {
     var fuRendered = this.options.fu.render().el;
     this.$el.empty();
-    this.$el.append(fuRendered).append(this.template(this));
+    this.$el.append(fuRendered);
+
+    if (this.config.showInput) {
+      this.$el.append(this.template(this));
+    }
+
     this.el.className = this.ppfx + 'asset-manager';
     this.renderAssets();
     this.rendered = 1;
