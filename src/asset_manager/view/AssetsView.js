@@ -175,7 +175,12 @@ module.exports = Backbone.View.extend({
   render() {
     const fuRendered = this.options.fu.render().el;
     this.$el.empty();
-    this.$el.append(fuRendered).append(this.template(this));
+    this.$el.append(fuRendered);
+
+    if (this.config.showInput) {
+      this.$el.append(this.template(this));
+    }
+
     this.el.className = `${this.ppfx}asset-manager`;
     this.renderAssets();
     this.rendered = 1;
