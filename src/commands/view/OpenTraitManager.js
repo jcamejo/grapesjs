@@ -78,6 +78,8 @@ module.exports = {
     }
 
     this.toggleTm();
+    //Open by Default
+    this.toggleMenu();
   },
 
   toggleMenu() {
