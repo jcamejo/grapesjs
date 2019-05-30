@@ -28994,7 +28994,9 @@ module.exports = {
 
     this.toggleTm();
     //Open by Default
-    this.toggleMenu();
+    if (!this.$cnSector.hasClass('gjs-sm-open')) {
+      this.toggleMenu();
+    }
   },
   toggleMenu: function toggleMenu() {
     if (this.$cnSector.hasClass('gjs-sm-open')) {
