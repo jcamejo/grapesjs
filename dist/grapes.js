@@ -23019,7 +23019,7 @@ module.exports = _backbone2.default.View.extend({
   updateTarget: function updateTarget(target) {
     if (target && target.set) {
       target.set('attributes', _.clone(target.get('attributes')));
-      target.set('src', this.model.get('src'));
+      target.set('src', '/img/' + this.model.getFilename());
     }
   },
   getPreview: function getPreview() {
@@ -26841,7 +26841,7 @@ module.exports = function () {
       defaultCommands['core:redo'] = function (e) {
         return e.UndoManager.redo();
       };
-      [['preview', 'Preview', 'preview'], ['resize', 'Resize', 'resize'], ['fullscreen', 'Fullscreen', 'fullscreen'], ['copy', 'CopyComponent'], ['paste', 'PasteComponent'], ['canvas-move', 'CanvasMove'], ['canvas-clear', 'CanvasClear'], ['open-code', 'ExportTemplate', 'export-template'], ['open-layers', 'OpenLayers', 'open-layers'], ['open-styles', 'OpenStyleManager', 'open-sm'], ['open-traits', 'OpenTraitManager', 'open-tm'], ['open-blocks', 'OpenBlocks', 'open-blocks'], ['open-assets', 'OpenAssets', 'open-assets'], ['component-select', 'SelectComponent', 'select-comp'], ['component-outline', 'SwitchVisibility', 'sw-visibility'], ['component-offset', 'ShowOffset', 'show-offset'], ['component-move', 'MoveComponent', 'move-comp'], ['component-next', 'ComponentNext'], ['component-prev', 'ComponentPrev'], ['component-enter', 'ComponentEnter'], ['component-exit', 'ComponentExit', 'select-parent'], ['component-delete', 'ComponentDelete'], ['component-style-clear', 'ComponentStyleClear'], ['component-drag', 'ComponentDrag']].forEach(function (item) {
+      [['preview', 'Preview', 'preview'], ['resize', 'Resize', 'resize'], ['fullscreen', 'Fullscreen', 'fullscreen'], ['copy', 'CopyComponent'], ['paste', 'PasteComponent'], ['canvas-move', 'CanvasMove'], ['canvas-clear', 'CanvasClear'], ['open-code', 'ExportTemplate', 'export-template'], ['open-layers', 'OpenLayers', 'open-layers'], ['open-styles', 'OpenStyleManager', 'open-sm'], ['open-traits', 'OpenTraitManager', 'open-tm'], ['open-blocks', 'OpenBlocks', 'open-blocks'], ['open-assets', 'OpenAssets', 'open-assets'], ['component-select', 'SelectComponent', 'select-comp'], ['component-outline', 'SwitchVisibility', 'sw-visibility'], ['component-offset', 'ShowOffset', 'show-offset'], ['component-move', 'MoveComponent', 'move-comp'], ['component-next', 'ComponentNext'], ['component-prev', 'ComponentPrev'], ['component-enter', 'ComponentEnter'], ['component-exit', 'ComponentExit', 'select-parent'], ['component-delete', 'ComponentDelete'], ['component-style-clear', 'ComponentStyleClear'], ['component-drag', 'ComponentDrag'], ['close_dropdowns', 'CloseDropdowns'], ['open_dropdowns', 'OpenDropdowns'], ['open_setting_dropdowns', 'OpenSettingDropdown'], ['open_rows', 'OpenRows'], ['open_layout', 'OpenLayout']].forEach(function (item) {
         var oldCmd = item[2];
         var cmd = __webpack_require__("./src/commands/view sync recursive ^\\.\\/.*$")("./" + item[1]);
         var cmdName = 'core:' + item[0];
@@ -27097,6 +27097,8 @@ var map = {
 	"./CanvasClear.js": "./src/commands/view/CanvasClear.js",
 	"./CanvasMove": "./src/commands/view/CanvasMove.js",
 	"./CanvasMove.js": "./src/commands/view/CanvasMove.js",
+	"./CloseDropdowns": "./src/commands/view/CloseDropdowns.js",
+	"./CloseDropdowns.js": "./src/commands/view/CloseDropdowns.js",
 	"./CommandAbstract": "./src/commands/view/CommandAbstract.js",
 	"./CommandAbstract.js": "./src/commands/view/CommandAbstract.js",
 	"./ComponentDelete": "./src/commands/view/ComponentDelete.js",
@@ -27127,8 +27129,16 @@ var map = {
 	"./OpenAssets.js": "./src/commands/view/OpenAssets.js",
 	"./OpenBlocks": "./src/commands/view/OpenBlocks.js",
 	"./OpenBlocks.js": "./src/commands/view/OpenBlocks.js",
+	"./OpenDropdowns": "./src/commands/view/OpenDropdowns.js",
+	"./OpenDropdowns.js": "./src/commands/view/OpenDropdowns.js",
 	"./OpenLayers": "./src/commands/view/OpenLayers.js",
 	"./OpenLayers.js": "./src/commands/view/OpenLayers.js",
+	"./OpenLayout": "./src/commands/view/OpenLayout.js",
+	"./OpenLayout.js": "./src/commands/view/OpenLayout.js",
+	"./OpenRows": "./src/commands/view/OpenRows.js",
+	"./OpenRows.js": "./src/commands/view/OpenRows.js",
+	"./OpenSettingDropdown": "./src/commands/view/OpenSettingDropdown.js",
+	"./OpenSettingDropdown.js": "./src/commands/view/OpenSettingDropdown.js",
 	"./OpenStyleManager": "./src/commands/view/OpenStyleManager.js",
 	"./OpenStyleManager.js": "./src/commands/view/OpenStyleManager.js",
 	"./OpenTraitManager": "./src/commands/view/OpenTraitManager.js",
@@ -27285,6 +27295,34 @@ module.exports = {
     methodsEv[methodEv](document, 'keyup', this.onKeyUp);
     methodsEv[methodEv](canvas, 'mousedown', this.enableDragger);
     methodsEv[methodEv](document, 'mouseup', this.disableDragger);
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/CloseDropdowns.js":
+/*!*********************************************!*\
+  !*** ./src/commands/view/CloseDropdowns.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-open');
+    var blocks = $('.gjs-blocks-c');
+    elements.each(function (el) {
+      $(elements[el]).removeClass('gjs-open');
+    });
+    blocks.each(function (el) {
+      $(blocks[el]).hide();
+    });
+  },
+  stop: function stop() {
+    console.log('Stop Close DropDown');
   }
 };
 
@@ -28781,6 +28819,34 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/commands/view/OpenDropdowns.js":
+/*!********************************************!*\
+  !*** ./src/commands/view/OpenDropdowns.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-block-category');
+    var blocks = $('.gjs-blocks-c');
+    elements.each(function (el) {
+      $(elements[el]).addClass('gjs-open');
+    });
+    blocks.each(function (el) {
+      $(blocks[el]).show();
+    });
+  },
+  stop: function stop() {
+    console.log('Stop Open Dropdowns');
+  }
+};
+
+/***/ }),
+
 /***/ "./src/commands/view/OpenLayers.js":
 /*!*****************************************!*\
   !*** ./src/commands/view/OpenLayers.js ***!
@@ -28819,6 +28885,79 @@ module.exports = {
   stop: function stop() {
     var layers = this.layers;
     layers && (layers.style.display = 'none');
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenLayout.js":
+/*!*****************************************!*\
+  !*** ./src/commands/view/OpenLayout.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-block-categories').children();
+    $(elements[0]).find('.gjs-blocks-c').show();
+    $(elements[0]).addClass('gjs-open');
+  },
+  stop: function stop() {
+    console.log('Stop Open Layouts');
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenRows.js":
+/*!***************************************!*\
+  !*** ./src/commands/view/OpenRows.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-block-categories').children();
+    $(elements[1]).find('.gjs-blocks-c').show();
+    $(elements[1]).addClass('gjs-open');
+  },
+  stop: function stop() {
+    console.log('Stop Open Rows');
+  }
+};
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenSettingDropdown.js":
+/*!**************************************************!*\
+  !*** ./src/commands/view/OpenSettingDropdown.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  run: function run(editor, sender) {
+    var elements = $('.gjs-sm-sectors .gjs-sm-sector .gjs-sm-properties');
+    var sector = $('.gjs-sm-sectors .gjs-sm-sector');
+    var caret = $('.fa-caret-right');
+    $(elements).show();
+    $(sector).addClass('gjs-sm-open');
+    $(caret).addClass('fa-caret-down');
+    $(caret).removeClass('fa-caret-right');
+  },
+  stop: function stop() {
+    console.log('Stop Open Setting Dropdowns');
   }
 };
 
@@ -28937,6 +29076,7 @@ module.exports = {
     var pfx = config.stylePrefix;
     var tm = editor.TraitManager;
     var sm = editor.StyleManager;
+    var sem = editor.SelectorManager;
     var panelC;
 
     if (!this.$cn) {
@@ -28951,6 +29091,9 @@ module.exports = {
       this.$cnTitleInner = $('<i id="gjs-sm-caret" class="fa fa-caret-right"></i>');
       this.$cnTextInnet = $('<span>Basic</span>');
       this.$cnProperties = $('<div class="gjs-sm-properties" style="display: none;"></div>');
+
+      var semView = sem.render();
+      this.$cn2.append(semView);
 
       this.$cnTitle.append(this.$cnTitleInner);
       this.$cnTitle.append(this.$cnTextInnet);
@@ -40294,7 +40437,7 @@ exports.default = _backbone2.default.View.extend({
     var clsInput = this.inputNameCls + ' ' + ppfx + 'no-app';
     var level = this.level + 1;
     var gut = 30 + level * 10 + 'px';
-    var name = model.getName();
+    var name = model.getName() === 'Body' ? 'Page' : model.getName();
 
     return '\n      ' + (hidable ? '<i class="' + pfx + 'layer-vis fa fa-eye ' + (this.isVisible() ? '' : 'fa-eye-slash') + '" data-toggle-visible></i>' : '') + '\n      <div class="' + clsTitleC + '">\n        <div class="' + clsTitle + '" style="padding-left: ' + gut + '" data-toggle-select>\n          <div class="' + pfx + 'layer-title-inn">\n            <i class="' + clsCaret + '" data-toggle-open></i>\n            ' + model.getIcon() + '\n            <span class="' + clsInput + '" data-name>' + name + '</span>\n          </div>\n        </div>\n      </div>\n      <div class="' + this.clsCount + '">' + (count || '') + '</div>\n      <div class="' + this.clsMove + '" data-toggle-move>\n        <i class="fa fa-arrows"></i>\n      </div>\n      <div class="' + this.clsChildren + '"></div>';
   },

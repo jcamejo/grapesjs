@@ -8,6 +8,7 @@ module.exports = {
     var pfx = config.stylePrefix;
     var tm = editor.TraitManager;
     var sm = editor.StyleManager;
+    var sem = editor.SelectorManager;
     var panelC;
 
     if (!this.$cn) {
@@ -28,6 +29,9 @@ module.exports = {
       this.$cnProperties = $(
         '<div class="gjs-sm-properties" style="display: none;"></div>'
       );
+
+      const semView = sem.render();
+      this.$cn2.append(semView);
 
       this.$cnTitle.append(this.$cnTitleInner);
       this.$cnTitle.append(this.$cnTextInnet);
