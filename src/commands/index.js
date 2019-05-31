@@ -152,6 +152,7 @@ module.exports = () => {
       // Core commands
       defaultCommands['core:undo'] = e => e.UndoManager.undo();
       defaultCommands['core:redo'] = e => e.UndoManager.redo();
+
       [
         ['preview', 'Preview', 'preview'],
         ['resize', 'Resize', 'resize'],
@@ -176,12 +177,7 @@ module.exports = () => {
         ['component-exit', 'ComponentExit', 'select-parent'],
         ['component-delete', 'ComponentDelete'],
         ['component-style-clear', 'ComponentStyleClear'],
-        ['component-drag', 'ComponentDrag'],
-        ['close_dropdowns', 'CloseDropdowns'],
-        ['open_dropdowns', 'OpenDropdowns'],
-        ['open_setting_dropdowns', 'OpenSettingDropdown'],
-        ['open_rows', 'OpenRows'],
-        ['open_layout', 'OpenLayout']
+        ['component-drag', 'ComponentDrag']
       ].forEach(item => {
         const oldCmd = item[2];
         const cmd = require(`./view/${item[1]}`);
