@@ -70,7 +70,7 @@ module.exports = {
   `,
 
   // CSS that could only be seen (for instance, inside the code viewer)
-  protectedCss: '* { box-sizing: border-box; } body {margin: 0;}',
+  protectedCss: '',
 
   // CSS for the iframe which containing the canvas, useful if you need to custom something inside
   // (eg. the style of the selected component)
