@@ -23228,10 +23228,7 @@ module.exports = _backbone2.default.View.extend({
     var fuRendered = this.options.fu.render().el;
     this.$el.empty();
     this.$el.append(fuRendered);
-
-    if (this.config.showInput) {
-      this.$el.append(this.template(this));
-    }
+    this.$el.append(this.template(this));
 
     this.el.className = this.ppfx + 'asset-manager';
     this.renderAssets();
@@ -37613,7 +37610,7 @@ module.exports = {
   baseCss: '\n    * {\n      box-sizing: border-box;\n    }\n    html, body, #wrapper {\n      min-height: 100%;\n    }\n    body {\n      margin: 0;\n      height: 100%;\n      background-color: #fff\n    }\n    #wrapper {\n      overflow: auto;\n      overflow-x: hidden;\n    }\n\n    * ::-webkit-scrollbar-track {\n      background: rgba(0, 0, 0, 0.1)\n    }\n\n    * ::-webkit-scrollbar-thumb {\n      background: rgba(255, 255, 255, 0.2)\n    }\n\n    * ::-webkit-scrollbar {\n      width: 10px\n    }\n  ',
 
   // CSS that could only be seen (for instance, inside the code viewer)
-  protectedCss: '* { box-sizing: border-box; } body {margin: 0;}',
+  protectedCss: '',
 
   // CSS for the iframe which containing the canvas, useful if you need to custom something inside
   // (eg. the style of the selected component)
@@ -44809,7 +44806,12 @@ module.exports = function () {
         st.load(keysF, function (res) {
           // Restore keys name
           var reg = new RegExp('^' + c.id + '');
-          res = res['data']['attributes'];
+
+          //TODO: Remove this hack
+          if (st.attributes.type == 'remote') {
+            res = res['data']['attributes'];
+          }
+
           for (var itemKey in res) {
             var itemKeyR = itemKey.replace(reg, '');
             result[itemKeyR] = res[itemKey];

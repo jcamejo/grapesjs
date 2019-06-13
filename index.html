@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="dist/css/grapes.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="dist/grapes.min.js"></script>
+    <script type="text/javascript" src="dist/plugins/grapesjs-blocks-basic.min.js"></script>
     <style>
       body,
       html {
@@ -29,7 +30,12 @@
 					scripts: [],
 					styles:[],
 				},
-				storageManager: { autoload: 0 },
+				plugins: ['gjs-blocks-basic'],
+				storageManager: {
+					autoload: 1,
+					type: 'local',
+					autosave: 1
+				},
 				styleManager : {
 					sectors: [{
 							name: 'General',
@@ -58,6 +64,27 @@
 						}
 					],
 				},
+			});
+
+			editor.on('storage:load', function(e) { console.log('Loaded ', e) });
+      editor.on('storage:store', function(e) { console.log('Stored ', e) });
+
+			editor.on('component:mount', model => {
+				if (model.attributes.type == "image" && model.attributes.tagName == "img") {
+					var tb = model.get('toolbar');
+					var assetsSettings = {
+						attributes: { class: 'fa fa-image' },
+						command: 'open-assets'
+					}
+
+					var assetsCommand = tb.filter(toolbar => toolbar.attributes.class.indexOf('fa-image') > -1);
+					if (assetsCommand.length == 0) {
+						tb.unshift(assetsSettings);
+						model.set('toolbar', tb);
+					}
+				}
+
+				return model;
 			});
     </script>
   </body>

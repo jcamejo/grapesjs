@@ -8,6 +8,7 @@ let plugins = [];
 module.exports = env => {
   const name = pkg.name;
   const isProd = env === 'prod';
+
   const output = {
     path: path.join(__dirname),
     filename: 'dist/grapes.min.js',
@@ -21,7 +22,8 @@ module.exports = env => {
       new webpack.BannerPlugin(`${name} - ${pkg.version}`),
     ];
   } else if (env === 'dev') {
-    output.filename = 'dist/grapes.js';
+    //output.filename = 'dist/grapes.js';
+		output.filename =  `../../../rails/launchpad-v2/app/assets/javascripts/vendor/grapes.js`
   } else {
     const index = 'index.html';
     const indexDev = `_${index}`;

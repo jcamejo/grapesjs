@@ -100,7 +100,7 @@ module.exports = {
   modalTitle: 'Select Image',
 
   //Show/hide add image action
-  showInput: true,
+  showInput: false,
 
   //Default placeholder for input
   inputPlaceholder: 'http://path/to/the/image.jpg'
