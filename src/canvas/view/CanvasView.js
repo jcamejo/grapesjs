@@ -258,6 +258,8 @@ module.exports = Backbone.View.extend({
         'click',
         ev => ev && ev.target.tagName == 'A' && ev.preventDefault()
       );
+      // Avoid the default form behaviour
+      body.on('submit', ev => ev && ev.preventDefault());
 
       // When the iframe is focused the event dispatcher is not the same so
       // I need to delegate all events to the parent document
@@ -411,7 +413,9 @@ module.exports = Backbone.View.extend({
 
     return {
       top: fo.top + bEl.scrollTop * zoom - co.top,
-      left: fo.left + bEl.scrollLeft * zoom - co.left
+      left: fo.left + bEl.scrollLeft * zoom - co.left,
+      width: co.width,
+      height: co.height
     };
   },
 
