@@ -5,8 +5,10 @@
     <title>GrapesJS</title>
     <link rel="stylesheet" href="dist/css/grapes.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
     <script src="dist/grapes.min.js"></script>
     <script type="text/javascript" src="dist/plugins/grapesjs-blocks-basic.min.js"></script>
+    <script type="text/javascript" src="dist/plugins/grapesjs-plugin-ckeditor.js"></script>
     <style>
       body,
       html {
@@ -30,7 +32,7 @@
 					scripts: [],
 					styles:[],
 				},
-				plugins: ['gjs-blocks-basic'],
+				plugins: ['gjs-blocks-basic', 'gjs-plugin-ckeditor'],
 				storageManager: {
 					autoload: 1,
 					type: 'local',
@@ -66,8 +68,6 @@
 				},
 			});
 
-			editor.on('storage:load', function(e) { console.log('Loaded ', e) });
-      editor.on('storage:store', function(e) { console.log('Stored ', e) });
 
 			editor.on('component:mount', model => {
 				if (model.attributes.type == "image" && model.attributes.tagName == "img") {

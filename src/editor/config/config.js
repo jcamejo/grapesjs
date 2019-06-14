@@ -51,7 +51,6 @@ module.exports = {
       height: 100%;
       background-color: #fff
     }
-
     #wrapper {
       overflow: auto;
       overflow-x: hidden;
