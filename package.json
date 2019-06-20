@@ -1,7 +1,7 @@
 {
   "name": "grapesjs",
   "description": "Free and Open Source Web Builder Framework",
-  "version": "0.14.62",
+  "version": "0.14.63",
   "author": "Artur Arseniev",
   "license": "BSD-3-Clause",
   "homepage": "http://grapesjs.com",
@@ -104,7 +104,7 @@
     "docs:deploy": "docs/deploy.sh",
     "lint": "eslint src",
     "check": "npm run lint && npm run test",
-    "build": "npm run check && npm run v:patch && npm run build-dev && webpack --env=prod",
+    "build": "npm run v:patch && npm run build-dev && webpack --env=prod",
     "build-n": "npm run check && npm run build:css && webpack --env=prod",
     "build-dev": "webpack --env=dev && npm run build:css",
     "build:css": "node-sass src/styles/scss/main.scss dist/css/grapes.min.css --output-style compressed",
