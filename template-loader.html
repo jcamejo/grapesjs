@@ -79,7 +79,7 @@
 					folder_name: 'anonymous-network-marketing',
 					pages: [{
 						name: 'home',
-						file_path: 'home.html',
+						file_path: 'index.html',
 						json_filename: 'index.json'
 					},
 					{
@@ -114,7 +114,7 @@
 						},
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -149,7 +149,7 @@
 						},
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -164,7 +164,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						}
 					],
@@ -174,7 +174,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -204,7 +204,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -244,7 +244,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -294,7 +294,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -324,7 +324,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -364,7 +364,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -389,7 +389,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -419,7 +419,7 @@
 					pages: [
 						{
 							name: 'home',
-							file_path: 'home.html',
+							file_path: 'index.html',
 							json_filename: 'index.json'
 						},
 						{
@@ -436,20 +436,29 @@
 				}]
 			}
 
+
+			var initSendingProcess = function() {
+				convertTemplates(templates);
+			}
+
+			var convertTemplate = function(template) {
+				for(var i=0; i < template.pages.length; i++) {
+					getPage(template, template.pages[i]);
+				}
+			}
+
 			var convertTemplates = function(templates) {
 				for(var i=0; i < templates.data.length; i++) {
-					for(var j=0; j < templates.data[i].pages.length; j++) {
-						getPage(templates.data[i], templates.data[i].pages[j]);
-					}
+					convertTemplate(templates.data[i]);
 				}
 			}
 
 			var getPage = function(template, page) {
 				var xhr = new XMLHttpRequest();
+				var filePath = basePath + template.folder_name + '/' + page.file_path;
+				var encodedPath = btoa(filePath);
 
-				var fileObject = {
-					file_path: basePath + template.folder_name + '/' + page.file_path
-				}
+				console.log('Getting Page ' + filePath);
 
 				xhr.onload = function() {
 					if(xhr.status == 200) {
@@ -464,19 +473,20 @@
 					}
 				}
 
-				xhr.open('POST', 'http://localhost:2000', true);
-				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-				xhr.send(JSON.stringify(fileObject));
+				xhr.open('GET', 'http://localhost:3010/' + encodedPath);
+				xhr.send();
 			}
 
 			var saveEditorObject = function(template, page, editorJson) {
-				console.log('sending ' + page.json_filename);
 				var xhr = new XMLHttpRequest();
 				var fileObject = {
 					template_name: template.folder_name,
 					filename: page.json_filename,
 					editor_json: editorJson
 				}
+
+				console.log('saving file');
+				console.log(fileObject);
 
 				xhr.onload = function() {
 					if(xhr.status == 200) {
@@ -488,13 +498,14 @@
 					}
 				}
 
-				xhr.open('POST', 'http://localhost:2000/save', true);
+				xhr.open('POST', 'http://localhost:3010/save', true);
 				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 				xhr.send(JSON.stringify(fileObject));
 			}
 
 			var initializeForm = function() {
 				var form = document.getElementById('file_converter');
+
 				form.addEventListener('submit', function(e) {
 					e.preventDefault();
 					var htmlFile = document.getElementsByName('html_file')[0].value;
