@@ -68,6 +68,18 @@
 				},
 			});
 
+			const link = editor.DomComponents.getType('link');
+
+			link.model.extend(Object.assign({}, link.model, {
+				defaults: Object.assign({}, link.model.prototype.defaults, {
+					traits: [{
+						type: 'text',
+						label: 'Test',
+						href: '',
+						changeProp:1
+					}]
+				})
+			}))
 
 /*
 			editor.on('component:mount', model => {
