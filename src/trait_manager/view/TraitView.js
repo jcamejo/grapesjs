@@ -24,6 +24,7 @@ module.exports = Backbone.View.extend({
     this.target = target;
     this.className = this.pfx + 'trait';
     this.labelClass = this.ppfx + 'label';
+    this.extraClass = model.get('className');
     this.fieldClass =
       this.ppfx + 'field ' + this.ppfx + 'field-' + model.get('type');
     this.inputhClass = this.ppfx + 'input-holder';
@@ -121,6 +122,7 @@ module.exports = Backbone.View.extend({
       const type = md.get('type') || 'text';
       const min = md.get('min');
       const max = md.get('max');
+
       const value = this.getModelValue();
       const input = $(`<input type="${type}" placeholder="${plh}">`);
 
@@ -169,20 +171,18 @@ module.exports = Backbone.View.extend({
       // I use prepand expecially for checkbox traits
       const inputWrap = this.el.querySelector(`.${this.inputhClass}`);
       const label = this.getLabel();
-      if (label === 'Agreed' || label === 'Required') {
-        inputWrap.parentElement.parentElement.style.display = 'flex';
-        inputWrap.parentElement.parentElement.style.justifyContent =
-          'space-between';
-      }
+
       inputWrap.insertBefore(el, inputWrap.childNodes[0]);
     }
   },
 
   render() {
+    const md = this.model;
     this.$input = null;
     this.renderLabel();
     this.renderField();
-    this.el.className = this.className;
+    this.el.className = `${this.className} ${md.get('extraClass')}`.trim();
+
     return this;
   }
 });
