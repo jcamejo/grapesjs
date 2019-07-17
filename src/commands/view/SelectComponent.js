@@ -1,12 +1,13 @@
+import Backbone from 'backbone';
 import { bindAll, isElement, isUndefined } from 'underscore';
 import { on, off, getUnitFromValue, isTaggableNode } from 'utils/mixins';
+import ToolbarView from 'dom_components/view/ToolbarView';
+import Toolbar from 'dom_components/model/Toolbar';
 
-const ToolbarView = require('dom_components/view/ToolbarView');
-const Toolbar = require('dom_components/model/Toolbar');
-const $ = require('backbone').$;
+const $ = Backbone.$;
 let showOffsets;
 
-module.exports = {
+export default {
   init(o) {
     bindAll(this, 'onHover', 'onOut', 'onClick', 'onFrameScroll');
   },
@@ -176,7 +177,9 @@ module.exports = {
    * @private
    */
   onClick(e) {
+    const { em } = this;
     e.stopPropagation();
+    if (em.get('_cmpDrag')) return em.set('_cmpDrag');
     const $el = $(e.target);
     let model = $el.data('model');
 

@@ -1,9 +1,9 @@
-import { isUndefined, clone } from 'underscore';
+import Backbone from 'backbone';
+import { isUndefined } from 'underscore';
 
-const Backbone = require('backbone');
 const $ = Backbone.$;
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
   events: {
     change: 'onChange'
   },

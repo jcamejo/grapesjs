@@ -1,4 +1,4 @@
-var Backbone = require('backbone');
+import Backbone from 'backbone';
 
 const TYPE_CLASS = 1;
 const TYPE_ID = 2;
@@ -77,4 +77,4 @@ const Selector = Backbone.Model.extend(
   }
 );
 
-module.exports = Selector;
+export default Selector;

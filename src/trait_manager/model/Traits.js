@@ -1,9 +1,9 @@
+import Backbone from 'backbone';
 import { isString, isArray } from 'underscore';
-const Backbone = require('backbone');
-const Trait = require('./Trait');
-const TraitFactory = require('./TraitFactory');
+import Trait from './Trait';
+import TraitFactory from './TraitFactory';
 
-module.exports = Backbone.Collection.extend({
+export default Backbone.Collection.extend({
   model: Trait,
 
   initialize(coll, options = {}) {
