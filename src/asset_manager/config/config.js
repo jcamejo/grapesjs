@@ -99,6 +99,9 @@ export default {
   // Default title for the asset manager modal
   modalTitle: 'Select Image',
 
+  //Show/hide add image action
+  showInput: false,
+
   //Default placeholder for input
   inputPlaceholder: 'http://path/to/the/image.jpg'
 };

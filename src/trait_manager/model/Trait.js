@@ -13,6 +13,7 @@ export default Backbone.Model.extend({
     value: '',
     target: '',
     default: '',
+    extraClass: '',
     placeholder: '',
     changeProp: 0,
     options: []

@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
-import { isUndefined } from 'underscore';
+import { isUndefined, clone } from 'underscore';
+const tooltips = require('./../config/tooltips');
 
 const $ = Backbone.$;
 
@@ -76,9 +77,25 @@ export default Backbone.View.extend({
    */
   renderLabel() {
     const label = this.getLabel();
-    this.$el.html(
-      `<div class="${this.labelClass}" title="${label}">${label}</div>`
-    );
+    switch (label) {
+      // case 'Agreed':
+      //   this.$el.html(
+      //     `<div class="${this.labelClass} tooltip" data-title="${tooltips.getTooltip(label)}">${label}</div>`
+      //   );
+      //   break;
+      default:
+        this.$el.html(
+          `<div class="${
+            this.labelClass
+          }" >${label}<i class="fa fa-question tooltip" style="margin-left: 0.25rem" data-tooltip="${tooltips.getTooltip(
+            label
+          )}"></i></div>`
+        );
+        break;
+    }
+    // this.$el.html(
+    //   `<div class="${this.labelClass} tooltip" title="${tooltips.getTooltip(label)}">${label}</div>`
+    // );
   },
 
   /**
@@ -104,6 +121,7 @@ export default Backbone.View.extend({
       const type = md.get('type') || 'text';
       const min = md.get('min');
       const max = md.get('max');
+
       const value = this.getModelValue();
       const input = $(`<input type="${type}" placeholder="${plh}">`);
 
@@ -151,15 +169,19 @@ export default Backbone.View.extend({
       const el = this.getInputEl();
       // I use prepand expecially for checkbox traits
       const inputWrap = this.el.querySelector(`.${this.inputhClass}`);
+      const label = this.getLabel();
+
       inputWrap.insertBefore(el, inputWrap.childNodes[0]);
     }
   },
 
   render() {
+    const md = this.model;
     this.$input = null;
     this.renderLabel();
     this.renderField();
-    this.el.className = this.className;
+    this.el.className = `${this.className} ${md.get('extraClass')}`.trim();
+
     return this;
   }
 });

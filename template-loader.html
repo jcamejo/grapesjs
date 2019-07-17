@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GrapesJS</title>
+    <link rel="stylesheet" href="dist/css/grapes.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="dist/grapes.min.js"></script>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+		<div id="gjs" style="">
+		</div>
+    <script type="text/javascript">
+			let editor;
+			var initializeEditor = function() {
+				editor = grapesjs.init({
+					showOffsets: 1,
+					noticeOnUnload: 0,
+					container: '#gjs',
+					height: '100%',
+					fromElement: true,
+					canvas: {
+						scripts: [],
+						styles:[],
+					},
+					storageManager: { autoload: 0 },
+					styleManager : {
+						sectors: [{
+								name: 'General',
+								open: false,
+								buildProps: ['float', 'display', 'position', 'top', 'right', 'left', 'bottom']
+							},{
+								name: 'Flex',
+								open: false,
+								buildProps: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'align-content', 'order', 'flex-basis', 'flex-grow', 'flex-shrink', 'align-self']
+							},{
+								name: 'Dimension',
+								open: false,
+								buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
+							},{
+								name: 'Typography',
+								open: false,
+								buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-shadow'],
+							},{
+								name: 'Decorations',
+								open: false,
+								buildProps: ['border-radius-c', 'background-color', 'border-radius', 'border', 'box-shadow', 'background'],
+							},{
+								name: 'Extra',
+								open: false,
+								buildProps: ['transition', 'perspective', 'transform'],
+							}
+						],
+					},
+				});
+			}
+
+			var basePath = '/Applications/MAMP/htdocs/lp-layout/current/templates/';
+			var templates = {
+				data: [{
+					folder_name: 'anonymous-network-marketing',
+					pages: [{
+						name: 'home',
+						file_path: 'index.html',
+						json_filename: 'index.json'
+					},
+					{
+						name: 'generate-webinar-leads',
+						file_path: 'generate-webinar-leads.html',
+						json_filename: 'generate-webinar-leads.json'
+					},
+					{
+						name: 'thank-you-webinar',
+						file_path: 'thank-you-webinar.html',
+						json_filename: 'thank-you-webinar.json'
+					}
+					]
+				},
+				{
+					folder_name: 'b2b-lead-generation',
+					pages: [
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'generate-phone-leads',
+							file_path: 'generate-phone-leads.html',
+							json_filename: 'generate-phone-leads.json'
+						},
+						{
+							name: 'thank-you-phone',
+							file_path: 'thank-you-phone.html',
+							json_filename: 'thank-you-phone.json'
+						},
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'services',
+							file_path: 'services.html',
+							json_filename: 'services.json'
+						},
+					],
+				},
+				{
+					folder_name: 'community-marketing',
+					pages: [
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'generate-phone-leads',
+							file_path: 'generate-phone-leads.html',
+							json_filename: 'generate-phone-leads.json'
+						},
+						{
+							name: 'thank-you-phone',
+							file_path: 'thank-you-phone.html',
+							json_filename: 'thank-you-phone.json'
+						},
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'generate-webinar-leads',
+							file_path: 'generate-webinar-leads.html',
+							json_filename: 'generate-webinar-leads.json'
+						},
+					],
+				},
+				{
+					folder_name: 'email-affiliate',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						}
+					],
+				},
+				{
+					folder_name: 'local-business',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'current-discounts',
+							file_path: 'current-discounts.html',
+							json_filename: 'current-discounts.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						},
+						{
+							name: 'services',
+							file_path: 'services.html',
+							json_filename: 'services.json'
+						},
+					],
+				},
+				{
+					folder_name: 'network-marketing',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'generate-phone-leads',
+							file_path: 'generate-phone-leads.html',
+							json_filename: 'generate-phone-leads.json'
+						},
+						{
+							name: 'thank-you-phone',
+							file_path: 'thank-you-phone.html',
+							json_filename: 'thank-you-phone.json'
+						},
+						{
+							name: 'generate-webinar-leads',
+							file_path: 'generate-webinar-leads.html',
+							json_filename: 'generate-webinar-leads.json'
+						},
+						{
+							name: 'thank-you-webinar',
+							file_path: 'thank-you-webinar.html',
+							json_filename: 'thank-you-webinar.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						}
+					]
+				},
+				{
+					folder_name: 'personal-branding',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						},
+						{
+							name: 'generate-ebook-leads',
+							file_path: 'generate-ebook-leads.html',
+							json_filename: 'generate-ebook-leads.json'
+						},
+						{
+							name: 'generate-phone-leads',
+							file_path: 'generate-phone-leads.html',
+							json_filename: 'generate-phone-leads.json'
+						},
+						{
+							name: 'generate-webinar-leads',
+							file_path: 'generate-webinar-leads.html',
+							json_filename: 'generate-webinar-leads.json'
+						},
+						{
+							name: 'thank-you-ebook',
+							file_path: 'thank-you-ebook.html',
+							json_filename: 'thank-you-ebook.json'
+						},
+						{
+							name: 'thank-you-phone',
+							file_path: 'thank-you-phone.html',
+							json_filename: 'thank-you-phone.json'
+						},
+						{
+							name: 'thank-you-webinar',
+							file_path: 'thank-you-webinar.html',
+							json_filename: 'thank-you-webinar.json'
+						}
+					],
+				},
+				{
+					folder_name: 'b2b-lead-generation',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'services',
+							file_path: 'services.html',
+							json_filename: 'services.json'
+						},
+						{
+							name: 'generate-phone-leads',
+							file_path: 'generate-phone-leads.html',
+							json_filename: 'generate-phone-leads.json'
+						},
+						{
+							name: 'thank-you-phone',
+							file_path: 'thank-you-phone.html',
+							json_filename: 'thank-you-phone.json'
+						},
+					],
+				},
+				{
+					folder_name: 'community-marketing',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						},
+						{
+							name: 'generate-phone-leads',
+							file_path: 'generate-phone-leads.html',
+							json_filename: 'generate-phone-leads.json'
+						},
+						{
+							name: 'thank-you-phone',
+							file_path: 'thank-you-phone.html',
+							json_filename: 'thank-you-phone.json'
+						},
+						{
+							name: 'generate-webinar-leads',
+							file_path: 'generate-webinar-leads.html',
+							json_filename: 'generate-webinar-leads.json'
+						},
+						{
+							name: 'thank-you-webinar',
+							file_path: 'thank-you-webinar.html',
+							json_filename: 'thank-you-webinar.json'
+						},
+					],
+				},
+				{
+					folder_name: 'freelancer-business',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						},
+						{
+							name: 'services',
+							file_path: 'services.html',
+							json_filename: 'services.json'
+						}
+					],
+				},
+				{
+					folder_name: 'subscription-business',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						},
+						{
+							name: 'Generate Webinar Leads',
+							file_path: 'generate-webinar-leads.html',
+							json_filename: 'generate-webinar-leads.json'
+						},
+						{
+							name: 'thank-you-webinar',
+							file_path: 'thank-you-webinar.html',
+							json_filename: 'thank-you-webinar.json'
+						}
+					],
+				},
+				{
+					folder_name: 'quick-idea-test',
+					pages: [
+						{
+							name: 'home',
+							file_path: 'index.html',
+							json_filename: 'index.json'
+						},
+						{
+							name: 'contact',
+							file_path: 'contact.html',
+							json_filename: 'contact.json'
+						},
+						{
+							name: 'about',
+							file_path: 'about.html',
+							json_filename: 'about.json'
+						}
+					],
+				}]
+			}
+
+
+			var initSendingProcess = function() {
+				convertTemplates(templates);
+			}
+
+			var convertTemplate = function(template) {
+				for(var i=0; i < template.pages.length; i++) {
+					getPage(template, template.pages[i]);
+				}
+			}
+
+			var convertTemplates = function(templates) {
+				for(var i=0; i < templates.data.length; i++) {
+					convertTemplate(templates.data[i]);
+				}
+			}
+
+			var getPage = function(template, page) {
+				var xhr = new XMLHttpRequest();
+				var filePath = basePath + template.folder_name + '/' + page.file_path;
+				var encodedPath = btoa(filePath);
+
+				console.log('Getting Page ' + filePath);
+
+				xhr.onload = function() {
+					if(xhr.status == 200) {
+						if(xhr.response) {
+							var htmlFile = xhr.response;
+							htmlFile = htmlFile.replace(/(\r\n|\n|\r)/gm,"");
+							htmlFile = htmlFile.replace(/\s+/gm," ");
+							var htmlBody = getBody(htmlFile);
+							var pageJson = saveToEditor(htmlBody);
+							saveEditorObject(template, page, pageJson);
+						}
+					}
+				}
+
+				xhr.open('GET', 'http://localhost:3010/' + encodedPath);
+				xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa('weismann' + ':' + 'j7PZ1iPsdBG7qjC'));
+				xhr.send();
+			}
+
+			var saveEditorObject = function(template, page, editorJson) {
+				var xhr = new XMLHttpRequest();
+				var fileObject = {
+					template_name: template.folder_name,
+					filename: page.json_filename,
+					editor_json: editorJson
+				}
+
+				console.log('saving file');
+				console.log(fileObject);
+
+				xhr.onload = function() {
+					if(xhr.status == 200) {
+						if(xhr.response) {
+							console.log('Page Saved');
+						} else {
+							console.log('Page not saved');
+						}
+					}
+				}
+
+				xhr.open('POST', 'http://localhost:3010/save', true);
+				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+				xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa('weismann' + ':' + 'j7PZ1iPsdBG7qjC'));
+				xhr.send(JSON.stringify(fileObject));
+			}
+
+			var initializeForm = function() {
+				var form = document.getElementById('file_converter');
+
+				form.addEventListener('submit', function(e) {
+					e.preventDefault();
+					var htmlFile = document.getElementsByName('html_file')[0].value;
+					htmlFile = htmlFile.replace(/(\r\n|\n|\r)/gm,"");
+					htmlFile = htmlFile.replace(/\s+/gm," ");
+
+					var pageBody = convertToHTML(htmlFile);
+					editor.setComponents(pageBody.innerHTML);
+
+					var HTMLJson = editor.store();
+					console.log(HTMLJson);
+				});
+			}
+
+			var saveToEditor = function(pageBody){
+					editor.setComponents(pageBody.innerHTML);
+					var HTMLJson = editor.store();
+					return HTMLJson;
+			}
+
+			var getBody = function(html) {
+				var tempHTML = document.createElement('html');
+				tempHTML.innerHTML = html;
+				var pageBody = tempHTML.getElementsByTagName('body')[0];
+				return pageBody;
+			}
+
+			initializeEditor();
+			//convertTemplates(templates);
+    </script>
+  </body>
+</html>

@@ -19,16 +19,17 @@ export default {
     {
       id: 'options',
       buttons: [
-        {
-          active: true,
-          id: swv,
-          className: 'fa fa-square-o',
-          command: swv,
-          context: swv,
-          attributes: { title: 'View components' }
-        },
+        // {
+        //   active: true,
+        //   id: swv,
+        //   className: 'fa fa-square-o',
+        //   command: swv,
+        //   context: swv,
+        //   attributes: { title: 'View components' }
+        // },
         {
           id: prv,
+          title: '<span style="padding-left: 0.5rem">Preview</span>',
           className: 'fa fa-eye',
           command: prv,
           context: prv,
@@ -36,30 +37,30 @@ export default {
         },
         {
           id: ful,
+          title: '<span style="padding-left: 0.5rem">Fullscreen</span>',
           className: 'fa fa-arrows-alt',
           command: ful,
           context: ful,
           attributes: { title: 'Fullscreen' }
-        },
-        {
-          id: expt,
-          className: 'fa fa-code',
-          command: expt,
-          attributes: { title: 'View code' }
         }
+        // {
+        //   id: expt,
+        //   className: 'fa fa-code',
+        //   command: expt,
+        //   attributes: { title: 'View code' }
+        // }
       ]
     },
     {
       id: 'views',
       buttons: [
-        {
-          id: osm,
-          className: 'fa fa-paint-brush',
-          command: osm,
-          active: true,
-          togglable: 0,
-          attributes: { title: 'Open Style Manager' }
-        },
+        // {
+        //   id: osm,
+        //   className: 'fa fa-paint-brush',
+        //   command: osm,
+        //   active: true,
+        //   attributes: { title: 'Open Style Manager' }
+        // },
         {
           id: otm,
           className: 'fa fa-cog',

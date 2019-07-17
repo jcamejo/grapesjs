@@ -14,6 +14,7 @@ export default Component.extend(
       droppable: 0,
       editable: 1,
       highlightable: 0,
+      unstylable: ['text-align', 'font-family'],
       resizable: { ratioDefault: 1 },
       traits: ['alt'],
 

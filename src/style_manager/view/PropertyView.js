@@ -255,7 +255,6 @@ export default Backbone.View.extend({
 
   checkVisibility() {
     var result = 1;
-
     // Check if need to hide the property
     if (this.config.hideNotStylable) {
       if (!this.isTargetStylable() || !this.isComponentStylable()) {

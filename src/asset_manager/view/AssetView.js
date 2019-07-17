@@ -40,7 +40,7 @@ export default Backbone.View.extend({
   updateTarget(target) {
     if (target && target.set) {
       target.set('attributes', clone(target.get('attributes')));
-      target.set('src', this.model.get('src'));
+      target.set('src', '/img/' + this.model.getFilename());
     }
   },
 

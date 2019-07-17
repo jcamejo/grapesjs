@@ -97,14 +97,6 @@ export default () => ({
         case 'right':
         case 'bottom':
         case 'left':
-        case 'margin-top':
-        case 'margin-right':
-        case 'margin-bottom':
-        case 'margin-left':
-        case 'padding-top':
-        case 'padding-right':
-        case 'padding-bottom':
-        case 'padding-left':
         case 'min-height':
         case 'min-width':
         case 'max-height':
@@ -140,6 +132,16 @@ export default () => ({
         case 'flex-shrink':
         case 'flex-basis':
           obj.type = 'integer';
+          break;
+        case 'padding-top':
+        case 'padding-right':
+        case 'padding-bottom':
+        case 'padding-left':
+        case 'margin-top':
+        case 'margin-right':
+        case 'margin-bottom':
+        case 'margin-left':
+          obj.type = 'slider';
           break;
         case 'margin':
         case 'padding':
@@ -272,7 +274,7 @@ export default () => ({
           obj.defaults = 'black';
           break;
         case 'text-align':
-          obj.defaults = 'left';
+          obj.defaults = 'center';
           break;
         case 'border-style':
           obj.defaults = 'solid';
@@ -397,6 +399,12 @@ export default () => ({
         case 'padding-right':
         case 'padding-bottom':
         case 'padding-left':
+        case 'margin-top':
+        case 'margin-right':
+        case 'margin-bottom':
+        case 'margin-left':
+          obj.min = 0;
+          obj.max = 600;
         case 'min-height':
         case 'min-width':
         case 'max-height':

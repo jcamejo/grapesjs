@@ -465,8 +465,8 @@ export default () => {
     scrollTo(el, opts = {}) {
       const elem = getElement(el);
       const cv = this.getCanvasView();
-      if (!elem) return;
 
+      if (!elem) return;
       if (!cv.isElInViewport(elem) || opts.force) {
         const opt =
           typeof opts === 'object'

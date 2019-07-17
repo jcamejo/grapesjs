@@ -8,16 +8,23 @@ export default Backbone.View.extend({
   template(view) {
     const pfx = view.pfx;
     const ppfx = view.ppfx;
+    let form = '';
+    if (this.config.showInput) {
+      form = `
+        <form class="${pfx}add-asset">
+					<div class="${ppfx}field ${pfx}add-field">
+						<input placeholder="${view.config.inputPlaceholder}"/>
+					</div>
+					<button class="${ppfx}btn-prim">${view.config.addBtnText}</button>
+          <div style="clear:both"></div>
+				</form>
+			`;
+    }
+
     return `
     <div class="${pfx}assets-cont">
       <div class="${pfx}assets-header">
-        <form class="${pfx}add-asset">
-          <div class="${ppfx}field ${pfx}add-field">
-            <input placeholder="${view.config.inputPlaceholder}"/>
-          </div>
-          <button class="${ppfx}btn-prim">${view.config.addBtnText}</button>
-          <div style="clear:both"></div>
-        </form>
+				${form}
       </div>
       <div class="${pfx}assets" data-el="assets"></div>
       <div style="clear:both"></div>
@@ -172,7 +179,9 @@ export default Backbone.View.extend({
   render() {
     const fuRendered = this.options.fu.render().el;
     this.$el.empty();
-    this.$el.append(fuRendered).append(this.template(this));
+    this.$el.append(fuRendered);
+    this.$el.append(this.template(this));
+
     this.el.className = `${this.ppfx}asset-manager`;
     this.renderAssets();
     this.rendered = 1;

@@ -90,9 +90,13 @@ export default Backbone.Model.extend({
     let fetchOptions;
     let body;
 
+    let apiBody = { data: { attributes: {} } };
+
     for (let param in params) {
       bodyObj[param] = params[param];
     }
+
+    apiBody['data']['attributes'] = bodyObj;
 
     if (isUndefined(headers[reqHead])) {
       headers[reqHead] = 'XMLHttpRequest';
@@ -106,12 +110,12 @@ export default Backbone.Model.extend({
     }
 
     if (typeJson) {
-      body = JSON.stringify(bodyObj);
+      body = JSON.stringify(apiBody);
     } else {
       body = new FormData();
 
       for (let bodyKey in bodyObj) {
-        body.append(bodyKey, bodyObj[bodyKey]);
+        body.append(bodyKey, apiBody['data']['attributes'][bodyKey]);
       }
     }
     fetchOptions = {
