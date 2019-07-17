@@ -24,7 +24,6 @@ module.exports = Backbone.View.extend({
     this.target = target;
     this.className = this.pfx + 'trait';
     this.labelClass = this.ppfx + 'label';
-    this.extraClass = model.get('className');
     this.fieldClass =
       this.ppfx + 'field ' + this.ppfx + 'field-' + model.get('type');
     this.inputhClass = this.ppfx + 'input-holder';
