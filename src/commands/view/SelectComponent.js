@@ -9,6 +9,7 @@ let showOffsets;
 
 export default {
   init(o) {
+    console.log('initializing');
     bindAll(this, 'onHover', 'onOut', 'onClick', 'onFrameScroll');
   },
 
@@ -51,7 +52,11 @@ export default {
     methods[method](body, 'mouseover', this.onHover);
     methods[method](body, 'mouseout', this.onOut);
     methods[method](body, 'click', this.onClick);
-    methods[method](win, 'scroll resize', this.onFrameScroll);
+
+    const wrap = editor.getWrapper().getEl();
+    wrap.addEventListener('scroll', this.onFrameScroll);
+    wrap.addEventListener('resize', this.onFrameScroll);
+
     em[method]('component:toggled', this.onSelect, this);
     em[method]('change:componentHovered', this.onHovered, this);
   },
@@ -547,6 +552,10 @@ export default {
     const unit = 'px';
     const toolbarEl = canvas.getToolbarEl();
     const toolbarStyle = toolbarEl.style;
+
+    console.log('toolbar el');
+    console.log(toolbarEl);
+
     toolbarStyle.opacity = 0;
     const pos = canvas.getTargetToElementDim(toolbarEl, el, {
       elPos,
