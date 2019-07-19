@@ -117,7 +117,7 @@
     "build": "npm run v:patch && npm run build-dev && webpack --env=prod",
     "build-n": "npm run check && npm run build:css && webpack --env=prod",
     "build-dev": "webpack --env=dev && npm run build:css",
-    "build:css": "node-sass src/styles/scss/main.scss dist/css/grapes.min.css --output-style compressed",
+    "build:css": "node-sass src/styles/scss/main.scss dist/css/grapes.min.css --output-style expanded",
     "v:patch": "npm version --no-git-tag-version patch",
     "start": "run-p start:*",
     "start:css": "npm run build:css -- -w",
