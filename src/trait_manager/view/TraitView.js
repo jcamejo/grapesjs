@@ -1,10 +1,10 @@
+import Backbone from 'backbone';
 import { isUndefined, clone } from 'underscore';
 const tooltips = require('./../config/tooltips');
 
-const Backbone = require('backbone');
 const $ = Backbone.$;
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
   events: {
     change: 'onChange'
   },

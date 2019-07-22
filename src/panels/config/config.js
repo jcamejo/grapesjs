@@ -7,7 +7,7 @@ var obl = 'open-blocks';
 var ful = 'fullscreen';
 var prv = 'preview';
 
-module.exports = {
+export default {
   stylePrefix: 'pn-',
 
   // Default panels fa-sliders for features
@@ -19,14 +19,14 @@ module.exports = {
     {
       id: 'options',
       buttons: [
-        // {
-        //   active: true,
-        //   id: swv,
-        //   className: 'fa fa-square-o',
-        //   command: swv,
-        //   context: swv,
-        //   attributes: { title: 'View components' }
-        // },
+        {
+          id: swv,
+          title: '<span style="padding-left: 0.5rem">Show Grid</span>',
+          className: 'fa fa-square-o',
+          command: swv,
+          context: swv,
+          attributes: { title: 'View components' }
+        },
         {
           id: prv,
           title: '<span style="padding-left: 0.5rem">Preview</span>',

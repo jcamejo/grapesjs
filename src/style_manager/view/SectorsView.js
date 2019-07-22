@@ -1,10 +1,9 @@
 import Backbone from 'backbone';
 import { extend, isString } from 'underscore';
 import { isTaggableNode } from 'utils/mixins';
+import SectorView from './SectorView';
 
-const SectorView = require('./SectorView');
-
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
   initialize(o = {}) {
     const config = o.config || {};
     this.pfx = config.stylePrefix || '';

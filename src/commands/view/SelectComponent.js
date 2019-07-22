@@ -1,12 +1,13 @@
+import Backbone from 'backbone';
 import { bindAll, isElement, isUndefined } from 'underscore';
 import { on, off, getUnitFromValue, isTaggableNode } from 'utils/mixins';
+import ToolbarView from 'dom_components/view/ToolbarView';
+import Toolbar from 'dom_components/model/Toolbar';
 
-const ToolbarView = require('dom_components/view/ToolbarView');
-const Toolbar = require('dom_components/model/Toolbar');
-const $ = require('backbone').$;
+const $ = Backbone.$;
 let showOffsets;
 
-module.exports = {
+export default {
   init(o) {
     bindAll(this, 'onHover', 'onOut', 'onClick', 'onFrameScroll');
   },
@@ -47,10 +48,12 @@ module.exports = {
     const methods = { on, off };
     const body = this.getCanvasBody();
     const win = this.getContentWindow();
+
     methods[method](body, 'mouseover', this.onHover);
     methods[method](body, 'mouseout', this.onOut);
     methods[method](body, 'click', this.onClick);
     methods[method](win, 'scroll resize', this.onFrameScroll);
+
     em[method]('component:toggled', this.onSelect, this);
     em[method]('change:componentHovered', this.onHovered, this);
   },
@@ -176,7 +179,9 @@ module.exports = {
    * @private
    */
   onClick(e) {
+    const { em } = this;
     e.stopPropagation();
+    if (em.get('_cmpDrag')) return em.set('_cmpDrag');
     const $el = $(e.target);
     let model = $el.data('model');
 
@@ -544,6 +549,7 @@ module.exports = {
     const unit = 'px';
     const toolbarEl = canvas.getToolbarEl();
     const toolbarStyle = toolbarEl.style;
+
     toolbarStyle.opacity = 0;
     const pos = canvas.getTargetToElementDim(toolbarEl, el, {
       elPos,
