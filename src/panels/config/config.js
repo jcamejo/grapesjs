@@ -42,13 +42,13 @@ export default {
           command: ful,
           context: ful,
           attributes: { title: 'Fullscreen' }
+        },
+        {
+          id: expt,
+          className: 'fa fa-code',
+          command: expt,
+          attributes: { title: 'View code' }
         }
-        // {
-        //   id: expt,
-        //   className: 'fa fa-code',
-        //   command: expt,
-        //   attributes: { title: 'View code' }
-        // }
       ]
     },
     {
