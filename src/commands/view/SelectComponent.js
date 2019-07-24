@@ -300,6 +300,9 @@ export default {
       const badgeW = badge ? badge.offsetWidth : 0;
       var top = posTop < canvasTop ? canvasTop : posTop;
       var left = pos.left + badgeW < canvasLeft ? canvasLeft : pos.left;
+
+      left = left < 0 ? 0 : left;
+
       bStyle.top = top + u;
       bStyle.left = left + u;
     }
