@@ -6,6 +6,7 @@ var ola = 'open-layers';
 var obl = 'open-blocks';
 var ful = 'fullscreen';
 var prv = 'preview';
+var imp = 'gjs-open-import-webpage';
 
 export default {
   stylePrefix: 'pn-',
@@ -42,12 +43,6 @@ export default {
           command: ful,
           context: ful,
           attributes: { title: 'Fullscreen' }
-        },
-        {
-          id: expt,
-          className: 'fa fa-code',
-          command: expt,
-          attributes: { title: 'View code' }
         }
       ]
     },
