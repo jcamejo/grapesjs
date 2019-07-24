@@ -12,45 +12,48 @@ export default {
     var sm = editor.StyleManager;
     var sem = editor.SelectorManager;
     var panelC;
+    var selectedComponent = editor.getSelected();
 
     if (!this.$cn) {
       var tmView = tm.getTraitsViewer();
       var confTm = tm.getConfig();
 
-      this.$cn = $('<div></div>');
-      this.$cn2 = $('<div></div>');
-      this.$cnWrap = $(
-        '<div class="gjs-sm-sectors gjs-one-bg gjs-two-color"></div>'
+      this.$cn = $('<div class="container-1"></div>');
+      this.$settingsContainer = $('<div class="container-2"></div>');
+      this.$cn.append(this.$settingsContainer);
+
+      this.$cnWrapTraits = $(
+        '<div class="gjs-sm-sectors gjs-one-bg gjs-two-color gjs-trait-manager"></div>'
       );
-      this.$cnSector = $('<div class="gjs-sm-sector no-select"></div>');
-      this.$cnTitle = $('<div class="gjs-sm-title"></div>');
-      this.$cnTitleInner = $(
-        '<i id="gjs-sm-caret" class="fa fa-caret-right"></i>'
+      this.$cnTraitsBasic = $('<div class="gjs-sm-sector no-select"></div>');
+      this.$cnTitleTraits = $('<div class="gjs-sm-title"></div>');
+      this.$cnTitleTraitsInner = $(
+        '<i id="gjs-sm-caret" class="gjs-caret fa fa-caret-right"></i>'
       );
-      this.$cnTextInnet = $('<span>Basic</span>');
-      this.$cnProperties = $(
+      this.$cnTextInner = $('<span>Basic</span>');
+      this.$cnTraits = $(
         '<div class="gjs-sm-properties" style="display: none;"></div>'
       );
 
       const semView = sem.render();
-      this.$cn2.append(semView);
+      this.$settingsContainer.append(semView);
 
-      this.$cnTitle.append(this.$cnTitleInner);
-      this.$cnTitle.append(this.$cnTextInnet);
-      this.$cnSector.append(this.$cnTitle);
-      this.$cnSector.append(this.$cnProperties);
-      // this.$cnProperties.append();
-      this.$cnWrap.append(this.$cnSector);
+      this.$cnTitleTraits.append(this.$cnTitleTraitsInner);
+      this.$cnTitleTraits.append(this.$cnTextInner);
+      this.$cnTraitsBasic.append(this.$cnTitleTraits);
+      this.$cnTraitsBasic.append(this.$cnTraits);
+      this.$cnWrapTraits.append(this.$cnTraitsBasic);
 
-      this.$cnTitle.bind('click', () => {
-        this.toggleMenu();
+      this.$cnTitleTraits.bind('click', () => {
+        this.toggleMenu(this.$cnTraitsBasic);
       });
 
-      this.$cn2.append(
+      this.$settingsContainer.append(
         `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
       );
-      this.$cn2.append(this.$cnWrap);
-      this.$cn.append(this.$cn2);
+      this.$noActions = $('<h1> No actions </h1>');
+      this.$settingsContainer.append(this.$noActions);
+      this.$settingsContainer.append(this.$cnWrapTraits);
 
       this.$header = $('<div>').append(
         `<div class="${confTm.stylePrefix}header">${confTm.textNoElement}</div>`
@@ -58,16 +61,14 @@ export default {
 
       this.$cn.append(this.$header);
 
-      // this.$cn2.append(
-      //   `<div class="${pfx}traits-label">${confTm.labelContainer}</div>`
-      // );
-      // this.$cn2.append(tmView.render().el);
-      this.$cnProperties.append(tmView.render().el);
+      this.$cnTraits.append(tmView.render().el);
 
-      //adding style manager in trait manager;
+      //adding style manager inside trait manager;
       const smView = sm.render();
-      this.$cn2.append('<div class="gjs-traits-label">Style settings</div>');
-      this.$cn2.append(smView);
+      this.$settingsContainer.append(
+        '<div class="gjs-traits-label">Style settings</div>'
+      );
+      this.$settingsContainer.append(smView);
 
       var panels = editor.Panels;
 
@@ -85,22 +86,23 @@ export default {
 
     this.toggleTm();
     //Open by Default
-    if (!this.$cnSector.hasClass('gjs-sm-open')) {
-      this.toggleMenu();
+    if (!this.$cnTraitsBasic.hasClass('gjs-sm-open')) {
+      this.toggleMenu(this.$cnTraitsBasic);
     }
   },
 
-  toggleMenu() {
-    if (this.$cnSector.hasClass('gjs-sm-open')) {
-      this.$cnSector.removeClass('gjs-sm-open');
-      this.$cnTitleInner.removeClass('fa-caret-down');
-      this.$cnTitleInner.addClass('fa-caret-right');
-      this.$cnProperties.hide();
+  toggleMenu($section) {
+    const element = $section.get(0);
+    if ($section.hasClass('gjs-sm-open')) {
+      $section.removeClass('gjs-sm-open');
+      $('.gjs-caret', element).removeClass('fa-caret-down');
+      $('.gjs-caret', element).addClass('fa-caret-right');
+      $('.gjs-sm-properties', element).hide();
     } else {
-      this.$cnSector.addClass('gjs-sm-open');
-      this.$cnTitleInner.removeClass('fa-caret-right');
-      this.$cnTitleInner.addClass('fa-caret-down');
-      this.$cnProperties.show();
+      $section.addClass('gjs-sm-open');
+      $('.gjs-caret', element).removeClass('fa-caret-right');
+      $('.gjs-caret', element).addClass('fa-caret-down');
+      $('.gjs-sm-properties', element).show();
     }
   },
 
@@ -110,19 +112,29 @@ export default {
    */
   toggleTm() {
     const sender = this.sender;
+    const target = this.target.getSelected();
+
     if (sender && sender.get && !sender.get('active')) return;
 
     if (this.target.getSelectedAll().length === 1) {
-      this.$cn2.show();
+      this.$settingsContainer.show();
       this.$header.hide();
+
+      if (target && target.get('traits').length == 0) {
+        this.$cnWrapTraits.hide();
+        this.$noActions.show();
+      } else {
+        this.$cnWrapTraits.show();
+        this.$noActions.hide();
+      }
     } else {
-      this.$cn2.hide();
+      this.$settingsContainer.hide();
       this.$header.show();
     }
   },
 
   stop() {
-    this.$cn2 && this.$cn2.hide();
+    this.$settingsContainer && this.$settingsContainer.hide();
     this.$header && this.$header.hide();
   }
 };
