@@ -5181,6 +5181,7 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-select option,
+.gjs-field-select option,
 .gjs-clm-select option,
 .gjs-sm-select option,
 .gjs-fields option,

@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { isEmpty, isArray, isString } from 'underscore';
+import { isEmpty, isArray, isString, each, includes, extend } from 'underscore';
 
 let Component;
 
@@ -71,7 +71,56 @@ export default Backbone.Collection.extend({
       });
     }
 
+    (isArray(models) ? models : [models])
+      .filter(i => i)
+      .forEach(model => this.processDef(model));
+
     return Backbone.Collection.prototype.add.apply(this, [models, opt]);
+  },
+
+  /**
+   * Process component definition.
+   */
+  processDef(model) {
+    const { em, config } = this;
+    const { processor } = config;
+
+    const modelPr = processor && processor(model);
+    if (modelPr) {
+      each(model, (val, key) => delete model[key]);
+      extend(model, modelPr);
+    }
+
+    // React JSX
+    if (model.$$typeof && typeof model.props == 'object') {
+      const domc = em.get('DomComponents');
+      const parser = em.get('Parser');
+      const { parserHtml } = parser;
+
+      each(model, (value, key) => {
+        if (!includes(['props', 'type'], key)) delete model[key];
+      });
+      const { props } = model;
+      const comps = props.children;
+      delete props.children;
+      delete model.props;
+      const res = parserHtml.splitPropsFromAttr(props);
+      model.attributes = res.attrs;
+
+      if (comps) {
+        model.components = comps;
+      }
+      if (!model.type) {
+        model.type = 'textnode';
+      } else if (!domc.getType(model.type)) {
+        model.tagName = model.type;
+        delete model.type;
+      }
+
+      extend(model, res.props);
+    }
+
+    return model;
   },
 
   onAdd(model, c, opts = {}) {

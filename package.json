@@ -1,7 +1,7 @@
 {
   "name": "grapesjs",
   "description": "Free and Open Source Web Builder Framework",
-  "version": "0.14.79",
+  "version": "0.14.66",
   "author": "Artur Arseniev",
   "license": "BSD-3-Clause",
   "homepage": "http://grapesjs.com",
@@ -12,8 +12,7 @@
     "url": "https://github.com/artf/grapesjs.git"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "babel": "^6.23.0",
+    "@babel/runtime": "^7.5.4",
     "backbone": "1.3.3",
     "backbone-undo": "^0.2.5",
     "cash-dom": "^1.3.7",
@@ -26,9 +25,9 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-transform-runtime": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-transform-runtime": "^7.5.0",
+    "@babel/preset-env": "^7.5.4",
     "babel-loader": "^8.0.6",
     "documentation": "^8.1.2",
     "eslint": "^6.0.1",
@@ -42,8 +41,8 @@
     "sinon": "^7.3.2",
     "string-replace-loader": "^2.2.0",
     "vuepress": "^0.10.2",
-    "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.5",
+    "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2",
     "whatwg-fetch": "^3.0.0"
   },
@@ -122,6 +121,7 @@
     "start": "run-p start:*",
     "start:css": "npm run build:css -- -w",
     "start:js": "webpack-dev-server --open --progress --colors",
+    "stats": "webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json",
     "format": "prettier --single-quote --write './{src,test}/**/*.js'",
     "test": "jest",
     "test:dev": "jest --watch",
