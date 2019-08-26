@@ -248,7 +248,6 @@ export default Backbone.View.extend({
       appendInput ? el.appendChild(tpl) : el.insertBefore(tpl, el.firstChild);
       this.elInput = tpl;
     }
-
     model.el = this.elInput;
   },
 
