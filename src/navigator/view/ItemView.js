@@ -47,7 +47,6 @@ export default Backbone.View.extend({
         <div class="${clsTitle}" style="padding-left: ${gut}" data-toggle-select>
           <div class="${pfx}layer-title-inn">
             <i class="${clsCaret}" data-toggle-open></i>
-            <i class="fa fa-cog" data-show-options></i>
             <i class="" data-toggle-open></i>
             ${icon ? `<span class="${clsBase}__icon">${icon}</span>` : ''}
             <span class="${clsInput}" data-name>${name}</span>
