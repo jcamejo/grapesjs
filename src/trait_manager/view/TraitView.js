@@ -1,7 +1,6 @@
 import Backbone from 'backbone';
 import { isUndefined, isString, isFunction } from 'underscore';
 import { capitalize } from 'utils/mixins';
-const tooltips = require('./../config/tooltips');
 
 const $ = Backbone.$;
 
@@ -116,25 +115,6 @@ export default Backbone.View.extend({
   renderLabel() {
     const { $el, target } = this;
     const label = this.getLabel();
-    switch (label) {
-      // case 'Agreed':
-      //   this.$el.html(
-      //     `<div class="${this.labelClass} tooltip" data-title="${tooltips.getTooltip(label)}">${label}</div>`
-      //   );
-      //   break;
-      default:
-        this.$el.html(
-          `<div class="${
-            this.labelClass
-          }" >${label}<i class="fa fa-question tooltip" style="margin-left: 0.25rem" data-tooltip="${tooltips.getTooltip(
-            label
-          )}"></i></div>`
-        );
-        break;
-    }
-    // this.$el.html(
-    //   `<div class="${this.labelClass} tooltip" title="${tooltips.getTooltip(label)}">${label}</div>`
-    // );
     let tpl = this.templateLabel(target);
 
     if (this.createLabel) {
@@ -178,7 +158,6 @@ export default Backbone.View.extend({
       const type = md.get('type') || 'text';
       const min = md.get('min');
       const max = md.get('max');
-
       const value = this.getModelValue();
       const input = $(`<input type="${type}" placeholder="${plh}">`);
 
@@ -248,6 +227,7 @@ export default Backbone.View.extend({
       appendInput ? el.appendChild(tpl) : el.insertBefore(tpl, el.firstChild);
       this.elInput = tpl;
     }
+
     model.el = this.elInput;
   },
 
@@ -270,7 +250,6 @@ export default Backbone.View.extend({
     const { type } = model.attributes;
     const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}trait`;
-
     this.$input = null;
     let tmpl = `<div class="${cls}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
@@ -287,7 +266,6 @@ export default Backbone.View.extend({
     $el.empty().append(tmpl);
     hasLabel && this.renderLabel();
     this.renderField();
-
     this.el.className = `${cls}__wrp`;
     this.postUpdate();
     this.onRender(this.getClbOpts());
