@@ -4552,6 +4552,15 @@ span.CodeMirror-selectedtext {
   text-align: left;
 }
 
+.gjs-label-wrp {
+  width: 30%;
+  min-width: 30%;
+}
+
+.gjs-field-wrp {
+  flex-grow: 1;
+}
+
 .gjs-trt-header {
   font-weight: lighter;
   padding: 10px;
@@ -4562,6 +4571,8 @@ span.CodeMirror-selectedtext {
   justify-content: flex-start;
   padding: 5px 10px;
   font-weight: lighter;
+  align-items: center;
+  text-align: left;
 }
 
 .gjs-trt-traits {
@@ -4569,14 +4580,9 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-trt-trait .gjs-label {
-  width: 30%;
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-
-.gjs-trt-trait .gjs-field {
-  width: 70%;
 }
 
 .gjs-guide-info {
@@ -5286,8 +5292,10 @@ span.CodeMirror-selectedtext {
 /* ??? */
 .gjs-field-checkbox {
   padding: 0;
-  width: auto !important;
+  width: 17px;
   height: 17px;
+  display: block;
+  cursor: pointer;
 }
 
 .gjs-field-checkbox input {
@@ -5466,7 +5474,6 @@ span.CodeMirror-selectedtext {
   height: 14px;
   margin: 0 5px;
   width: 6px;
-  cursor: pointer;
 }
 
 .gjs-add-trasp {

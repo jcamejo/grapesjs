@@ -51,7 +51,7 @@ export default {
 
     methods[method](body, 'mouseover', this.onHover);
     methods[method](body, 'mouseout', this.onOut);
-    methods[method](body, 'click', this.onClick);
+    methods[method](body, 'click touchend', this.onClick);
     methods[method](win, 'scroll resize', this.onFrameScroll);
 
     em[method]('component:toggled', this.onSelect, this);
@@ -181,6 +181,7 @@ export default {
   onClick(e) {
     const { em } = this;
     e.stopPropagation();
+    e.preventDefault();
     if (em.get('_cmpDrag')) return em.set('_cmpDrag');
     const $el = $(e.target);
     let model = $el.data('model');

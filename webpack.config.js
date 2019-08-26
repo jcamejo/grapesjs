@@ -24,8 +24,8 @@ module.exports = env => {
       new webpack.BannerPlugin(`${name} - ${pkg.version}`),
     ];
   } else if (env === 'dev') {
-    //output.filename = 'dist/grapes.js';
-		output.filename =  `../../../rails/launchpad-v2/app/assets/javascripts/vendor/grapes.js`
+    output.filename = 'dist/grapes.js';
+		//output.filename =  `../../../rails/launchpad-v2/app/assets/javascripts/vendor/grapes.js`
   } else {
     const index = 'index.html';
     const indexDev = `_${index}`;
@@ -41,6 +41,7 @@ module.exports = env => {
     devtool: isProd ? 'source-map' : (!env ? 'cheap-module-eval-source-map' : false),
     devServer: {
       headers: { 'Access-Control-Allow-Origin': '*' },
+      disableHostCheck: true,
     },
     module: {
       rules: [{
