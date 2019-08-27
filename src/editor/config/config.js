@@ -52,6 +52,7 @@ export default {
       background-color: #fff
     }
     #wrapper {
+			height: 100%;
       overflow: auto;
       overflow-x: hidden;
     }
