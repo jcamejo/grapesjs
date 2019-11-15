@@ -70,6 +70,8 @@
 			});
 
 			const link = editor.DomComponents.getType('link');
+			const comps = editor.DomComponents;
+
 
 			link.model.extend(Object.assign({}, link.model, {
 				defaults: Object.assign({}, link.model.prototype.defaults, {
