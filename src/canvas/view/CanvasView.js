@@ -262,7 +262,7 @@ export default Backbone.View.extend({
       body.append(this.getJsContainer());
       em.trigger('loaded');
       this.frame.el.contentWindow.onscroll = this.onFrameScroll;
-      this.frame.udpateOffset();
+      this.frame.updateOffset();
 
       // Avoid the default link behaviour in the canvas
       body.on(
@@ -440,7 +440,7 @@ export default Backbone.View.extend({
     const id = model.getId();
 
     if (!view.scriptContainer) {
-      view.scriptContainer = $(`<div id="${id}">`);
+      view.scriptContainer = $(`<div data-id="${id}">`);
       this.getJsContainer().appendChild(view.scriptContainer.get(0));
     }
 

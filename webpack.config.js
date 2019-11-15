@@ -3,6 +3,7 @@ const pkg = require('./package.json');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const rootDir = path.resolve(__dirname);
 let plugins = [];
 
 module.exports = env => {
@@ -29,11 +30,6 @@ module.exports = env => {
     const template = fs.existsSync(indexDev) ? indexDev : index;
     plugins.push(new HtmlWebpackPlugin({ template, inject: false }));
   }
-
-  // plugins.push(new webpack.ProvidePlugin({
-  //   _: 'underscore',
-  //   Backbone: 'backbone'
-  // }));
 
   return {
     entry: './src',
@@ -63,7 +59,9 @@ module.exports = env => {
     resolve: {
       modules: ['src', 'node_modules'],
       alias: {
-        jquery: 'cash-dom'
+        jquery: 'cash-dom',
+        backbone: `${rootDir}/node_modules/backbone`,
+        underscore: `${rootDir}/node_modules/underscore`,
       }
     }
   };

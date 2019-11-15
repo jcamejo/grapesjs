@@ -9,7 +9,7 @@ You can customize the initial state of the module from the editor initialization
 
 ```js
 const editor = grapesjs.init({
- rte: {
+ richTextEditor: {
    // options
  }
 })
@@ -41,7 +41,7 @@ Add a new action to the built-in RTE toolbar
 ```javascript
 rte.add('bold', {
   icon: '<b>B</b>',
-  attributes: {title: 'Bold',}
+  attributes: {title: 'Bold'},
   result: rte => rte.exec('bold')
 });
 rte.add('link', {

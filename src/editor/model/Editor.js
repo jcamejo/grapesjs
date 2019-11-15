@@ -5,6 +5,7 @@ import { getModel } from 'utils/mixins';
 
 const deps = [
   require('utils'),
+  require('i18n'),
   require('keymaps'),
   require('undo_manager'),
   require('storage_manager'),
@@ -67,6 +68,7 @@ export default Backbone.Model.extend({
     this.set('modules', []);
     this.set('toLoad', []);
     this.set('storables', []);
+    this.set('dmode', c.dragMode);
     const el = c.el;
     const log = c.log;
     const toLog = log === true ? keys(logs) : isArray(log) ? log : [];
@@ -416,12 +418,12 @@ export default Backbone.Model.extend({
   getHtml() {
     const config = this.config;
     const exportWrapper = config.exportWrapper;
-    const wrappesIsBody = config.wrappesIsBody;
+    const wrapperIsBody = config.wrapperIsBody;
     const js = config.jsInHtml ? this.getJs() : '';
     var wrp = this.get('DomComponents').getComponent();
     var html = this.get('CodeManager').getCode(wrp, 'html', {
       exportWrapper,
-      wrappesIsBody
+      wrapperIsBody
     });
     html += js ? `<script>${js}</script>` : '';
     return html;
@@ -435,7 +437,7 @@ export default Backbone.Model.extend({
    */
   getCss(opts = {}) {
     const config = this.config;
-    const wrappesIsBody = config.wrappesIsBody;
+    const wrapperIsBody = config.wrapperIsBody;
     const avoidProt = opts.avoidProtected;
     const keepUnusedStyles = !isUndefined(opts.keepUnusedStyles)
       ? opts.keepUnusedStyles
@@ -448,7 +450,7 @@ export default Backbone.Model.extend({
       protCss +
       this.get('CodeManager').getCode(wrp, 'css', {
         cssc,
-        wrappesIsBody,
+        wrapperIsBody,
         keepUnusedStyles
       })
     );
@@ -622,6 +624,14 @@ export default Backbone.Model.extend({
 
   getZoomDecimal() {
     return this.get('Canvas').getZoomDecimal();
+  },
+
+  setDragMode(value) {
+    return this.set('dmode', value);
+  },
+
+  t(...args) {
+    return this.get('I18n').t(...args);
   },
 
   /**

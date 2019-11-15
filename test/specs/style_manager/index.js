@@ -57,7 +57,7 @@ describe('StyleManager', () => {
     });
 
     test('Get inexistent sector', () => {
-      expect(obj.getSector('test')).toEqual(null);
+      expect(obj.getSector('test')).toBeFalsy();
     });
 
     test('Get sector', () => {
@@ -179,21 +179,6 @@ describe('StyleManager', () => {
         var prop1 = obj.getProperty('dim', 'width');
         expect(prop1.get('name')).toEqual('Width');
       });
-    });
-
-    Models.run();
-
-    describe('Views', () => {
-      SectorView.run();
-      SectorsView.run();
-      PropertyView.run();
-      PropertySelectView.run();
-      PropertyRadioView.run();
-      PropertyIntegerView.run();
-      PropertyColorView.run();
-      PropertyCompositeView.run();
-      PropertyStackView.run();
-      LayerView.run();
     });
   });
 });

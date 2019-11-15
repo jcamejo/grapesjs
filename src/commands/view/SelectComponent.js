@@ -50,7 +50,7 @@ export default {
     const win = this.getContentWindow();
     methods[method](body, 'mouseover', this.onHover);
     methods[method](body, 'mouseout', this.onOut);
-    methods[method](body, 'click', this.onClick);
+    methods[method](body, 'click touchend', this.onClick);
     methods[method](win, 'scroll resize', this.onFrameScroll);
     em[method]('component:toggled', this.onSelect, this);
     em[method]('change:componentHovered', this.onHovered, this);
@@ -179,6 +179,7 @@ export default {
   onClick(e) {
     const { em } = this;
     e.stopPropagation();
+    e.preventDefault();
     if (em.get('_cmpDrag')) return em.set('_cmpDrag');
     const $el = $(e.target);
     let model = $el.data('model');
@@ -454,12 +455,8 @@ export default {
           const style = modelToStyle.getStyle();
 
           if (!onlyHeight) {
-            const padding = 10;
-            const frameOffset = canvas.getCanvasView().getFrameOffset();
-            const width =
-              rect.w < frameOffset.width - padding
-                ? rect.w
-                : frameOffset.width - padding;
+            const bodyw = canvas.getBody().offsetWidth;
+            const width = rect.w < bodyw ? rect.w : bodyw;
             style[keyWidth] = autoWidth ? 'auto' : `${width}${unitWidth}`;
           }
 
@@ -521,7 +518,8 @@ export default {
         this.toolbar = new Toolbar(toolbar);
         var toolbarView = new ToolbarView({
           collection: this.toolbar,
-          editor: this.editor
+          editor: this.editor,
+          em
         });
         toolbarEl.appendChild(toolbarView.render().el);
       }

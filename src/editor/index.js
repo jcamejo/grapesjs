@@ -126,6 +126,12 @@ export default (config = {}) => {
     editor: em,
 
     /**
+     * @property {I18n}
+     * @private
+     */
+    I18n: em.get('I18n'),
+
+    /**
      * @property {DomComponents}
      * @private
      */
@@ -282,6 +288,7 @@ export default (config = {}) => {
     /**
      * Returns CSS built inside canvas
      * @param {Object} [opts={}] Options
+     * @param {Boolean} [opts.avoidProtected=false] Don't include protected CSS
      * @return {string} CSS string
      */
     getCss(opts) {
@@ -337,7 +344,7 @@ export default (config = {}) => {
      * @param {Boolean} [opts.avoidUpdateStyle=false] If the HTML string contains styles,
      * by default, they will be created and, if already exist, updated. When this option
      * is true, styles already created will not be updated.
-     * @return {Model|Array<Model>}
+     * @return {Array<Component>}
      * @example
      * editor.addComponents('<div class="cls">New component</div>');
      * // or
@@ -348,7 +355,7 @@ export default (config = {}) => {
      * });
      */
     addComponents(components, opts) {
-      return this.getComponents().add(components, opts);
+      return this.getWrapper().append(components, opts);
     },
 
     /**
@@ -618,6 +625,17 @@ export default (config = {}) => {
     },
 
     /**
+     * Change the global drag mode of components.
+     * To get more about this feature read: https://github.com/artf/grapesjs/issues/1936
+     * @param {String} value Drag mode, options: 'absolute' | 'translate'
+     * @returns {this}
+     */
+    setDragMode(value) {
+      em.setDragMode(value);
+      return this;
+    },
+
+    /**
      * Trigger event log message
      * @param  {*} msg Message to log
      * @param  {Object} [opts={}] Custom options
@@ -635,6 +653,24 @@ export default (config = {}) => {
     log(msg, opts = {}) {
       em.log(msg, opts);
       return this;
+    },
+
+    /**
+     * Translate label
+     * @param {String} key Label to translate
+     * @param {Object} [opts] Options for the translation
+     * @param {Object} [opts.params] Params for the translation
+     * @param {Boolean} [opts.noWarn] Avoid warnings in case of missing resources
+     * @returns {String}
+     * @example
+     * editor.t('msg');
+     * // use params
+     * editor.t('msg2', { params: { test: 'hello' } });
+     * // custom local
+     * editor.t('msg2', { params: { test: 'hello' }, l: 'it' });
+     */
+    t(...args) {
+      return em.t(...args);
     },
 
     /**
