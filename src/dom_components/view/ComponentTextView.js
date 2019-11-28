@@ -1,6 +1,8 @@
 import { on, off } from 'utils/mixins';
 import ComponentView from './ComponentView';
 
+const compProt = ComponentView.prototype;
+
 export default ComponentView.extend({
   events: {
     dblclick: 'onActive',
@@ -8,7 +10,7 @@ export default ComponentView.extend({
   },
 
   initialize(o) {
-    ComponentView.prototype.initialize.apply(this, arguments);
+    compProt.initialize.apply(this, arguments);
     this.disableEditing = this.disableEditing.bind(this);
     const model = this.model;
     const em = this.em;
@@ -44,7 +46,6 @@ export default ComponentView.extend({
       }
     }
 
-    this.rteEnabled = 1;
     this.toggleEvents(1);
   },
 
@@ -66,8 +67,25 @@ export default ComponentView.extend({
       this.syncContent();
     }
 
-    this.rteEnabled = 0;
     this.toggleEvents();
+  },
+
+  /**
+   * get content from RTE
+   * @return string
+   */
+  getContent() {
+    const { rte } = this;
+    const { activeRte } = rte || {};
+    let content = '';
+
+    if (activeRte && typeof activeRte.getContent === 'function') {
+      content = activeRte.getContent();
+    } else {
+      content = this.getChildrenContainer().innerHTML;
+    }
+
+    return content;
   },
 
   /**
@@ -76,7 +94,7 @@ export default ComponentView.extend({
   syncContent(opts = {}) {
     const { model, rte, rteEnabled } = this;
     if (!rteEnabled && !opts.force) return;
-    const content = this.getChildrenContainer().innerHTML;
+    const content = this.getContent();
     const comps = model.components();
     const contentOpt = { fromDisable: 1, ...opts };
     comps.length && comps.reset(null, opts);
@@ -140,17 +158,33 @@ export default ComponentView.extend({
    * @param {Boolean} enable
    */
   toggleEvents(enable) {
-    var method = enable ? 'on' : 'off';
+    const { em } = this;
     const mixins = { on, off };
-    this.em.setEditing(enable);
+    const method = enable ? 'on' : 'off';
+    em.setEditing(enable);
+    this.rteEnabled = !!enable;
 
     // The ownerDocument is from the frame
     var elDocs = [this.el.ownerDocument, document];
     mixins.off(elDocs, 'mousedown', this.disableEditing);
     mixins[method](elDocs, 'mousedown', this.disableEditing);
+    em[method]('toolbar:run:before', this.disableEditing);
 
     // Avoid closing edit mode on component click
     this.$el.off('mousedown', this.disablePropagation);
     this.$el[method]('mousedown', this.disablePropagation);
+
+    // Fixes #2210 but use this also as a replacement
+    // of this fix: bd7b804f3b46eb45b4398304b2345ce870f232d2
+    if (this.config.draggableComponents) {
+      let { el } = this;
+
+      while (el) {
+        el.draggable = enable ? !1 : !0;
+        // Note: el.parentNode is sometimes null here
+        el = el.parentNode;
+        el && el.tagName == 'BODY' && (el = 0);
+      }
+    }
   }
 });

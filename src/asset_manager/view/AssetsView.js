@@ -5,9 +5,7 @@ export default Backbone.View.extend({
     submit: 'handleSubmit'
   },
 
-  template(view) {
-    const pfx = view.pfx;
-    const ppfx = view.ppfx;
+  template({ pfx, ppfx, em, ...view }) {
     let form = '';
     if (this.config.showInput) {
       form = `
@@ -26,6 +24,7 @@ export default Backbone.View.extend({
       <div class="${pfx}assets-header">
 				${form}
       </div>
+			<button class="${ppfx}btn-prim">${view.config.addBtnText}</button>
       <div class="${pfx}assets" data-el="assets"></div>
       <div style="clear:both"></div>
     </div>
@@ -37,6 +36,7 @@ export default Backbone.View.extend({
     this.config = o.config;
     this.pfx = this.config.stylePrefix || '';
     this.ppfx = this.config.pStylePrefix || '';
+    this.em = this.config.em;
     const coll = this.collection;
     this.listenTo(coll, 'reset', this.renderAssets);
     this.listenTo(coll, 'add', this.addToAsset);

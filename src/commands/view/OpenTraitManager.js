@@ -5,6 +5,7 @@ const $ = Backbone.$;
 export default {
   run(editor, sender) {
     this.sender = sender;
+    const em = editor.getModel();
 
     var config = editor.Config;
     var pfx = config.stylePrefix;
@@ -56,7 +57,9 @@ export default {
       this.$settingsContainer.append(this.$cnWrapTraits);
 
       this.$header = $('<div>').append(
-        `<div class="${confTm.stylePrefix}header">${confTm.textNoElement}</div>`
+        `<div class="${confTm.stylePrefix}header">${em.t(
+          'traitManager.empty'
+        )}</div>`
       );
 
       this.$cn.append(this.$header);
@@ -68,6 +71,11 @@ export default {
       this.$settingsContainer.append(
         '<div class="gjs-traits-label">Style settings</div>'
       );
+
+      this.$cn2.append(
+        `<div class="${pfx}traits-label">${em.t('traitManager.label')}</div>`
+      );
+
       this.$settingsContainer.append(smView);
 
       var panels = editor.Panels;

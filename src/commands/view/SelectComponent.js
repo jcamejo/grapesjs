@@ -461,12 +461,8 @@ export default {
           const style = modelToStyle.getStyle();
 
           if (!onlyHeight) {
-            const padding = 10;
-            const frameOffset = canvas.getCanvasView().getFrameOffset();
-            const width =
-              rect.w < frameOffset.width - padding
-                ? rect.w
-                : frameOffset.width - padding;
+            const bodyw = canvas.getBody().offsetWidth;
+            const width = rect.w < bodyw ? rect.w : bodyw;
             style[keyWidth] = autoWidth ? 'auto' : `${width}${unitWidth}`;
           }
 
@@ -528,7 +524,8 @@ export default {
         this.toolbar = new Toolbar(toolbar);
         var toolbarView = new ToolbarView({
           collection: this.toolbar,
-          editor: this.editor
+          editor: this.editor,
+          em
         });
         toolbarEl.appendChild(toolbarView.render().el);
       }

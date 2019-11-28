@@ -118,18 +118,19 @@ export default {
   exportWrapper: 0,
 
   // The wrapper, if visible, will be shown as a `<body>`
-  wrappesIsBody: 1,
+  wrapperIsBody: 1,
 
   // Usually when you update the `style` of the component this changes the
   // element's `style` attribute. Unfortunately, inline styling doesn't allow
   // use of media queries (@media) or even pseudo selectors (eg. :hover).
   // When `avoidInlineStyle` is true all styles are inserted inside the css rule
-  avoidInlineStyle: 0,
+  // @deprecated Don't use this option, we don't support inline styling anymore
+  avoidInlineStyle: 1,
 
   // Avoid default properties from storable JSON data, like `components` and `styles`.
   // With this option enabled your data will be smaller (usefull if need to
   // save some storage space)
-  avoidDefaults: 0,
+  avoidDefaults: 1,
 
   // (experimental)
   // The structure of components is always on the screen but it's not the same
@@ -151,6 +152,9 @@ export default {
   // Dom element
   el: '',
 
+  // Configurations for I18n
+  i18n: {},
+
   // Configurations for Undo Manager
   undoManager: {},
 
@@ -167,7 +171,7 @@ export default {
   storageManager: {},
 
   //Configurations for Rich Text Editor
-  rte: {},
+  richTextEditor: {},
 
   //Configurations for DomComponents
   domComponents: {},
@@ -194,20 +198,24 @@ export default {
   deviceManager: {
     devices: [
       {
+        id: 'desktop',
         name: 'Desktop',
         width: ''
       },
       {
+        id: 'tablet',
         name: 'Tablet',
         width: '768px',
         widthMedia: '992px'
       },
       {
+        id: 'mobileLandscape',
         name: 'Mobile landscape',
         width: '568px',
         widthMedia: '768px'
       },
       {
+        id: 'mobilePortrait',
         name: 'Mobile portrait',
         width: '320px',
         widthMedia: '480px'

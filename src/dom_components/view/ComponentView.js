@@ -3,6 +3,7 @@ import { isArray, isEmpty, each, keys } from 'underscore';
 import Components from '../model/Components';
 import ComponentsView from './ComponentsView';
 import Selectors from 'selector_manager/model/Selectors';
+import { replaceWith } from 'utils/dom';
 
 export default Backbone.View.extend({
   className() {
@@ -46,7 +47,16 @@ export default Backbone.View.extend({
       ...(draggableComponents && { dragstart: 'handleDragStart' })
     };
     this.delegateEvents();
-    !modelOpt.temporary && this.init();
+    !modelOpt.temporary && this.init(this._clbObj());
+  },
+
+  _clbObj() {
+    const { em, model, el } = this;
+    return {
+      editor: em && em.getEditor(),
+      model,
+      el
+    };
   },
 
   /**
@@ -55,9 +65,20 @@ export default Backbone.View.extend({
   init() {},
 
   /**
+   * Remove callback
+   */
+  removed() {},
+
+  /**
    * Callback executed when the `active` event is triggered on component
    */
   onActive() {},
+
+  remove() {
+    Backbone.View.prototype.remove.apply(this, arguments);
+    this.removed(this._clbObj());
+    return this;
+  },
 
   handleDragStart(event) {
     event.preventDefault();
@@ -255,12 +276,14 @@ export default Backbone.View.extend({
 
     const defaultAttr = {
       'data-gjs-type': type || 'default',
-      ...(draggableComponents && { draggable: true }),
-      ...(highlightable && { 'data-highlightable': 1 }),
-      ...(textable && {
-        contenteditable: 'false',
-        'data-gjs-textable': 'true'
-      })
+      ...(draggableComponents ? { draggable: true } : {}),
+      ...(highlightable ? { 'data-highlightable': 1 } : {}),
+      ...(textable
+        ? {
+            contenteditable: 'false',
+            'data-gjs-textable': 'true'
+          }
+        : {})
     };
 
     // Remove all current attributes
@@ -354,7 +377,7 @@ export default Backbone.View.extend({
     this.el = '';
     this._ensureElement();
     this.$el.data({ model, collection });
-    el.replaceWith(this.el);
+    replaceWith(el, this.el);
     this.render();
   },
 
@@ -399,7 +422,7 @@ export default Backbone.View.extend({
     const { em, model, modelOpt } = this;
 
     if (!modelOpt.temporary) {
-      this.onRender();
+      this.onRender(this._clbObj());
       em && em.trigger('component:mount', model);
     }
   },
