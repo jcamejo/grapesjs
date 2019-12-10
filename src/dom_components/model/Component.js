@@ -575,6 +575,7 @@ const Component = Backbone.Model.extend(Styleable).extend(
       traits.length && this.set('attributes', attrs);
       this.listenTo(...toListen);
       changed && em && em.trigger('component:toggled');
+
       return this;
     },
 

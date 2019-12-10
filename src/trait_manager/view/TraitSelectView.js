@@ -11,6 +11,7 @@ export default TraitView.extend({
 
   templateInput() {
     const { ppfx, clsField } = this;
+
     return `<div class="${clsField}">
       <div data-input></div>
       <div class="${ppfx}sel-arrow">
