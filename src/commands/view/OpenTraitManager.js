@@ -72,10 +72,6 @@ export default {
         '<div class="gjs-traits-label">Style settings</div>'
       );
 
-      this.$cn2.append(
-        `<div class="${pfx}traits-label">${em.t('traitManager.label')}</div>`
-      );
-
       this.$settingsContainer.append(smView);
 
       var panels = editor.Panels;

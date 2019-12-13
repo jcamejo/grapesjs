@@ -55,7 +55,7 @@
 						},{
 							name: 'Typography',
 							open: false,
-							buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-shadow'],
+							buildProps: ['text-align'],
 						},{
 							name: 'Decorations',
 							open: false,
@@ -68,41 +68,6 @@
 					],
 				},
 			});
-
-			const link = editor.DomComponents.getType('link');
-			const comps = editor.DomComponents;
-
-
-			link.model.extend(Object.assign({}, link.model, {
-				defaults: Object.assign({}, link.model.prototype.defaults, {
-					traits: [{
-						type: 'text',
-						label: 'Test',
-						href: '',
-						changeProp:1,
-						className: 'hola!'
-					}]
-				})
-			}))
-/*
-			editor.on('component:mount', model => {
-				if (model.attributes.type == "image" && model.attributes.tagName == "img") {
-					var tb = model.get('toolbar');
-					var assetsSettings = {
-						attributes: { class: 'fa fa-image' },
-						command: 'open-assets'
-					}
-
-					var assetsCommand = tb.filter(toolbar => toolbar.attributes.class.indexOf('fa-image') > -1);
-					if (assetsCommand.length == 0) {
-						tb.unshift(assetsSettings);
-						model.set('toolbar', tb);
-					}
-				}
-
-				return model;
-			});
-			*/
     </script>
   </body>
 </html>
