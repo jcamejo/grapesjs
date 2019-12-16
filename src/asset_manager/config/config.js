@@ -105,5 +105,6 @@ export default {
   //   var stopUpload = true;
   //   if(stopUpload) return false;
   // }
-  beforeUpload: null
+  beforeUpload: null,
+  addBtnText: 'Add image'
 };
