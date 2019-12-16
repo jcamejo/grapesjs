@@ -24,7 +24,6 @@ export default Backbone.View.extend({
       <div class="${pfx}assets-header">
 				${form}
       </div>
-			<button class="${ppfx}btn-prim">${view.config.addBtnText}</button>
       <div class="${pfx}assets" data-el="assets"></div>
       <div style="clear:both"></div>
     </div>
