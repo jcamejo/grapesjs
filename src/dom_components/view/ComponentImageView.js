@@ -47,15 +47,6 @@ export default ComponentView.extend({
   },
 
   /**
-   * get Attached event names
-   * @returns {Object}
-   * @private
-   * */
-  getEventNames() {
-    return this.events;
-  },
-
-  /**
    * Update src attribute
    * @private
    * */
