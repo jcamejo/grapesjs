@@ -19490,7 +19490,8 @@ var _default = {
   //   var stopUpload = true;
   //   if(stopUpload) return false;
   // }
-  beforeUpload: null
+  beforeUpload: null,
+  addBtnText: 'Add image'
 };
 exports.default = _default;
 
@@ -20207,7 +20208,7 @@ var _default = _backbone.default.View.extend({
       form = "\n        <form class=\"".concat(pfx, "add-asset\">\n\t\t\t\t\t<div class=\"").concat(ppfx, "field ").concat(pfx, "add-field\">\n\t\t\t\t\t\t<input placeholder=\"").concat(view.config.inputPlaceholder, "\"/>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class=\"").concat(ppfx, "btn-prim\">").concat(view.config.addBtnText, "</button>\n          <div style=\"clear:both\"></div>\n\t\t\t\t</form>\n\t\t\t");
     }
 
-    return "\n    <div class=\"".concat(pfx, "assets-cont\">\n      <div class=\"").concat(pfx, "assets-header\">\n\t\t\t\t").concat(form, "\n      </div>\n\t\t\t<button class=\"").concat(ppfx, "btn-prim\">").concat(view.config.addBtnText, "</button>\n      <div class=\"").concat(pfx, "assets\" data-el=\"assets\"></div>\n      <div style=\"clear:both\"></div>\n    </div>\n    ");
+    return "\n    <div class=\"".concat(pfx, "assets-cont\">\n      <div class=\"").concat(pfx, "assets-header\">\n\t\t\t\t").concat(form, "\n      </div>\n      <div class=\"").concat(pfx, "assets\" data-el=\"assets\"></div>\n      <div style=\"clear:both\"></div>\n    </div>\n    ");
   },
   initialize: function initialize(o) {
     this.options = o;
@@ -21198,6 +21199,8 @@ exports.default = void 0;
 var _backbone = _interopRequireDefault(__webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js"));
 
 var _Category = _interopRequireDefault(__webpack_require__(/*! ./Category */ "./src/block_manager/model/Category.js"));
+
+var _CategoryView = _interopRequireDefault(__webpack_require__(/*! ../view/CategoryView */ "./src/block_manager/view/CategoryView.js"));
 
 var _default = _backbone.default.Collection.extend({
   model: _Category.default
@@ -26508,7 +26511,6 @@ var _default = {
 
       var smView = sm.render();
       this.$settingsContainer.append('<div class="gjs-traits-label">Style settings</div>');
-      this.$cn2.append("<div class=\"".concat(pfx, "traits-label\">").concat(em.t('traitManager.label'), "</div>"));
       this.$settingsContainer.append(smView);
       var panels = editor.Panels;
       if (!panels.getPanel('views-container')) panelC = panels.addPanel({
@@ -34126,6 +34128,14 @@ var _default = _backbone.default.View.extend({
     this.removed(this._clbObj());
     return this;
   },
+
+  /**
+   * get Attached event names
+   * @returns {Object}
+   * */
+  getEventNames: function getEventNames() {
+    return this.events;
+  },
   handleDragStart: function handleDragStart(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -38053,7 +38063,7 @@ var _default = {
   editors: editors,
   plugins: plugins,
   // Will be replaced on build
-  version: '0.15.12',
+  version: '0.15.13',
 
   /**
    * Initialize the editor with passed options
@@ -39570,7 +39580,7 @@ var _default = {
     id: 'options',
     buttons: [{
       id: swv,
-      title: '<span style="padding-left: 0.5rem">Show Grid</span>',
+      title: '<span style="padding-left: 0.5rem">SHOW GRID</span>',
       className: 'fa fa-square-o',
       command: swv,
       context: swv,
@@ -39579,7 +39589,7 @@ var _default = {
       }
     }, {
       id: prv,
-      title: '<span style="padding-left: 0.5rem">Preview</span>',
+      title: '<span style="padding-left: 0.5rem">PREVIEW</span>',
       className: 'fa fa-eye',
       command: prv,
       context: prv,
@@ -39588,7 +39598,7 @@ var _default = {
       }
     }, {
       id: ful,
-      title: '<span style="padding-left: 0.5rem">Fullscreen</span>',
+      title: '<span style="padding-left: 0.5rem">FULLSCREEN</span>',
       className: 'fa fa-arrows-alt',
       command: ful,
       context: ful,
@@ -40658,7 +40668,7 @@ var _default = _backbone.default.View.extend({
     var frag = document.createDocumentFragment();
     $el.empty();
     this.collection.each(function (model) {
-      return _this.addToCollection(model, frag);
+      _this.addToCollection(model, frag);
     });
     $el.append(frag);
     $el.attr('class', this.className);
@@ -46230,7 +46240,7 @@ var _PropertyRadio = _interopRequireDefault(__webpack_require__(/*! ./PropertyRa
 var _default = _PropertyRadio.default.extend({
   defaults: function defaults() {
     return (0, _objectSpread2.default)({}, _PropertyRadio.default.prototype.defaults, {
-      full: 0
+      full: 1
     });
   }
 });
@@ -49713,8 +49723,10 @@ var _default = _backbone.default.View.extend({
     var type = model.attributes.type;
     var hasLabel = this.hasLabel && this.hasLabel();
     var cls = "".concat(pfx, "trait");
+    var extraClass = model.attributes.extraClass || null;
+    var classes = extraClass ? "".concat(extraClass, " ").concat(cls) : cls;
     this.$input = null;
-    var tmpl = "<div class=\"".concat(cls, "\">\n      ").concat(hasLabel ? "<div class=\"".concat(ppfx, "label-wrp\" data-label></div>") : '', "\n      <div class=\"").concat(ppfx, "field-wrp ").concat(ppfx, "field-wrp--").concat(type, "\" data-input>\n        ").concat(this.templateInput ? (0, _underscore.isFunction)(this.templateInput) ? this.templateInput(this.getClbOpts()) : this.templateInput : '', "\n      </div>\n    </div>");
+    var tmpl = "<div class=\"".concat(classes, "\">\n      ").concat(hasLabel ? "<div class=\"".concat(ppfx, "label-wrp\" data-label></div>") : '', "\n      <div class=\"").concat(ppfx, "field-wrp ").concat(ppfx, "field-wrp--").concat(type, "\" data-input>\n        ").concat(this.templateInput ? (0, _underscore.isFunction)(this.templateInput) ? this.templateInput(this.getClbOpts()) : this.templateInput : '', "\n      </div>\n    </div>");
     $el.empty().append(tmpl);
     hasLabel && this.renderLabel();
     this.renderField();
@@ -54173,7 +54185,7 @@ var _default = _backbone.default.View.extend({
     var em = this.em,
         onMoveClb = this.onMoveClb,
         plh = this.plh;
-    this.moved = 1; // Turn placeholder visibile
+    this.moved = 1; // Turn placeholder visible
 
     var dsp = plh.style.display;
     if (!dsp || dsp === 'none') plh.style.display = 'block'; // Cache all necessary positions
@@ -54673,6 +54685,7 @@ var _default = _backbone.default.View.extend({
    * @param {Object} pos Position object
    * @param {Array<number>} trgDim target dimensions
    * */
+  //#TODO: Make the placeholder color optional
   movePlaceholder: function movePlaceholder(plh, dims, pos, trgDim) {
     var marg = 0,
         t = 0,
@@ -54681,7 +54694,7 @@ var _default = _backbone.default.View.extend({
         h = 0,
         un = 'px',
         margI = 5,
-        brdCol = '#62c462',
+        brdCol = '#fc6e4e',
         brd = 3,
         method = pos.method;
     var elDim = dims[pos.index];
