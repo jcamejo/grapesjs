@@ -21,7 +21,7 @@ export default {
       buttons: [
         {
           id: swv,
-          title: '<span style="padding-left: 0.5rem">Show Grid</span>',
+          title: '<span style="padding-left: 0.5rem">SHOW GRID</span>',
           className: 'fa fa-square-o',
           command: swv,
           context: swv,
@@ -29,7 +29,7 @@ export default {
         },
         {
           id: prv,
-          title: '<span style="padding-left: 0.5rem">Preview</span>',
+          title: '<span style="padding-left: 0.5rem">PREVIEW</span>',
           className: 'fa fa-eye',
           command: prv,
           context: prv,
@@ -37,7 +37,7 @@ export default {
         },
         {
           id: ful,
-          title: '<span style="padding-left: 0.5rem">Fullscreen</span>',
+          title: '<span style="padding-left: 0.5rem">FULLSCREEN</span>',
           className: 'fa fa-arrows-alt',
           command: ful,
           context: ful,

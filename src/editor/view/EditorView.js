@@ -22,9 +22,7 @@ export default Backbone.View.extend({
     const contEl = $(conf.el || `body ${conf.container}`);
     const pfx = conf.stylePrefix;
     el.empty();
-
     if (conf.width) contEl.css('width', conf.width);
-
     if (conf.height) contEl.css('height', conf.height);
 
     el.append(model.get('Canvas').render());
