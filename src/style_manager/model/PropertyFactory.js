@@ -431,19 +431,6 @@ export default () => ({
           break;
       }
 
-      // step
-      switch (prop) {
-        case 'padding-top':
-        case 'padding-right':
-        case 'padding-bottom':
-        case 'padding-left':
-        case 'margin-top':
-        case 'margin-right':
-        case 'margin-bottom':
-        case 'margin-left':
-          break;
-      }
-
       // Preview
       switch (prop) {
         case 'text-shadow':
