@@ -408,7 +408,7 @@ export default () => ({
         case 'margin-bottom':
         case 'margin-left':
           obj.min = 0;
-          obj.max = 600;
+          obj.max = 300;
         case 'min-height':
         case 'min-width':
         case 'max-height':
@@ -428,6 +428,19 @@ export default () => ({
         case 'perspective':
         case 'flex-basis':
           obj.min = 0;
+          break;
+      }
+
+      // step
+      switch (prop) {
+        case 'padding-top':
+        case 'padding-right':
+        case 'padding-bottom':
+        case 'padding-left':
+        case 'margin-top':
+        case 'margin-right':
+        case 'margin-bottom':
+        case 'margin-left':
           break;
       }
 
