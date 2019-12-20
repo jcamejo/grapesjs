@@ -408,7 +408,7 @@ export default () => ({
         case 'margin-bottom':
         case 'margin-left':
           obj.min = 0;
-          obj.max = 300;
+          obj.max = 200;
         case 'min-height':
         case 'min-width':
         case 'max-height':
