@@ -49,6 +49,10 @@ export default ComponentView.extend({
     this.toggleEvents(1);
   },
 
+  onDisable() {
+    this.disableEditing();
+  },
+
   /**
    * Disable element content editing
    * @private
