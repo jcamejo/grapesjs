@@ -76,7 +76,7 @@ export default Input.extend({
       let changed = 0;
       let previousColor;
       this.$el.find(`[data-colorp-c]`).append(colorEl);
-      colorEl.spectrum({
+      let picker = colorEl.spectrum({
         containerClassName: `${ppfx}one-bg ${ppfx}two-color`,
         appendTo: elToAppend || 'body',
         maxSelectionSize: 8,
@@ -102,14 +102,6 @@ export default Input.extend({
           self.noneColor = 0;
         },
         show(color) {
-          if (em) {
-            em.on('component:selected', () => {
-              const pickerContainer = em
-                .getContainer()
-                .querySelector('.sp-container');
-              pickerContainer.classList.add('sp-hidden');
-            });
-          }
           changed = 0;
           previousColor = getColor(color);
         },
@@ -124,6 +116,11 @@ export default Input.extend({
           }
         }
       });
+      if (em) {
+        em.on('component:selected', () => {
+          picker[0].spect.hide();
+        });
+      }
 
       this.colorEl = colorEl;
     }

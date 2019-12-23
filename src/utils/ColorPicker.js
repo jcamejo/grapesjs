@@ -1068,7 +1068,6 @@ export default function($, undefined) {
     };
 
     spect.id = spectrums.push(spect) - 1;
-
     return spect;
   }
 
@@ -1283,6 +1282,7 @@ export default function($, undefined) {
       var options = $.extend({}, opts, $(this).data());
       var spect = spectrum(this, options);
       $(this).data(dataID, spect.id);
+      this.spect = spect;
     });
   };
 
