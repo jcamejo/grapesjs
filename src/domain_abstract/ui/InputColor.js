@@ -118,7 +118,7 @@ export default Input.extend({
       });
       if (em) {
         em.on('component:selected', () => {
-          picker[0].spect.hide();
+          colorEl.spectrum('hide');
         });
       }
 
