@@ -76,7 +76,7 @@ export default Input.extend({
       let changed = 0;
       let previousColor;
       this.$el.find(`[data-colorp-c]`).append(colorEl);
-      let picker = colorEl.spectrum({
+      colorEl.spectrum({
         containerClassName: `${ppfx}one-bg ${ppfx}two-color`,
         appendTo: elToAppend || 'body',
         maxSelectionSize: 8,
@@ -116,8 +116,10 @@ export default Input.extend({
           }
         }
       });
+
       if (em) {
         em.on('component:selected', () => {
+          changed = 1;
           colorEl.spectrum('hide');
         });
       }
