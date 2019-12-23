@@ -59,6 +59,7 @@ export default Input.extend({
       const self = this;
       const ppfx = this.ppfx;
       var model = this.model;
+      var em = this.em;
 
       var colorEl = $(`<div class="${this.ppfx}field-color-picker"></div>`);
       var cpStyle = colorEl.get(0).style;
@@ -101,6 +102,14 @@ export default Input.extend({
           self.noneColor = 0;
         },
         show(color) {
+          if (em) {
+            em.on('component:selected', () => {
+              const pickerContainer = em
+                .getContainer()
+                .querySelector('.sp-container');
+              pickerContainer.classList.add('sp-hidden');
+            });
+          }
           changed = 0;
           previousColor = getColor(color);
         },

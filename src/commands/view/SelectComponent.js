@@ -182,6 +182,7 @@ export default {
     const { em } = this;
     e.stopPropagation();
     e.preventDefault();
+
     if (em.get('_cmpDrag')) return em.set('_cmpDrag');
     const $el = $(e.target);
     let model = $el.data('model');
