@@ -559,7 +559,6 @@ export default Backbone.View.extend({
     )} ${className}__${property}`;
     el.className += full ? ` ${className}--full` : '';
     this.updateStatus();
-
     const onRender = this.onRender && this.onRender.bind(this);
     onRender && onRender();
     this.setValue(model.get('value'), { targetUpdate: 1 });
