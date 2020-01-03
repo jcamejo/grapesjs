@@ -19,6 +19,7 @@ export default () => ({
       switch (prop) {
         case 'border-radius-c':
           obj.property = 'border-radius';
+          obj.label = 'Corners';
           break;
       }
 

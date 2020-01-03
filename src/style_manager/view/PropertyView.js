@@ -21,12 +21,13 @@ export default Backbone.View.extend({
   templateLabel(model) {
     const { pfx, em } = this;
     const { parent } = model;
-    const { icon = '', info = '', id, name } = model.attributes;
-    const label = (em && em.t(`styleManager.properties.${id}`)) || name;
+    const { icon = '', info = '', id, name, label } = model.attributes;
+    const propertyLabel =
+      (em && em.t(`styleManager.properties.${id}`)) || label || name;
 
     return `
       <span class="${pfx}icon ${icon}" title="${info}">
-        ${label}
+        ${propertyLabel}
       </span>
       ${!parent ? `<b class="${pfx}clear" ${clearProp}>&Cross;</b>` : ''}
     `;
