@@ -259,15 +259,9 @@ export default Backbone.View.extend({
     var result = 1;
     // Check if need to hide the property
     if (this.config.hideNotStylable) {
-      if (this.model.attributes.property == 'text-align') {
-        console.log('Is Target stylable', this.isTargetStylable());
-        console.log('Is Component stylable', this.isComponentStylable());
-      }
       if (!this.isTargetStylable() || !this.isComponentStylable()) {
-        console.log('Hiding', this.model.attributes.property);
         this.hide();
         result = 0;
-        console.log('Visible', this.model.get('visible'));
       } else {
         this.show();
       }
@@ -531,11 +525,6 @@ export default Backbone.View.extend({
   updateVisibility() {
     let display = this.model.get('visible') ? 'block' : 'none';
     this.el.style.display = display;
-    if (this.model.get('property') == 'text-align') {
-      console.log('updating visibility of', this.model.get('property'));
-      console.log('display', display);
-      console.log('el', this.el);
-    }
   },
 
   show() {
