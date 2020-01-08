@@ -556,6 +556,7 @@ export default Backbone.View.extend({
     const property = model.get('property');
     const full = model.get('full');
     const className = `${pfx}property`;
+
     el.innerHTML = this.template(model);
     el.className = `${className} ${pfx}${model.get(
       'type'

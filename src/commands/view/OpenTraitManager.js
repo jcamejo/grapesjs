@@ -55,7 +55,6 @@ export default {
       this.$noActions = $('<h1> No actions </h1>');
       this.$settingsContainer.append(this.$noActions);
       this.$settingsContainer.append(this.$cnWrapTraits);
-
       this.$header = $('<div>').append(
         `<div class="${confTm.stylePrefix}header">${em.t(
           'traitManager.empty'
@@ -63,7 +62,6 @@ export default {
       );
 
       this.$cn.append(this.$header);
-
       this.$cnTraits.append(tmView.render().el);
 
       //adding style manager inside trait manager;

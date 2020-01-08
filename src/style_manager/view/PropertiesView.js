@@ -40,13 +40,14 @@ export default Backbone.View.extend({
     view.render();
     const rendered = view.el;
     this.properties.push(view);
+    view.updateVisibility();
 
     appendAtIndex(appendTo, rendered, opts.at);
   },
 
   render() {
-    this.properties = [];
     const fragment = document.createDocumentFragment();
+    this.properties = [];
     this.collection.each(model => this.add(model, fragment));
     this.$el.append(fragment);
     this.$el.attr('class', `${this.pfx}properties`);

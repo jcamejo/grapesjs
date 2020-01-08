@@ -82,6 +82,7 @@ export default Backbone.View.extend({
     const { pfx, model, em, $el } = this;
     const { id, name } = model.attributes;
     const label = (em && em.t(`styleManager.sectors.${id}`)) || name;
+
     $el.html(this.template({ pfx, label }));
     this.$caret = $el.find(`#${pfx}caret`);
     this.renderProperties();
@@ -92,7 +93,6 @@ export default Backbone.View.extend({
 
   renderProperties() {
     var objs = this.model.get('properties');
-
     if (objs) {
       var view = new PropertiesView({
         collection: objs,
