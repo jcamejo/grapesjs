@@ -205,7 +205,6 @@ export default Backbone.View.extend(
       const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
       const overlay = this.appendCropperOverlay();
       const editor = overlay.firstChild;
-      const confirmButton = this.appendConfirmButton(overlay);
 
       let croppie = new Croppie(editor, {
         enableResize: true,
@@ -214,6 +213,13 @@ export default Backbone.View.extend(
           width: 300
         },
         showZoomer: true
+      });
+
+      const confirmButton = this.appendConfirmButton(overlay);
+      const closeBtn = this.appendCloseButton(overlay, () => {
+        overlay.style.display = 'none';
+        croppie.destroy();
+        return false;
       });
 
       if (files.length > 0) {
@@ -241,18 +247,24 @@ export default Backbone.View.extend(
     },
 
     appendCropperOverlay() {
-      let container = document.createElement('div');
-      let editor = document.createElement('div');
+      let container = document.getElementById('crop-overlay');
 
-      container.style.position = 'fixed';
-      container.style.left = 0;
-      container.style.top = 0;
-      container.style.zIndex = 9999;
-      container.style.backgroundColor = '#FFF';
-      container.style.height = '100%';
-      container.style.width = '100%';
-      container.appendChild(editor);
-      document.body.appendChild(container);
+      if (container) {
+        container.style.display = 'block';
+      } else {
+        let editor = document.createElement('div');
+        container = document.createElement('div');
+        container.id = 'crop-overlay';
+        container.style.position = 'fixed';
+        container.style.left = 0;
+        container.style.top = 0;
+        container.style.zIndex = 9999;
+        container.style.backgroundColor = '#FFF';
+        container.style.height = '100%';
+        container.style.width = '100%';
+        container.appendChild(editor);
+        document.body.appendChild(container);
+      }
 
       return container;
     },
@@ -268,6 +280,22 @@ export default Backbone.View.extend(
       overlay.appendChild(confirmButton);
 
       return confirmButton;
+    },
+    appendCloseButton(overlay, clb) {
+      let closeBtn = document.createElement('a');
+      closeBtn.textContent = 'X';
+
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.left = '20px';
+      closeBtn.style.top = '20px';
+      closeBtn.style.zIndex = 9999;
+      closeBtn.style.color = '#000';
+
+      closeBtn.addEventListener('click', clb);
+
+      overlay.appendChild(closeBtn);
+
+      return closeBtn;
     },
 
     initDropzone(ev) {
