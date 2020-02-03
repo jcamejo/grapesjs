@@ -283,11 +283,12 @@ export default Backbone.View.extend(
     },
     appendCloseButton(overlay, clb) {
       let closeBtn = document.createElement('a');
-      closeBtn.textContent = 'X';
 
+      closeBtn.id = 'close-cropper';
+      closeBtn.className = 'close-cropper-btn';
+      closeBtn.textContent = 'X';
       closeBtn.style.position = 'absolute';
       closeBtn.style.left = '20px';
-      closeBtn.style.top = '20px';
       closeBtn.style.zIndex = 9999;
       closeBtn.style.color = '#000';
 
