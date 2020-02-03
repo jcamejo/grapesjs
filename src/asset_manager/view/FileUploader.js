@@ -1,6 +1,7 @@
 import { template } from 'underscore';
 import Backbone from 'backbone';
 import fetch from 'utils/fetch';
+import Croppie from 'croppie';
 
 export default Backbone.View.extend(
   {
@@ -28,7 +29,8 @@ export default Backbone.View.extend(
           ? c.disableUpload
           : !c.upload && !c.embedAsBase64;
       this.multiUpload = c.multiUpload !== undefined ? c.multiUpload : true;
-      this.events['change #' + this.uploadId] = 'uploadFile';
+      //this.events['change #' + this.uploadId] = 'uploadFile';
+      this.events['change #' + this.uploadId] = 'loadCropper';
       let uploadFile = c.uploadFile;
 
       if (uploadFile) {
@@ -107,9 +109,15 @@ export default Backbone.View.extend(
      * @private
      * */
     uploadFile(e, clb) {
-      const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+      let files;
       const { config } = this;
       const { beforeUpload } = config;
+
+      if (e.size) {
+        files = [e];
+      } else {
+        files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+      }
 
       const beforeUploadResponse = beforeUpload && beforeUpload(files);
       if (beforeUploadResponse === false) return;
@@ -123,7 +131,7 @@ export default Backbone.View.extend(
 
       if (this.multiUpload) {
         for (let i = 0; i < files.length; i++) {
-          body.append(`${config.uploadName}[]`, files[i]);
+          body.append(`${config.uploadName}[]`, files[i], files[i].name);
         }
       } else if (files.length) {
         body.append(config.uploadName, files[0]);
@@ -180,11 +188,86 @@ export default Backbone.View.extend(
           this.uploadForm.ondrop = function(e) {
             this.className = '';
             e.preventDefault();
-            that.uploadFile(e);
+            that.loadCropper(e);
             return;
           };
         }
       }
+    },
+    blobToFile(blob, fileName) {
+      blob.lastModifiedDate = new Date();
+      blob.name = fileName;
+
+      return blob;
+    },
+    loadCropper(e, clb) {
+      const that = this;
+      const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+      const overlay = this.appendCropperOverlay();
+      const editor = overlay.firstChild;
+      const confirmButton = this.appendConfirmButton(overlay);
+
+      let croppie = new Croppie(editor, {
+        enableResize: true,
+        viewport: {
+          height: 300,
+          width: 300
+        },
+        showZoomer: true
+      });
+
+      if (files.length > 0) {
+        let file = files[0];
+        let fileName = file.name;
+
+        croppie.bind({
+          url: URL.createObjectURL(file)
+        });
+
+        confirmButton.addEventListener('click', function() {
+          croppie
+            .result({
+              type: 'blob',
+              size: 'original'
+            })
+            .then(function(blob) {
+              const file = that.blobToFile(blob, fileName);
+              that.uploadFile(file);
+            });
+
+          document.body.removeChild(overlay);
+        });
+      }
+    },
+
+    appendCropperOverlay() {
+      let container = document.createElement('div');
+      let editor = document.createElement('div');
+
+      container.style.position = 'fixed';
+      container.style.left = 0;
+      container.style.top = 0;
+      container.style.zIndex = 9999;
+      container.style.backgroundColor = '#FFF';
+      container.style.height = '100%';
+      container.style.width = '100%';
+      container.appendChild(editor);
+      document.body.appendChild(container);
+
+      return container;
+    },
+
+    appendConfirmButton(overlay) {
+      let confirmButton = document.createElement('button');
+      confirmButton.style.position = 'absolute';
+      confirmButton.style.right = '20px';
+      confirmButton.style.bottom = '20px';
+      confirmButton.style.zIndex = 9999;
+      confirmButton.textContent = 'Confirm';
+      confirmButton.className = 'btn btn-1';
+      overlay.appendChild(confirmButton);
+
+      return confirmButton;
     },
 
     initDropzone(ev) {
