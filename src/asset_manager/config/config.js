@@ -30,7 +30,7 @@ export default {
   params: {},
 
   // The credentials setting for the upload request, eg. 'include', 'omit'
-  credentials: 'include',
+  credentials: 'omit',
 
   // Allow uploading multiple files per request.
   // If disabled filename will not have '[]' appended

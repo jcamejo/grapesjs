@@ -2,6 +2,7 @@ import { template } from 'underscore';
 import Backbone from 'backbone';
 import fetch from 'utils/fetch';
 import Croppie from 'croppie';
+import FileType from 'file-type/browser';
 
 export default Backbone.View.extend(
   {
@@ -12,7 +13,7 @@ export default Backbone.View.extend(
     <div style="clear:both;"></div>
   </form>
   `),
-
+    cropper: null,
     events: {},
 
     initialize(opts = {}) {
@@ -186,10 +187,14 @@ export default Backbone.View.extend(
             return false;
           };
           this.uploadForm.ondrop = function(e) {
-            this.className = '';
-            e.preventDefault();
-            that.loadCropper(e);
-            return;
+            try {
+              this.className = '';
+              e.preventDefault();
+              that.loadCropper(e);
+              return;
+            } catch (e) {
+              that.closeCropper();
+            }
           };
         }
       }
@@ -206,7 +211,7 @@ export default Backbone.View.extend(
       const overlay = this.appendCropperOverlay();
       const editor = overlay.firstChild;
 
-      let croppie = new Croppie(editor, {
+      this.cropper = new Croppie(editor, {
         enableResize: true,
         viewport: {
           height: 300,
@@ -218,7 +223,7 @@ export default Backbone.View.extend(
       const confirmButton = this.appendConfirmButton(overlay);
       const closeBtn = this.appendCloseButton(overlay, () => {
         overlay.style.display = 'none';
-        croppie.destroy();
+        that.cropper.destroy();
         return false;
       });
 
@@ -226,24 +231,40 @@ export default Backbone.View.extend(
         let file = files[0];
         let fileName = file.name;
 
-        croppie.bind({
-          url: URL.createObjectURL(file)
-        });
+        (async () => {
+          let type = await FileType.fromStream(file.stream());
 
-        confirmButton.addEventListener('click', function() {
-          croppie
-            .result({
-              type: 'blob',
-              size: 'original'
-            })
-            .then(function(blob) {
-              const file = that.blobToFile(blob, fileName);
-              that.uploadFile(file);
+          if (type && (type.mime == 'image/jpeg' || type.mime == 'image/png')) {
+            this.cropper.bind({
+              url: URL.createObjectURL(file)
             });
 
-          document.body.removeChild(overlay);
-        });
+            confirmButton.addEventListener('click', function() {
+              that.cropper
+                .result({
+                  type: 'blob',
+                  size: 'original'
+                })
+                .then(function(blob) {
+                  const file = that.blobToFile(blob, fileName);
+                  that.uploadFile(file);
+                });
+
+              document.body.removeChild(overlay);
+            });
+          } else {
+            that.closeCropper();
+          }
+        })();
       }
+    },
+
+    closeCropper() {
+      const cropperOverlay = document.getElementById('crop-overlay');
+      if (cropperOverlay) {
+        cropperOverlay.style.display = 'none';
+      }
+      this.cropper && this.cropper.destroy();
     },
 
     appendCropperOverlay() {
@@ -281,6 +302,7 @@ export default Backbone.View.extend(
 
       return confirmButton;
     },
+
     appendCloseButton(overlay, clb) {
       let closeBtn = document.createElement('a');
 
