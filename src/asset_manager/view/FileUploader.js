@@ -264,7 +264,7 @@ export default Backbone.View.extend(
       confirmButton.style.bottom = '20px';
       confirmButton.style.zIndex = 9999;
       confirmButton.textContent = 'Confirm';
-      confirmButton.className = 'btn btn-1';
+      confirmButton.className = 'btn btn-1 crop-confirm-btn';
       overlay.appendChild(confirmButton);
 
       return confirmButton;
