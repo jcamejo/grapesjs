@@ -226,7 +226,6 @@ export default Backbone.View.extend(
         let file = files[0];
         let fileName = file.name;
 
-        console.log('File', file);
         (async () => {
           let type = await FileType.fromStream(file.stream());
 
