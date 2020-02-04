@@ -187,14 +187,9 @@ export default Backbone.View.extend(
             return false;
           };
           this.uploadForm.ondrop = function(e) {
-            try {
-              this.className = '';
-              e.preventDefault();
-              that.loadCropper(e);
-              return;
-            } catch (e) {
-              that.closeCropper();
-            }
+            this.className = '';
+            e.preventDefault();
+            that.loadCropper(e);
           };
         }
       }
