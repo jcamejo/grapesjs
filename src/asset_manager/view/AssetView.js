@@ -37,10 +37,12 @@ export default Backbone.View.extend({
    * @param {Model} target
    * @private
    * */
+  //TODO: Add option to change the src file
   updateTarget(target) {
     if (target && target.set) {
       target.set('attributes', clone(target.get('attributes')));
-      target.set('src', '/img/' + this.model.getFilename());
+      //target.set('src', '/img/' + this.model.getFilename());
+      target.set('src', this.model.id);
     }
   },
 
