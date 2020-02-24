@@ -151,8 +151,7 @@ export default Backbone.View.extend(
         this.onUploadStart();
         const fetchOpts = {
           method: 'post',
-          //credentials: config.credentials || 'include',
-          credentials: 'omit',
+          credentials: config.credentials || 'include',
           headers,
           body
         };
