@@ -10,23 +10,23 @@ export default Backbone.View.extend({
     if (this.config.showInput) {
       form = `
         <form class="${pfx}add-asset">
-					<div class="${ppfx}field ${pfx}add-field">
-						<input placeholder="${view.config.inputPlaceholder}"/>
-					</div>
-					<button class="${ppfx}btn-prim">${view.config.addBtnText}</button>
+          <div class="${ppfx}field ${pfx}add-field">
+            <input placeholder="${view.config.inputPlaceholder}"/>
+          </div>
+          <button class="${ppfx}btn-prim">${view.config.addBtnText}</button>
           <div style="clear:both"></div>
-				</form>
-			`;
+        </form>
+      `;
     }
 
     return `
-    <div class="${pfx}assets-cont">
-      <div class="${pfx}assets-header">
-				${form}
+      <div class="${pfx}assets-cont">
+        <div class="${pfx}assets-header">
+          ${form}
+        </div>
+        <div class="${pfx}assets" data-el="assets"></div>
+        <div style="clear:both"></div>
       </div>
-      <div class="${pfx}assets" data-el="assets"></div>
-      <div style="clear:both"></div>
-    </div>
     `;
   },
 
@@ -54,6 +54,10 @@ export default Backbone.View.extend({
     const input = this.getAddInput();
     const url = input.value.trim();
     const handleAdd = this.config.handleAdd;
+    const externalImage = {
+      type: 'image',
+      external: true
+    };
 
     if (!url) {
       return;
@@ -65,7 +69,8 @@ export default Backbone.View.extend({
     if (handleAdd) {
       handleAdd.bind(this)(url);
     } else {
-      this.options.globalCollection.add(url, { at: 0 });
+      externalImage.src = url;
+      this.options.globalCollection.add(externalImage, { at: 0 });
     }
   },
 

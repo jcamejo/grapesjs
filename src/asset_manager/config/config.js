@@ -93,8 +93,8 @@ export default {
   // Default title for the asset manager modal
   modalTitle: 'Select Image',
 
-  //Show/hide add image action
-  showInput: false,
+  //Show/hide input for external URLs
+  showInput: true,
 
   //Default placeholder for input
   inputPlaceholder: 'http://path/to/the/image.jpg',
@@ -106,5 +106,8 @@ export default {
   //   if(stopUpload) return false;
   // }
   beforeUpload: null,
-  addBtnText: 'Add image'
+  addBtnText: 'Add image',
+
+  //Default loading path for assets
+  baseAssetPath: '/img/'
 };

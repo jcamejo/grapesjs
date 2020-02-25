@@ -6,6 +6,7 @@ export default Asset.extend({
     type: 'image',
     unitDim: 'px',
     height: 0,
-    width: 0
+    width: 0,
+    external: false
   }
 });
