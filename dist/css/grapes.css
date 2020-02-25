@@ -3406,6 +3406,10 @@ div.gjs-com-hover-move {
     cursor: pointer
 }
 
+.gjs-clm-tags-btn {
+	width: 24px;
+}
+
 .gjs-clm-tags-btn svg {
     fill: currentColor;
     display: block
