@@ -54,10 +54,6 @@ export default Backbone.View.extend({
     const input = this.getAddInput();
     const url = input.value.trim();
     const handleAdd = this.config.handleAdd;
-    const externalImage = {
-      type: 'image',
-      external: true
-    };
 
     if (!url) {
       return;
@@ -69,8 +65,7 @@ export default Backbone.View.extend({
     if (handleAdd) {
       handleAdd.bind(this)(url);
     } else {
-      externalImage.src = url;
-      this.options.globalCollection.add(externalImage, { at: 0 });
+      this.options.globalCollection.add(url, { at: 0 });
     }
   },
 

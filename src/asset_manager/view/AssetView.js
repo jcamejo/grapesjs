@@ -38,21 +38,9 @@ export default Backbone.View.extend({
    * @private
    * */
   updateTarget(target) {
-    const config = this.config;
-    const model = this.model;
-    const { basePath } = config;
-    let imagePath;
-
     if (target && target.set) {
       target.set('attributes', clone(target.get('attributes')));
-
-      if (this.model.attributes.external) {
-        imagePath = this.model.attributes.src;
-      } else {
-        imagePath = basePath + model.getFilename();
-      }
-
-      target.set('src', imagePath);
+      target.set('src', this.model.get('src'));
     }
   },
 
