@@ -178,14 +178,17 @@ export default Backbone.View.extend(
         this.uploadForm = this.$el.find('form').get(0);
         if ('draggable' in this.uploadForm) {
           var uploadFile = this.uploadFile;
+
           this.uploadForm.ondragover = function() {
             this.className = that.pfx + 'hover';
             return false;
           };
+
           this.uploadForm.ondragleave = function() {
             this.className = '';
             return false;
           };
+
           this.uploadForm.ondrop = function(e) {
             this.className = '';
             e.preventDefault();
@@ -202,9 +205,11 @@ export default Backbone.View.extend(
     },
     loadCropper(e, clb) {
       const that = this;
+      const config = this.config;
       const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
       const overlay = this.appendCropperOverlay();
       const editor = overlay.firstChild;
+      const { afterUpload } = config;
 
       this.cropper = new Croppie(editor, {
         enableResize: true,
@@ -242,7 +247,7 @@ export default Backbone.View.extend(
                 })
                 .then(function(blob) {
                   const file = that.blobToFile(blob, fileName);
-                  that.uploadFile(file);
+                  that.uploadFile(file, afterUpload);
                 });
 
               document.body.removeChild(overlay);

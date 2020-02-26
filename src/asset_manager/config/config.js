@@ -94,8 +94,8 @@ export default {
   modalTitle: 'Select Image',
 
   //Show/hide input for external URLs
-  showInput: true,
-
+  showInput: false,
+  //
   //Default placeholder for input
   inputPlaceholder: 'http://path/to/the/image.jpg',
   //method called before upload, on return false upload is canceled.
@@ -106,8 +106,11 @@ export default {
   //   if(stopUpload) return false;
   // }
   beforeUpload: null,
+  // method called after the asset has a successful response.
+  // Likely to be used to handle src attribute before adding it
+  // to the collection
+  afterUpload: null,
   addBtnText: 'Add image',
-
   //Default loading path for assets
   baseAssetPath: '/img/'
 };
