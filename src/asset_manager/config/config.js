@@ -106,5 +106,8 @@ export default {
   //   if(stopUpload) return false;
   // }
   beforeUpload: null,
-  addBtnText: 'Add image'
+  addBtnText: 'Add image',
+
+  // Default base src path when updating image target
+  basePath: '/img/'
 };
