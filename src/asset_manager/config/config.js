@@ -112,5 +112,5 @@ export default {
   afterUpload: null,
   addBtnText: 'Add image',
   //Default loading path for assets
-  baseAssetPath: '/img/'
+  basePath: '/img/'
 };
