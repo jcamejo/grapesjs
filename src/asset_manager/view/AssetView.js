@@ -41,7 +41,6 @@ export default Backbone.View.extend({
     const config = this.config;
     const model = this.model;
     const { basePath } = config;
-
     let imagePath;
 
     if (target && target.set) {
