@@ -133,6 +133,8 @@ export default Backbone.View.extend({
         category.id = category.label;
       }
 
+      // IT checks if the category has already being created
+      // If not renders the view and appends the block
       var catModel = this.categories.add(category);
       var catId = catModel.get('id');
       var catView = this.renderedCategories[catId];

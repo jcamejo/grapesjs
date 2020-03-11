@@ -117,7 +117,7 @@ const Component = Backbone.Model.extend(Styleable).extend(
       script: '',
       'script-export': '',
       attributes: '',
-      traits: ['id', 'title'],
+      traits: [],
       propagate: '',
       dmode: '',
       toolbar: null
@@ -579,6 +579,7 @@ const Component = Backbone.Model.extend(Styleable).extend(
       traits.length && this.set('attributes', attrs);
       this.listenTo(...toListen);
       changed && em && em.trigger('component:toggled');
+
       return this;
     },
 
@@ -658,14 +659,19 @@ const Component = Backbone.Model.extend(Styleable).extend(
         var tb = [];
         if (model.collection) {
           tb.push({
+            attributes: { class: 'fa fa-2x fa-arrow-up' },
+            command: 'select-parent'
+            // TODO: Check this
+            /*
             attributes: { class: 'fa fa-arrow-up' },
             command: ed => ed.runCommand('core:component-exit', { force: 1 })
+            */
           });
         }
         if (model.get('draggable')) {
           tb.push({
             attributes: {
-              class: `fa fa-arrows ${ppfx}no-touch-actions`,
+              class: `fa fa-2x fa-arrows ${ppfx}no-touch-actions`,
               draggable: true
             },
             //events: hasDnd(this.em) ? { dragstart: 'execCommand' } : '',
@@ -674,13 +680,13 @@ const Component = Backbone.Model.extend(Styleable).extend(
         }
         if (model.get('copyable')) {
           tb.push({
-            attributes: { class: 'fa fa-clone' },
+            attributes: { class: 'fa fa-2x fa-clone' },
             command: 'tlb-clone'
           });
         }
         if (model.get('removable')) {
           tb.push({
-            attributes: { class: 'fa fa-trash-o' },
+            attributes: { class: 'fa fa-2x fa-trash-o' },
             command: 'tlb-delete'
           });
         }

@@ -1,7 +1,6 @@
 import Backbone from 'backbone';
 import { isUndefined, isString, isFunction } from 'underscore';
 import { capitalize } from 'utils/mixins';
-
 const $ = Backbone.$;
 
 export default Backbone.View.extend({
@@ -260,8 +259,11 @@ export default Backbone.View.extend({
     const { type } = model.attributes;
     const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}trait`;
+    const extraClass = model.attributes.extraClass || null;
+    const classes = extraClass ? `${extraClass} ${cls}` : cls;
+
     this.$input = null;
-    let tmpl = `<div class="${cls}">
+    let tmpl = `<div class="${classes}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
       <div class="${ppfx}field-wrp ${ppfx}field-wrp--${type}" data-input>
         ${

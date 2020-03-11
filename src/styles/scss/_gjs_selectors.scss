@@ -19,6 +19,10 @@
   cursor: pointer;
 }
 
+.#{$clm-prefix}tags-btn {
+	width: 24px;
+}
+
 .#{$clm-prefix} {
   &tags-btn svg {
     fill: currentColor;

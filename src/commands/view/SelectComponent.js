@@ -81,6 +81,7 @@ export default {
       methods[method](body, 'click touchend', this.onClick);
       methods[method](win, 'scroll', this.onFrameScroll);
     };
+
     methods[method](window, 'resize', this.onFrameUpdated);
     em[method]('component:toggled', this.onSelect, this);
     em[method]('change:componentHovered', this.onHovered, this);

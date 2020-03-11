@@ -425,7 +425,7 @@ export default Backbone.View.extend({
     const { em, onMoveClb, plh } = this;
     this.moved = 1;
 
-    // Turn placeholder visibile
+    // Turn placeholder visible
     var dsp = plh.style.display;
     if (!dsp || dsp === 'none') plh.style.display = 'block';
 
@@ -958,6 +958,7 @@ export default Backbone.View.extend({
    * @param {Object} pos Position object
    * @param {Array<number>} trgDim target dimensions
    * */
+  //#TODO: Make the placeholder color optional
   movePlaceholder(plh, dims, pos, trgDim) {
     var marg = 0,
       t = 0,
@@ -966,7 +967,7 @@ export default Backbone.View.extend({
       h = 0,
       un = 'px',
       margI = 5,
-      brdCol = '#62c462',
+      brdCol = '#fc6e4e',
       brd = 3,
       method = pos.method;
     var elDim = dims[pos.index];

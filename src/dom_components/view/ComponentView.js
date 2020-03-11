@@ -101,6 +101,14 @@ export default Backbone.View.extend({
     return this;
   },
 
+  /**
+   * get Attached event names
+   * @returns {Object}
+   * */
+  getEventNames() {
+    return this.events;
+  },
+
   handleDragStart(event) {
     event.preventDefault();
     event.stopPropagation();

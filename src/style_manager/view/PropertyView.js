@@ -21,12 +21,14 @@ export default Backbone.View.extend({
   templateLabel(model) {
     const { pfx, em } = this;
     const { parent } = model;
-    const { icon = '', info = '', id, name } = model.attributes;
-    const label = (em && em.t(`styleManager.properties.${id}`)) || name;
+    const { icon = '', info = '', id, name, label } = model.attributes;
+    // Propose this as a change for the label
+    const propertyLabel =
+      (em && em.t(`styleManager.properties.${id}`)) || label || name;
 
     return `
       <span class="${pfx}icon ${icon}" title="${info}">
-        ${label}
+        ${propertyLabel}
       </span>
       ${!parent ? `<b class="${pfx}clear" ${clearProp}>&Cross;</b>` : ''}
     `;
@@ -309,7 +311,6 @@ export default Backbone.View.extend({
 
   checkVisibility() {
     var result = 1;
-
     // Check if need to hide the property
     if (this.config.hideNotStylable) {
       if (!this.isTargetStylable() || !this.isComponentStylable()) {
@@ -589,7 +590,8 @@ export default Backbone.View.extend({
   },
 
   updateVisibility() {
-    this.el.style.display = this.model.get('visible') ? 'block' : 'none';
+    let display = this.model.get('visible') ? 'block' : 'none';
+    this.el.style.display = display;
   },
 
   show() {
@@ -622,13 +624,13 @@ export default Backbone.View.extend({
     const full = model.get('full');
     const cls = model.get('className') || '';
     const className = `${pfx}property`;
+
     el.innerHTML = this.template(model);
     el.className = `${className} ${pfx}${model.get(
       'type'
     )} ${className}__${property} ${cls}`.trim();
     el.className += full ? ` ${className}--full` : '';
     this.updateStatus();
-
     const onRender = this.onRender && this.onRender.bind(this);
     onRender && onRender();
     this.setValue(model.get('value'), { targetUpdate: 1 });

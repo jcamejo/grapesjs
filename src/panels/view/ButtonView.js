@@ -160,10 +160,12 @@ export default Backbone.View.extend({
 
   render() {
     const label = this.model.get('label');
+    const title = this.model.get('title');
     const { $el } = this;
     $el.empty();
     this.updateAttributes();
     label && $el.append(label);
+    title && $el.append(title);
     this.checkActive();
     this.updateDisable();
 

@@ -194,12 +194,41 @@ export default () => {
       return categories;
     },
 
+    //TODO: Check if it's possible to add a real id instead of the name directly
+    /**
+     * Get category by ID.
+     * @param {string} id Id string
+     * @return {Category|null}
+     */
+    getCategory(id) {
+      var res = categories.where({ id });
+      return res.length > 0 ? res[0] : null;
+    },
+
     /**
      * Return the Blocks container element
      * @return {HTMLElement}
      */
     getContainer() {
       return blocksView.el;
+    },
+
+    /**
+     * Returns the list of of current categories view elements
+     * @return {Array}
+     */
+
+    getCategoryViews() {
+      return blocksView.renderedCategories;
+    },
+
+    /**
+     * returns the category view by ID
+     * @param {string} id ID string
+     * @return {CategoryView|null}
+     */
+    getCategoryView(id) {
+      return this.getCategoryViews()[id] || null;
     },
 
     /**
@@ -232,7 +261,6 @@ export default () => {
      */
     render(blocks, opts = {}) {
       const toRender = blocks || this.getAll().models;
-
       if (opts.external) {
         return new BlocksView(
           {

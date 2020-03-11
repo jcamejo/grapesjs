@@ -14,6 +14,7 @@ export default Backbone.View.extend({
     'touchstart [data-toggle-move]': 'startSort',
     'click [data-toggle-visible]': 'toggleVisibility',
     'click [data-toggle-select]': 'handleSelect',
+    'click [data-show-options]': 'openTraits',
     'mouseover [data-toggle-select]': 'handleHover',
     'click [data-toggle-open]': 'toggleOpening',
     'dblclick [data-name]': 'handleEdit',
@@ -47,6 +48,7 @@ export default Backbone.View.extend({
         <div class="${clsTitle}" style="padding-left: ${gut}" data-toggle-select>
           <div class="${pfx}layer-title-inn">
             <i class="${clsCaret}" data-toggle-open></i>
+            <i class="" data-toggle-open></i>
             ${icon ? `<span class="${clsBase}__icon">${icon}</span>` : ''}
             <span class="${clsInput}" data-name>${name}</span>
           </div>
@@ -365,6 +367,10 @@ export default Backbone.View.extend({
     this.model = model;
     this.initialize(this.opt);
     this.render();
+  },
+
+  openTraits() {
+    console.log('opening Traits');
   },
 
   updateLayerable() {

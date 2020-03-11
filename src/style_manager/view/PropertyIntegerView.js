@@ -10,6 +10,8 @@ export default PropertyView.extend({
 
   init() {
     const model = this.model;
+    if (model.attributes.property == 'border-radius') {
+    }
     this.listenTo(model, 'change:unit', this.modelValueChanged);
     this.listenTo(model, 'el:change', this.elementUpdated);
     this.listenTo(model, 'change:units', this.render);

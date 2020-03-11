@@ -4,6 +4,7 @@ export default Backbone.Model.extend({
   defaults: {
     id: '',
     label: '',
+    title: '',
     tagName: 'span',
     className: '',
     command: '',
