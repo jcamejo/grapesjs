@@ -768,7 +768,7 @@ export default Backbone.View.extend({
   },
 
   /**
-   * Check if the current pointer is neare to element borders
+   * Check if the current pointer is near to element borders
    * @return {Boolen}
    */
   nearElBorders(el) {
