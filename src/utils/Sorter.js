@@ -67,7 +67,7 @@ export default Backbone.View.extend({
     this.selectOnEnd = !o.avoidSelectOnEnd;
     this.scale = o.scale;
     this.activeTextModel = null;
-    this.plhColor = o.plhColor || '#62c462';
+    this.plhColor = o.plhColor || '#dd8787';
 
     if (this.em && this.em.on) {
       this.em.on('change:canvasOffset', this.updateOffset);
@@ -426,7 +426,7 @@ export default Backbone.View.extend({
     const { em, onMoveClb, plh } = this;
     this.moved = 1;
 
-    // Turn placeholder visible
+    // Turn placeholder visibile
     var dsp = plh.style.display;
     if (!dsp || dsp === 'none') plh.style.display = 'block';
 
@@ -769,7 +769,7 @@ export default Backbone.View.extend({
   },
 
   /**
-   * Check if the current pointer is near to element borders
+   * Check if the current pointer is neare to element borders
    * @return {Boolen}
    */
   nearElBorders(el) {
@@ -959,7 +959,6 @@ export default Backbone.View.extend({
    * @param {Object} pos Position object
    * @param {Array<number>} trgDim target dimensions
    * */
-  //#TODO: Make the placeholder color optional
   movePlaceholder(plh, dims, pos, trgDim) {
     var marg = 0,
       t = 0,
