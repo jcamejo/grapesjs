@@ -369,9 +369,9 @@ const Component = Backbone.Model.extend(Styleable).extend(
      * @example
      * component.addAttributes({ 'data-key': 'value' });
      */
-    addAttributes(attrs) {
+    addAttributes(attrs, opts = {}) {
       const newAttrs = { ...this.getAttributes(), ...attrs };
-      this.setAttributes(newAttrs);
+      this.setAttributes(newAttrs, (opts = {}));
 
       return this;
     },
