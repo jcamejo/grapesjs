@@ -304,7 +304,6 @@ export default Backbone.View.extend({
       }
 
       .${ppfx}selected-parent {
-        outline: 2px solid ${colorWarn} !important
       }
 
       .${ppfx}no-select {

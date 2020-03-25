@@ -31,9 +31,11 @@ export default ComponentView.extend({
   onActive(e) {
     // We place this before stopPropagation in case of nested
     // text components will not block the editing (#1394)
+
     if (this.rteEnabled || !this.model.get('editable')) {
       return;
     }
+
     e && e.stopPropagation && e.stopPropagation();
     const { rte, em } = this;
 

@@ -90,6 +90,14 @@ export default {
   // Any dropzone content to append inside dropzone element
   dropzoneContent: '',
 
+  // Default title for the asset manager modal
+  modalTitle: 'Select Image',
+
+  //Show/hide input for external URLs
+  showInput: false,
+  //
+  //Default placeholder for input
+  inputPlaceholder: 'http://path/to/the/image.jpg',
   //method called before upload, on return false upload is canceled.
   // @example
   // beforeUpload: (files) => {
@@ -98,7 +106,12 @@ export default {
   //   if(stopUpload) return false;
   // }
   beforeUpload: null,
-
   // Toggles visiblity of assets url input
-  showUrlInput: true
+  showUrlInput: true,
+  // method called after the asset has a successful response.
+  // Likely to be used to handle src attribute before adding it
+  // to the collection
+  afterUpload: null,
+  //Default loading path for assets
+  basePath: '/img/'
 };

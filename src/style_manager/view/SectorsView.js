@@ -182,6 +182,7 @@ export default Backbone.View.extend({
     const $el = this.$el;
     const pfx = this.pfx;
     const ppfx = this.ppfx;
+
     $el.empty();
     this.collection.each(model => this.addToCollection(model, frag));
     $el.append(frag);

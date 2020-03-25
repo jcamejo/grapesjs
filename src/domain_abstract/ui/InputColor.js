@@ -59,6 +59,7 @@ export default Input.extend({
       const self = this;
       const ppfx = this.ppfx;
       var model = this.model;
+      var em = this.em;
 
       var colorEl = $(`<div class="${this.ppfx}field-color-picker"></div>`);
       var cpStyle = colorEl.get(0).style;
@@ -116,6 +117,13 @@ export default Input.extend({
           }
         }
       });
+
+      if (em) {
+        em.on('component:selected', () => {
+          changed = 1;
+          colorEl.spectrum('hide');
+        });
+      }
 
       this.colorEl = colorEl;
     }

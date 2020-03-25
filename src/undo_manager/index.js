@@ -50,6 +50,8 @@ export default () => {
       um.changeUndoType('add', {
         on(model, collection, options = {}) {
           if (options.avoidStore) return;
+          // remove hovered event
+          // if (model.changed.status === 'hovered') return;;
           return {
             object: collection,
             before: undefined,
@@ -60,6 +62,7 @@ export default () => {
       });
       um.changeUndoType('remove', {
         on(model, collection, options = {}) {
+          // if (!model.changed.status) return;
           if (options.avoidStore) return;
           return {
             object: collection,

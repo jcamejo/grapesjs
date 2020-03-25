@@ -21,13 +21,13 @@ export default Backbone.View.extend({
     }
 
     return `
-    <div class="${pfx}assets-cont">
-      <div class="${pfx}assets-header">
-        ${form}
+      <div class="${pfx}assets-cont">
+        <div class="${pfx}assets-header">
+          ${form}
+        </div>
+        <div class="${pfx}assets" data-el="assets"></div>
+        <div style="clear:both"></div>
       </div>
-      <div class="${pfx}assets" data-el="assets"></div>
-      <div style="clear:both"></div>
-    </div>
     `;
   },
 
@@ -179,7 +179,9 @@ export default Backbone.View.extend({
   render() {
     const fuRendered = this.options.fu.render().el;
     this.$el.empty();
-    this.$el.append(fuRendered).append(this.template(this));
+    this.$el.append(fuRendered);
+    this.$el.append(this.template(this));
+
     this.el.className = `${this.ppfx}asset-manager`;
     this.renderAssets();
     this.rendered = 1;

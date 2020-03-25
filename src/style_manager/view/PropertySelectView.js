@@ -7,6 +7,7 @@ export default PropertyView.extend({
   templateInput() {
     const pfx = this.pfx;
     const ppfx = this.ppfx;
+    //TODO: span being an id, Add this to a class
     return `
       <div class="${ppfx}field ${ppfx}select">
         <span id="${pfx}input-holder"></span>

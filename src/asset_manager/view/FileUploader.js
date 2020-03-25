@@ -1,6 +1,8 @@
 import { template } from 'underscore';
 import Backbone from 'backbone';
 import fetch from 'utils/fetch';
+import Croppie from 'croppie';
+import FileType from 'file-type/browser';
 
 export default Backbone.View.extend(
   {
@@ -11,7 +13,7 @@ export default Backbone.View.extend(
     <div style="clear:both;"></div>
   </form>
   `),
-
+    cropper: null,
     events: {},
 
     initialize(opts = {}) {
@@ -28,7 +30,8 @@ export default Backbone.View.extend(
           ? c.disableUpload
           : !c.upload && !c.embedAsBase64;
       this.multiUpload = c.multiUpload !== undefined ? c.multiUpload : true;
-      this.events['change #' + this.uploadId] = 'uploadFile';
+      //this.events['change #' + this.uploadId] = 'uploadFile';
+      this.events['change #' + this.uploadId] = 'loadCropper';
       let uploadFile = c.uploadFile;
 
       if (uploadFile) {
@@ -107,9 +110,15 @@ export default Backbone.View.extend(
      * @private
      * */
     uploadFile(e, clb) {
-      const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+      let files;
       const { config } = this;
       const { beforeUpload } = config;
+
+      if (e.size) {
+        files = [e];
+      } else {
+        files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+      }
 
       const beforeUploadResponse = beforeUpload && beforeUpload(files);
       if (beforeUploadResponse === false) return;
@@ -123,7 +132,7 @@ export default Backbone.View.extend(
 
       if (this.multiUpload) {
         for (let i = 0; i < files.length; i++) {
-          body.append(`${config.uploadName}[]`, files[i]);
+          body.append(`${config.uploadName}[]`, files[i], files[i].name);
         }
       } else if (files.length) {
         body.append(config.uploadName, files[0]);
@@ -169,22 +178,147 @@ export default Backbone.View.extend(
         this.uploadForm = this.$el.find('form').get(0);
         if ('draggable' in this.uploadForm) {
           var uploadFile = this.uploadFile;
+
           this.uploadForm.ondragover = function() {
             this.className = that.pfx + 'hover';
             return false;
           };
+
           this.uploadForm.ondragleave = function() {
             this.className = '';
             return false;
           };
+
           this.uploadForm.ondrop = function(e) {
             this.className = '';
             e.preventDefault();
-            that.uploadFile(e);
-            return;
+            that.loadCropper(e);
           };
         }
       }
+    },
+    blobToFile(blob, fileName) {
+      blob.lastModifiedDate = new Date();
+      blob.name = fileName;
+
+      return blob;
+    },
+    loadCropper(e, clb) {
+      const that = this;
+      const config = this.config;
+      const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+      const overlay = this.appendCropperOverlay();
+      const editor = overlay.firstChild;
+      const { afterUpload } = config;
+
+      this.cropper = new Croppie(editor, {
+        enableResize: true,
+        viewport: {
+          height: 300,
+          width: 300
+        },
+        showZoomer: true
+      });
+
+      const confirmButton = this.appendConfirmButton(overlay);
+      const closeBtn = this.appendCloseButton(overlay, () => {
+        overlay.style.display = 'none';
+        that.cropper.destroy();
+        return false;
+      });
+
+      if (files.length > 0) {
+        let file = files[0];
+        let fileName = file.name;
+
+        (async () => {
+          let type = await FileType.fromStream(file.stream());
+
+          if (type && (type.mime == 'image/jpeg' || type.mime == 'image/png')) {
+            this.cropper.bind({
+              url: URL.createObjectURL(file)
+            });
+
+            confirmButton.addEventListener('click', function() {
+              that.cropper
+                .result({
+                  type: 'blob',
+                  size: 'original'
+                })
+                .then(function(blob) {
+                  const file = that.blobToFile(blob, fileName);
+                  that.uploadFile(file, afterUpload);
+                });
+
+              document.body.removeChild(overlay);
+            });
+          } else {
+            that.closeCropper();
+          }
+        })();
+      }
+    },
+
+    closeCropper() {
+      const cropperOverlay = document.getElementById('crop-overlay');
+      if (cropperOverlay) {
+        cropperOverlay.style.display = 'none';
+      }
+      this.cropper && this.cropper.destroy();
+    },
+
+    appendCropperOverlay() {
+      let container = document.getElementById('crop-overlay');
+
+      if (container) {
+        container.style.display = 'block';
+      } else {
+        let editor = document.createElement('div');
+        container = document.createElement('div');
+        container.id = 'crop-overlay';
+        container.style.position = 'fixed';
+        container.style.left = 0;
+        container.style.top = 0;
+        container.style.zIndex = 9999;
+        container.style.backgroundColor = '#FFF';
+        container.style.height = '100%';
+        container.style.width = '100%';
+        container.appendChild(editor);
+        document.body.appendChild(container);
+      }
+
+      return container;
+    },
+
+    appendConfirmButton(overlay) {
+      let confirmButton = document.createElement('button');
+      confirmButton.style.position = 'absolute';
+      confirmButton.style.right = '20px';
+      confirmButton.style.bottom = '20px';
+      confirmButton.style.zIndex = 9999;
+      confirmButton.textContent = 'Confirm';
+      confirmButton.className = 'btn btn-1 crop-confirm-btn';
+      overlay.appendChild(confirmButton);
+
+      return confirmButton;
+    },
+
+    appendCloseButton(overlay, clb) {
+      let closeBtn = document.createElement('a');
+
+      closeBtn.id = 'close-cropper';
+      closeBtn.className = 'close-cropper-btn';
+      closeBtn.textContent = 'X';
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.left = '20px';
+      closeBtn.style.zIndex = 9999;
+      closeBtn.style.color = '#000';
+
+      closeBtn.addEventListener('click', clb);
+
+      overlay.appendChild(closeBtn);
+
+      return closeBtn;
     },
 
     initDropzone(ev) {
