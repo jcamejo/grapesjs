@@ -29,7 +29,7 @@ export default {
         },
         {
           id: prv,
-          title: '<span style="padding-left: 0.5rem">PREVIEW</span>',
+          title: `<span style="padding-left: 0.5rem">PREVIEW</span>`,
           className: 'fa fa-eye',
           command: prv,
           context: prv,
