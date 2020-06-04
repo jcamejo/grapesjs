@@ -25,6 +25,10 @@ export default Backbone.View.extend({
     this.disableCls = `${ppfx}disabled`;
     this.btnsVisCls = `${pfx}visible`;
     this.className = pfx + 'btn' + (cls ? ' ' + cls : '');
+    const text =
+      this.em && this.em.t && this.em.t(`panels.buttons.text.${this.model.id}`);
+    text && this.model.set('title', text);
+
     this.listenTo(this.model, 'change', this.render);
     this.listenTo(this.model, 'change:active updateActive', this.updateActive);
     this.listenTo(this.model, 'checkActive', this.checkActive);
@@ -57,8 +61,10 @@ export default Backbone.View.extend({
   updateAttributes() {
     const { em, model, $el } = this;
     const attr = model.get('attributes') || {};
+
     const title = em && em.t && em.t(`panels.buttons.titles.${model.id}`);
     $el.attr(attr);
+
     title && $el.attr({ title });
 
     this.updateClassName();
