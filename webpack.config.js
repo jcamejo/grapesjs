@@ -25,7 +25,10 @@ module.exports = env => {
     ];
   } else if (env === 'dev') {
     output.filename = 'dist/grapes.js';
-  } else if(env === 'app') {
+  } else if(env === 'app-dev' || env === 'app-prod') {
+    plugins = [
+      new webpack.optimize.ModuleConcatenationPlugin()
+    ];
     output.filename =  `../../../rails/launchpad-v2/app/assets/javascripts/vendor/grapes.js`;
   } else {
     const index = 'index.html';
@@ -38,7 +41,7 @@ module.exports = env => {
     entry: './src',
     output: output,
     plugins: plugins,
-    mode: isProd ? 'production' : 'development',
+    mode: (isProd || env === 'app-prod') ? 'production' : 'development',
     devtool: isProd ? 'source-map' : (!env ? 'cheap-module-eval-source-map' : false),
     devServer: {
       headers: { 'Access-Control-Allow-Origin': '*' },
