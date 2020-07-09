@@ -62,7 +62,7 @@
         });
       }
 
-      var basePath = '/Applications/MAMP/htdocs/lp-layout/current/templates/';
+      var basePath = '';
       var templates = {
         data: [{
           folder_name: 'anonymous-network-marketing',
@@ -443,10 +443,8 @@
 
       var getPage = function(template, page) {
         var xhr = new XMLHttpRequest();
-        var filePath = basePath + template.folder_name + '/' + page.file_path;
-        var encodedPath = btoa(filePath);
-
-        console.log('Getting Page ' + filePath);
+        var filePath = template.folder_name + '/' + page.file_path;
+        var encodedPath = encodeURIComponent(filePath);
 
         xhr.onload = function() {
           if(xhr.status == 200) {
@@ -462,7 +460,7 @@
           }
         }
 
-        xhr.open('GET', 'http://localhost:3010/' + encodedPath);
+        xhr.open('GET', 'http://localhost:3010/get-file?path=' + encodedPath);
         xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa('weismann' + ':' + 'j7PZ1iPsdBG7qjC'));
         xhr.send();
       }
