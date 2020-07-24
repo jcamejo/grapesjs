@@ -474,7 +474,7 @@ export default Backbone.View.extend({
       // If there is a significant changes with the pointer
       if (
         !this.lastPos ||
-        (this.lastPos.index != pos.index || this.lastPos.method != pos.method)
+        this.lastPos.index != pos.index || this.lastPos.method != pos.method
       ) {
         this.movePlaceholder(this.plh, dims, pos, this.prevTargetDim);
         if (!this.$plh) this.$plh = $(this.plh);
@@ -1055,6 +1055,8 @@ export default Backbone.View.extend({
     this.toggleSortCursor();
 
     this.toMove = null;
+    this.eventMove = 0;
+    this.dropModel = null;
 
     if (isFunction(onEndMove)) {
       const data = {

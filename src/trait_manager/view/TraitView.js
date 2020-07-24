@@ -36,12 +36,13 @@ export default Backbone.View.extend({
     this.target = target;
     const { ppfx } = this;
     this.clsField = `${ppfx}field ${ppfx}field-${type}`;
-    [['change:value', this.onValueChange], ['remove', this.removeView]].forEach(
-      ([event, clb]) => {
-        model.off(event, clb);
-        this.listenTo(model, event, clb);
-      }
-    );
+    [
+      ['change:value', this.onValueChange],
+      ['remove', this.removeView]
+    ].forEach(([event, clb]) => {
+      model.off(event, clb);
+      this.listenTo(model, event, clb);
+    });
     model.view = this;
     this.listenTo(model, 'change:label', this.render);
     this.listenTo(model, 'change:placeholder', this.rerender);
@@ -258,9 +259,9 @@ export default Backbone.View.extend({
     const { $el, pfx, ppfx, model } = this;
     const { type } = model.attributes;
     const hasLabel = this.hasLabel && this.hasLabel();
-    const cls = `${pfx}trait`;
+    const cls = `${pfx}trait ${cls}--${type}`;
     const extraClass = model.attributes.extraClass || null;
-    const classes = extraClass ? `${extraClass} ${cls}` : cls;
+    const classes = extraClass ? `${extraClass} ${cls} ${cls}--${type}` : cls;
 
     this.$input = null;
     let tmpl = `<div class="${classes}">

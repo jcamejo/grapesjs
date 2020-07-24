@@ -86,7 +86,7 @@ export default {
     em[method]('component:toggled', this.onSelect, this);
     em[method]('change:componentHovered', this.onHovered, this);
     em[method](
-      'component:resize component:styleUpdate',
+      'component:resize component:styleUpdate component:input',
       this.updateGlobalPos,
       this
     );
@@ -96,7 +96,7 @@ export default {
       .getFrames()
       .forEach(frame => {
         const { view } = frame;
-        trigger(view.getWindow(), view.getBody());
+        view && trigger(view.getWindow(), view.getBody());
       });
   },
 
@@ -205,15 +205,16 @@ export default {
     this.currentDoc = null;
     this.em.setHovered(0);
     this.canvas.getFrames().forEach(frame => {
-      const el = frame.view.getToolsEl();
-      this.toggleToolsEl(0, 0, { el });
+      const { view } = frame;
+      const el = view && view.getToolsEl();
+      el && this.toggleToolsEl(0, 0, { el });
     });
   },
 
   toggleToolsEl(on, view, opts = {}) {
     const el = opts.el || this.canvas.getToolsEl(view);
-    el.style.opacity = on ? 1 : 0;
-    return el;
+    el && (el.style.opacity = on ? 1 : 0);
+    return el || {};
   },
 
   /**
