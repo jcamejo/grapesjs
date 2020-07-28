@@ -133,7 +133,7 @@ export default Input.extend({
   render() {
     Input.prototype.render.call(this);
     // This will make the color input available on render
-    this.getColorEl();
+    const colorEl = this.getColorEl();
     return this;
   }
 });

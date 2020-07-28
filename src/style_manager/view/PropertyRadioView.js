@@ -11,6 +11,7 @@ export default PropertyView.extend({
   },
 
   onRender() {
+    const { em } = this;
     const pfx = this.pfx;
     const ppfx = this.ppfx;
     const itemCls = `${ppfx}radio-item-label`;
@@ -27,8 +28,12 @@ export default PropertyView.extend({
         options.forEach(el => {
           let cl = el.className ? `${el.className} ${pfx}icon ${itemCls}` : '';
           let id = `${prop}-${el.value}-${cid}`;
-          let labelTxt = el.name || el.value;
+          let localeTxt =
+            em &&
+            em.t(`styleManager.properties.${model.id}_options.${el.value}`);
+          let labelTxt = localeTxt || el.name || el.value;
           let titleAttr = el.title ? `title="${el.title}"` : '';
+
           inputStr += `
             <div class="${ppfx}radio-item">
               <input type="radio" class="${clsInput}" id="${id}" name="${prop}-${cid}" value="${
