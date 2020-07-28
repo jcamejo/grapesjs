@@ -262,7 +262,7 @@ export default () => ({
           break;
         case 'font-size':
         case 'border-width':
-          obj.defaults = 'medium';
+          obj.defaults = '';
           break;
         case 'font-weight':
           obj.defaults = '400';
