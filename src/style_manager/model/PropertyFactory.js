@@ -275,7 +275,7 @@ export default () => ({
         case 'text-shadow-color':
         case 'border-color':
         case 'box-shadow-color':
-          obj.defaults = 'black';
+          obj.defaults = '';
           break;
         case 'text-align':
           obj.defaults = 'center';
