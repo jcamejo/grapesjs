@@ -6,7 +6,7 @@ export default Component.extend(
       ...Component.prototype.defaults,
       type: 'link',
       tagName: 'a',
-      traits: ['title', 'href', 'target']
+      traits: ['href', 'target']
     },
 
     /**
