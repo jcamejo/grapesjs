@@ -20,14 +20,6 @@ export default {
       id: 'options',
       buttons: [
         {
-          id: swv,
-          title: '<span>SHOW GRID</span>',
-          className: 'fa fa-square-o',
-          command: swv,
-          context: swv,
-          attributes: { title: 'View components' }
-        },
-        {
           id: prv,
           title: '<span>PREVIEW</span>',
           className: 'fa fa-eye',
@@ -54,13 +46,6 @@ export default {
           command: otm,
           togglable: 0,
           attributes: { title: 'Settings' }
-        },
-        {
-          id: ola,
-          className: 'fa fa-bars',
-          command: ola,
-          togglable: 0,
-          attributes: { title: 'Open Layer Manager' }
         },
         {
           id: obl,
