@@ -563,6 +563,7 @@ export default () => ({
             'Tahoma, Geneva' + ss,
             'Times New Roman, Times, serif',
             'Trebuchet MS, Helvetica' + ss,
+            'CenturyGothic' + ss,
             'Verdana, Geneva' + ss
           ];
           obj.list = [];
