@@ -30,6 +30,7 @@ export default PropertyView.extend({
 
   onRender() {
     var pfx = this.pfx;
+    const { em } = this;
     const options = this.model.getOptions();
 
     if (!this.input) {
@@ -37,6 +38,9 @@ export default PropertyView.extend({
 
       options.forEach(option => {
         let name = option.name || option.value;
+        if (name == 'empty') {
+          name = em.t(`styleManager.properties.${this.property}-empty`);
+        }
         let style = option.style ? option.style.replace(/"/g, '&quot;') : '';
         let styleAttr = style ? `style="${style}"` : '';
         let value = option.value.replace(/"/g, '&quot;');

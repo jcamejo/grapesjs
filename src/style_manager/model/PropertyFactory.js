@@ -258,7 +258,7 @@ export default () => ({
           obj.defaults = 'auto';
           break;
         case 'font-family':
-          obj.defaults = 'Select one';
+          obj.defaults = '';
           break;
         case 'font-size':
         case 'border-width':
@@ -551,7 +551,7 @@ export default () => ({
         case 'font-family':
           var ss = ', sans-serif';
           var fonts = [
-            'Select one',
+            'empty',
             'Arial, Helvetica' + ss,
             'Arial Black, Gadget' + ss,
             'Brush Script MT' + ss,
@@ -571,10 +571,8 @@ export default () => ({
           for (var j = 0, l = fonts.length; j < l; j++) {
             var font = {};
             if (j == 0) {
-              font.disabled = true;
               font.value = '';
-              font.selected = true;
-              font.name = 'Select one';
+              font.name = fonts[j];
             } else {
               font.value = fonts[j];
               font.name = fonts[j].split(',')[0];
