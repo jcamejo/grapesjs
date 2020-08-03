@@ -36,13 +36,12 @@ export default Backbone.View.extend({
     this.target = target;
     const { ppfx } = this;
     this.clsField = `${ppfx}field ${ppfx}field-${type}`;
-    [
-      ['change:value', this.onValueChange],
-      ['remove', this.removeView]
-    ].forEach(([event, clb]) => {
-      model.off(event, clb);
-      this.listenTo(model, event, clb);
-    });
+    [['change:value', this.onValueChange], ['remove', this.removeView]].forEach(
+      ([event, clb]) => {
+        model.off(event, clb);
+        this.listenTo(model, event, clb);
+      }
+    );
     model.view = this;
     this.listenTo(model, 'change:label', this.render);
     this.listenTo(model, 'change:placeholder', this.rerender);
@@ -136,10 +135,12 @@ export default Backbone.View.extend({
    */
   getLabel() {
     const { em } = this;
-    const { label, name } = this.model.attributes;
+    const { label, name, id } = this.model.attributes;
     return (
+      em.t(`traitManager.traits.labels.${id}`) ||
       em.t(`traitManager.traits.labels.${name}`) ||
-      capitalize(label || name).replace(/-/g, ' ')
+      capitalize(label || name).replace(/-/g, ' ') ||
+      em.t(`traitManager.traits.labels.${name}`)
     );
   },
 
