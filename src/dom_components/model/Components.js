@@ -22,6 +22,10 @@ export default Backbone.Collection.extend({
   },
 
   removeChildren(removed, coll, opts = {}) {
+    if (!removed) {
+      return;
+    }
+
     const { domc, em } = this;
     const allByID = domc ? domc.allById() : {};
 
