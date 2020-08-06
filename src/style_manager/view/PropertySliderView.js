@@ -47,6 +47,7 @@ export default Property.extend({
 
   setValue(value) {
     const parsed = this.model.parseValue(value);
+
     this.getSliderEl().value = parseFloat(parsed.value);
     Property.prototype.setValue.apply(this, arguments);
   },

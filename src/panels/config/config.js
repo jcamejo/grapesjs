@@ -2,6 +2,8 @@ const swv = 'sw-visibility';
 const expt = 'export-template';
 const osm = 'open-sm';
 const otm = 'open-tm';
+const cs = 'comp-settings';
+const ocs = 'open-comp-settings';
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
@@ -41,9 +43,9 @@ export default {
       id: 'views',
       buttons: [
         {
-          id: otm,
+          id: cs,
           className: 'fa fa-cog',
-          command: otm,
+          command: ocs,
           togglable: 0,
           attributes: { title: 'Settings' }
         },
